@@ -4,7 +4,7 @@ Tags: news, blog, entertainment, one-column, two-columns, grid-layout, block-sty
 Requires at least: 5.3
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.3.11
+Stable tag: 1.3.12
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,6 +68,9 @@ URL: http://github.com/kenwheeler/slick
 License: The MIT License
 
 == Changelog ==
+= 1.3.12 - Nov 28th, 2024 =
+	* Tweaks - css tweaks
+
 = 1.3.11 - Sept 6th, 2024 =
 	* Fixed - Mainbanner trailing post responsive issue fixed
 	* Added - Mainbanner trailing post image alt text added

@@ -6162,7 +6162,6 @@
 
 	body.single #theme-content .row .primary-content .post-thumbnail img {
 		height: auto;
-		width: auto;
 		object-fit: cover;
 		display: block;
 	}
