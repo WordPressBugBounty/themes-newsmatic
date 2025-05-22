@@ -7774,3 +7774,10 @@ article figure.post-thumb-wrap img,
 		font-size: inherit;
 	}
 
+	/* single post thumbnail */
+	.post-thumbnail .thumb-caption {
+		font-size: 13px;
+    	font-weight: 500;
+    	font-family: var(--post-title-family);
+	}
+
