@@ -4,7 +4,7 @@ Tags: news, blog, entertainment, one-column, two-columns, grid-layout, block-sty
 Requires at least: 5.3
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.3.16
+Stable tag: 1.3.17
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,6 +68,9 @@ URL: http://github.com/kenwheeler/slick
 License: The MIT License
 
 == Changelog ==
+= 1.3.17 - Sept 18th, 2025 =
+	* Added - user capability to install plugins check added
+
 = 1.3.16 - June 20th, 2025 =
 	* Added - upsells added
 	
