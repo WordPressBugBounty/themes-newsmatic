@@ -8,7 +8,9 @@
  *
  * @package Newsmatic
  */
-
+require get_template_directory() . '/builder/footer-builder.php';
+use Newsmatic_Builder as NB;
+use Newsmatic\CustomizerDefault as ND;
  if( did_action( 'elementor/loaded' ) && class_exists( 'Nekit_Render_Templates_Html' ) ) :
 	$Nekit_render_templates_html = new Nekit_Render_Templates_Html();
 	if( $Nekit_render_templates_html->is_template_available('footer') ) {
@@ -27,24 +29,13 @@ if( ! $footer_rendered ) :
   * 
   */
   do_action( 'newsmatic_before_footer_section' );
+  
+  $footer_section_width = ND\newsmatic_get_customizer_option( 'footer_section_width' );
+  $footer_class = 'site-footer dark_bk ' . $footer_section_width;
 ?>
-	<footer id="colophon" class="site-footer dark_bk">
+	<footer id="colophon" class="<?php echo esc_attr( $footer_class );?>">
 		<?php
-			/**
-			 * Function - newsmatic_footer_sections_html
-			 * 
-			 * @since 1.0.0
-			 * 
-			 */
-			newsmatic_footer_sections_html();
-
-			/**
-			 * Function - newsmatic_bottom_footer_sections_html
-			 * 
-			 * @since 1.0.0
-			 * 
-			 */
-			newsmatic_bottom_footer_sections_html();
+			new NB\Footer_Builder_Render();
 		?>
 	</footer><!-- #colophon -->
 	<?php

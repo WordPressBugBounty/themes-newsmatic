@@ -22,7 +22,10 @@ function newsmatic_body_classes( $classes ) {
 	$classes[] = esc_attr( 'newsmatic-title-' . ND\newsmatic_get_customizer_option( 'post_title_hover_effects'  ) ); // post title hover effects
 	$classes[] = esc_attr( 'newsmatic-image-hover--effect-' . ND\newsmatic_get_customizer_option( 'site_image_hover_effects' ) ); // site image hover effects
 	$classes[] = esc_attr( 'site-' . ND\newsmatic_get_customizer_option( 'website_layout' ) ); // site layout
-	if( ND\newsmatic_get_customizer_option( 'website_block_border_top_option' ) ) $classes[] = esc_attr( 'newsmatic_site_block_border_top' ); // block border top
+	if( ND\newsmatic_get_customizer_option( 'website_block_border_top_option' ) ) $classes[] = esc_attr( 'newsmatic_site_block_border_top' ); // block border top	
+
+	$header_width_layout = ND\newsmatic_get_customizer_option('header_width_layout');
+	$classes[] = esc_attr('header-width--' . $header_width_layout);
 	
 	// page layout
 	if( is_page() || is_404() || is_search() ) :
@@ -93,6 +96,7 @@ function newsmatic_scripts() {
 	wp_enqueue_style( 'newsmatic-typo-fonts', wptt_get_webfont_url( newsmatic_typo_fonts_url() ), array(), null );
 	// enqueue inline style
 	wp_enqueue_style( 'newsmatic-style', get_stylesheet_uri(), array(), NEWSMATIC_VERSION );
+	wp_enqueue_style( 'newsmatic-builder', get_template_directory_uri().'/assets/css/builder.css', array(), NEWSMATIC_VERSION );
 	wp_add_inline_style( 'newsmatic-style', newsmatic_current_styles() );
 	wp_enqueue_style( 'newsmatic-main-style', get_template_directory_uri().'/assets/css/main.css', array(), NEWSMATIC_VERSION );
 	wp_enqueue_style( 'newsmatic-loader-style', get_template_directory_uri().'/assets/css/loader.css', array(), NEWSMATIC_VERSION );
@@ -108,8 +112,11 @@ function newsmatic_scripts() {
 	$scriptVars['_wpnonce'] = wp_create_nonce( 'newsmatic-nonce' );
 	$scriptVars['ajaxUrl'] 	= admin_url('admin-ajax.php');
 	$scriptVars['stt']	= ND\newsmatic_get_multiselect_tab_option('stt_responsive_option');
-	$scriptVars['stickey_header']= ND\newsmatic_get_customizer_option('theme_header_sticky');
 	$scriptVars['livesearch']= ND\newsmatic_get_customizer_option('theme_header_live_search_option');
+
+	$theme_header_sticky = ND\newsmatic_get_customizer_option( 'theme_header_sticky' );
+	if( $theme_header_sticky ) $scriptVars[ 'headerSticky' ] = $theme_header_sticky;
+
 	// newsmatic scripts
 	wp_localize_script( 'newsmatic-theme', 'newsmaticObject' , $scriptVars);
 
@@ -160,12 +167,9 @@ if( ! function_exists( 'newsmatic_current_styles' ) ) :
 			if( ND\newsmatic_get_customizer_option('website_block_border_top_option') ) :
 				newsmatic_assign_var( "--theme-block-top-border-color", "website_block_border_top_color" );
 			endif;
-			newsmatic_header_padding('--header-padding', 'header_vertical_padding');
 			$nBackgroundCode = function($identifier,$id) {
 				newsmatic_get_background_style($identifier,$id);
 			};
-			$nBackgroundCode('.newsmatic_main_body .site-header.layout--default .top-header','top_header_background_color_group');
-			$nBackgroundCode('.newsmatic_main_body .site-header.layout--default .menu-section','header_menu_background_color_group');
 			$nBackgroundCode('.newsmatic_font_typography .header-custom-button','header_custom_button_background_color_group');
 			$nBackgroundCode('.newsmatic_font_typography .header-custom-button:hover','header_custom_button_background_hover_color_group');
 			$nSpacingCode = function($identifier,$id, $property = 'padding') {
@@ -177,6 +181,7 @@ if( ! function_exists( 'newsmatic_current_styles' ) ) :
 			$nTypoCode( "--site-title", 'site_title_typo' );
 			$nTypoCode( "--site-tagline", 'site_tagline_typo' );
 			newsmatic_site_logo_width_fnc("body .site-branding img.custom-logo", 'newsmatic_site_logo_width');
+			newsmatic_site_logo_width_fnc("body .site-footer .footer-site-logo img", 'bottom_footer_logo_width');
 			$nColorGroupCode = function($identifier,$id,$property='color') {
 				newsmatic_color_options_one($identifier,$id,$property);
 			};
@@ -191,11 +196,13 @@ if( ! function_exists( 'newsmatic_current_styles' ) ) :
 			$nColorCode('--move-to-top-color','stt_color_group');
 			newsmatic_visibility_options('.ads-banner','header_ads_banner_responsive_option');
 			newsmatic_visibility_options('body #newsmatic-scroll-to-top.show','stt_responsive_option');
-			newsmatic_border_option('body .site-header.layout--default .menu-section .row', 'header_menu_top_border', 'border-top');
-			newsmatic_border_option('body .site-footer.dark_bk','footer_top_border', 'border-top');
-			$nBackgroundCode('.newsmatic_main_body .site-header.layout--default .site-branding-section', 'header_background_color_group');
+			newsmatic_border_option('body .site-footer .row-one.full-width, body .site-footer .row-one .full-width','footer_top_border', 'border-top');
 			$nColorCode('--custom-btn-color','header_custom_button_color_group');
+			$nColorCode('--mode-toggle-color','light_mode_color');
+			$nColorCode('--mode-toggle-color-dark','dark_mode_color');
 			newsmatic_theme_color('--theme-color-red','theme_color');
+			$nColorCode('--footer-social-color','footer_social_icons_color');
+			newsmatic_box_shadow_styles( 'header_builder_box_shadow', 'body .site .site-header' );
 			newsmatic_category_colors_styles();
 			
 			// banner image border radius setting styles
@@ -303,6 +310,39 @@ if( ! function_exists( 'newsmatic_current_styles' ) ) :
 					}
 				}
 			endforeach;
+
+			$nBackgroundCode('.newsmatic_main_body .site-header .row-one.full-width, .newsmatic_main_body .site-header .row-one .full-width', 'top_header_background_color_group');
+			$nBackgroundCode('.newsmatic_main_body .site-header .row-two.full-width, .newsmatic_main_body .site-header .row-two .full-width','header_background_color_group');
+			$nBackgroundCode('.newsmatic_main_body .site-header .row-three.full-width, .newsmatic_main_body .site-header .row-three .full-width','header_menu_background_color_group');
+
+			$nBackgroundCode('body.newsmatic_main_body .site-footer .row-one.full-width, body.newsmatic_main_body .site-footer .row-one .full-width','footer_background_color_group');
+			$nBackgroundCode('body.newsmatic_main_body .site-footer .row-two.full-width, body.newsmatic_main_body .site-footer .row-two .full-width','bottom_footer_background_color_group');
+			$nBackgroundCode('body.newsmatic_main_body .site-footer .row-three.full-width, body.newsmatic_main_body .site-footer .row-three .full-width','footer_third_row_background');
+
+			newsmatic_border_option('body .site-header.layout--default','header_builder_border', 'border');
+			newsmatic_border_option('body .site-header .row-one.full-width, body .site-header .row-one .full-width','top_header_bottom_border', 'border-bottom');
+			newsmatic_border_option('body .site-header .row-two .bb-bldr-row:before','header_menu_top_border', 'border-bottom');
+			newsmatic_border_option('body .site-header .row-three .bb-bldr-row:before','header_menu_bottom_border', 'border-bottom');
+			newsmatic_border_option('body .site-footer .row-two.full-width, body .site-footer .row-two .full-width','footer_second_row_border', 'border-top');
+			newsmatic_border_option('body .site-footer .row-three.full-width, body .site-footer .row-three .full-width','footer_third_row_border', 'border-top');
+
+			$nSpacingCode( 'body .site-header .row-one.full-width, body .site-header .row-one .full-width' , 'header_first_row_padding', 'padding' );
+			$nSpacingCode( 'body .site-header .row-two.full-width, body .site-header .row-two .full-width' , 'header_second_row_padding', 'padding' );
+			$nSpacingCode( 'body .site-header .row-three.full-width, body .site-header .row-three .full-width' , 'header_third_row_padding', 'padding' );
+			$nSpacingCode( 'body .site-footer .row-one.full-width, body .site-footer .row-one .full-width' , 'footer_first_row_padding', 'padding' );
+			$nSpacingCode( 'body .site-footer .row-two.full-width, body .site-footer .row-two .full-width' , 'footer_second_row_padding', 'padding' );
+			$nSpacingCode( 'body .site-footer .row-three.full-width, body .site-footer .row-three .full-width' , 'footer_third_row_padding', 'padding' );
+
+			newsmatic_adjust_builder_border( 'header_builder' );
+			newsmatic_adjust_builder_border( 'responsive_header_builder' );
+
+			$nColorCode('--top-header-menu-color','top_header_menu_color');
+			$nColorGroupCode('body.newsmatic_main_body .site-header.layout--default .top-date-time, body.newsmatic_main_body .site-header.layout--default .top-date-time:after','top_header_datetime_color', 'color');
+			$nColorCode('--random-news-color','header_random_news_label_color');
+			$nColorCode('--newsletter-color','header_newsletter_label_color');
+			$nColorCode('--footer-text-color','footer_color');
+			$nColorGroupCode('.newsmatic_main_body .site-footer .site-info','bottom_footer_text_color');
+			$nColorCode('--top-header-social-color','top_header_social_icon_color');
 		$current_styles = ob_get_clean();
 		return apply_filters( 'newsmatic_current_styles', wp_strip_all_tags($current_styles) );
 	}
@@ -313,16 +353,14 @@ if( ! function_exists( 'newsmatic_customizer_social_icons' ) ) :
 	 * Functions get social icons
 	 * 
 	 */
-	function newsmatic_customizer_social_icons() {
-		$social_icons = ND\newsmatic_get_customizer_option( 'social_icons' );
-		$social_icons_target = ND\newsmatic_get_customizer_option( 'social_icons_target' );
+	function newsmatic_customizer_social_icons( $prefix = '' ) {
+		$social_icons = ND\newsmatic_get_customizer_option( $prefix . 'social_icons' );
+		$social_icons_target = ND\newsmatic_get_customizer_option( $prefix . 'social_icons_target' );
 		$decoded_social_icons = json_decode( $social_icons );
 		echo '<div class="social-icons">';
 			foreach( $decoded_social_icons as $icon ) :
 				if( $icon->item_option === 'show' ) {
-		?>
-					<a class="social-icon" href="<?php echo esc_url( $icon->icon_url ); ?>" target="<?php echo esc_attr( $social_icons_target ); ?>"><i class="<?php echo esc_attr( $icon->icon_class ); ?>"></i></a>
-		<?php
+					echo '<a class="social-icon" href="', esc_url( $icon->icon_url ), '" target="', esc_attr( $social_icons_target ), '"><i class="', esc_attr( $icon->icon_class ), '"></i></a>';
 				}
 			endforeach;
 		echo '</div>';
@@ -815,3 +853,137 @@ if (!function_exists('newsmatic_create_elementor_kit')) {
     }
 	add_action( 'init', 'newsmatic_create_elementor_kit' );
 }
+
+if( ! function_exists( 'newsmatic_get_header_builder_layouts' ) ) :
+	/**
+	 * Get header builder layouts
+	 * 
+	 * @since 1.4.0
+	 */
+	function newsmatic_get_header_builder_layouts() {
+		$theme_directory = get_template_directory_uri();
+		return [
+			'one' => [
+				'label' => esc_html__( 'Layout One', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_one.png',
+				'devices'	=>	[ 'smartphone', 'tablet', 'desktop' ],
+				'columns'	=>	[ 1 ]
+			],
+			'two' => [
+				'label' => esc_html__( 'Layout One', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_two.png',
+				'devices'	=>	[ 'smartphone', 'tablet', 'desktop' ],
+				'columns'	=>	[ 2 ]
+			],
+			'three' => [
+				'label' => esc_html__( 'Layout Two', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_three.png',
+				'devices'	=>	[ 'smartphone', 'tablet', 'desktop' ],
+				'columns'	=>	[ 2 ]
+			],
+			'five' => [
+				'label' => esc_html__( 'Layout One', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_five.png',
+				'devices'	=>	[ 'smartphone', 'tablet', 'desktop' ],
+				'columns'	=>	[ 3 ]
+			],
+			'eight' => [
+				'label' => esc_html__( 'Layout Four', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_eight.png',
+				'devices'	=>	[ 'smartphone', 'tablet', 'desktop' ],
+				'columns'	=>	[ 3 ]
+			],
+			'twenty' => [
+				'label' => esc_html__( 'Layout Three', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_twenty.png',
+				'devices'	=>	[ 'desktop', 'smartphone', 'tablet' ],
+				'columns'	=>	[ 3 ]
+			],
+			'thirteen' => [
+				'label' => esc_html__( 'Layout Three', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_thirteen.png',
+				'devices'	=>	[ 'smartphone', 'tablet' ],
+				'columns'	=>	[ 2 ]
+			],
+			'fourteen' => [
+				'label' => esc_html__( 'Layout Seven', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_fourteen.png',
+				'devices'	=>	[ 'smartphone', 'tablet' ],
+				'columns'	=>	[ 3 ]
+			],
+			'sixteen' => [
+				'label' => esc_html__( 'Layout Four', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_sixteen.png',
+				'devices'	=>	[ 'smartphone', 'tablet' ],
+				'columns'	=>	[ 3 ]
+			]
+		];
+	}
+endif;
+
+if( ! function_exists( 'newsmatic_get_footer_builder_layouts' ) ) :
+	/**
+	 * Get footer builder layouts
+	 * 
+	 * @since 1.4.0
+	 */
+	function newsmatic_get_footer_builder_layouts() {
+		$theme_directory = get_template_directory_uri();
+		return [
+			'one' => [
+				'label' => esc_html__( 'Layout One', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_one.png',
+				'devices'	=>	[ 'smartphone', 'tablet', 'desktop' ],
+				'columns'	=>	[ 1 ]
+			],
+			'two' => [
+				'label' => esc_html__( 'Layout One', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_two.png',
+				'devices'	=>	[ 'smartphone', 'tablet', 'desktop' ],
+				'columns'	=>	[ 2 ]
+			],
+			'three' => [
+				'label' => esc_html__( 'Layout Two', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_three.png',
+				'devices'	=>	[ 'smartphone', 'tablet', 'desktop' ],
+				'columns'	=>	[ 2 ]
+			],
+			'five' => [
+				'label' => esc_html__( 'Layout One', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_five.png',
+				'devices'	=>	[ 'smartphone', 'tablet', 'desktop' ],
+				'columns'	=>	[ 3 ]
+			],
+			'twenty' => [
+				'label' => esc_html__( 'Layout Two', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_twenty.png',
+				'devices'	=>	[ 'desktop', 'smartphone', 'tablet' ],
+				'columns'	=>	[ 3 ]
+			],
+			'nine' => [
+				'label' => esc_html__( 'Layout One', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_nine.png',
+				'devices'	=>	[ 'smartphone', 'tablet', 'desktop' ],
+				'columns'	=>	[ 4 ]
+			],
+			'thirteen' => [
+				'label' => esc_html__( 'Layout Three', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_thirteen.png',
+				'devices'	=>	[ 'smartphone', 'tablet' ],
+				'columns'	=>	[ 2 ]
+			],
+			'sixteen' => [
+				'label' => esc_html__( 'Layout Three', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_sixteen.png',
+				'devices'	=>	[ 'smartphone', 'tablet' ],
+				'columns'	=>	[ 3 ]
+			],
+			'eighteen' => [
+				'label' => esc_html__( 'Layout Two', 'newsmatic' ),
+				'url'   => $theme_directory . '/assets/images/customizer/builder_eighteen.png',
+				'devices'	=>	[ 'smartphone', 'tablet' ],
+				'columns'	=>	[ 4 ]
+			]
+		];
+	}
+endif;

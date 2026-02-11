@@ -23,6 +23,10 @@ function newsmatic_customize_register( $wp_customize ) {
 	require get_template_directory() . '/inc/customizer/custom-controls/redirect-control/redirect-control.php'; // redirect control
     require get_template_directory() . '/inc/customizer/base.php'; // base class
     require get_template_directory() . '/inc/customizer/custom-controls/upsell/upsell.php'; // upsell class
+    require get_template_directory() . '/inc/customizer/custom-controls/builder/builder.php'; // builder control
+    require get_template_directory() . '/inc/customizer/custom-controls/responsive-builder/responsive-builder.php'; // responsive-builder control
+    require get_template_directory() . '/inc/customizer/custom-controls/section-heading-toggle/section-heading-toggle.php'; // section heading control
+
     // icon text control
     class Newsmatic_WP_Icon_Text_Control extends Newsmatic_WP_Base_Control {
         // control type
@@ -465,6 +469,104 @@ function newsmatic_customize_register( $wp_customize ) {
         public function to_json() {
             parent::to_json();
             $this->json['choices'] = $this->choices;
+        }
+    }
+
+    // Responsive Radio Tab Control
+	class Newsmatic_WP_Responsive_Radio_Tab_Control extends Newsmatic_WP_Base_Control {
+		// control type
+		public $type = 'responsive-radio-tab';
+		public $double_line = false;
+		public $responsive = true;
+
+		/**
+         * Add custom JSON parameters to use in the JS template.
+         *
+         * @since  1.0.0
+         * @access public
+         * @return void
+         */
+        public function to_json() {
+            parent::to_json();
+            $this->json['choices'] = $this->choices;
+            $this->json['double_line'] = $this->double_line;
+            $this->json['responsive'] = $this->responsive;
+        }
+	}
+
+    // Responsive Radio Image
+	class Newsmatic_WP_Responsive_Radio_Image extends Newsmatic_WP_Base_Control {
+		// control type
+        public $type = 'responsive-radio-image';
+		public $choices = [];
+		public $has_callback = true;
+		public $row = 1;
+		public $builder = 'header';
+
+		/**
+         * Add custom JSON parameters to use in the JS template.
+         *
+         * @since  1.0.0
+         * @access public
+         * @return void
+         */
+        public function to_json() {
+            parent::to_json();
+			$this->json['choices'] = $this->choices;
+			$this->json['has_callback'] = $this->has_callback;
+			$this->json['row'] = $this->row;
+			$this->json['builder'] = $this->builder;
+        }
+	}
+
+    // Builder Reflector
+	class Newsmatic_WP_Builder_Reflector_Control extends Newsmatic_WP_Base_Control {
+		// control type
+        public $type = 'builder-reflector';
+        public $placement = 'header';
+        public $row = 1;
+        public $builder;
+        public $responsive;
+        public $responsive_builder_id;
+
+		/**
+         * Add custom JSON parameters to use in the JS template.
+         *
+         * @since  1.0.0
+         * @access public
+         * @return void
+         */
+        public function to_json() {
+            parent::to_json();
+            $this->json['placement'] = $this->placement;
+            $this->json['row'] = $this->row;
+            $this->json['builder'] = $this->builder;
+            $this->json['responsive'] = $this->responsive;
+            $this->json['responsive'] = $this->responsive;
+            $this->json['responsive_builder_id'] = $this->responsive_builder_id;
+        }
+	}
+
+    // number control
+    class Newsmatic_WP_Number_Range_Control extends Newsmatic_WP_Base_Control {
+        // control type
+        public $type = 'number-range';
+        public $fields;
+        public $responsive = false;
+		public $tab = 'general';
+
+        /**
+         * Add custom JSON parameters to use in the JS template.
+         *
+         * @since  1.0.0
+         * @access public
+         * @return void
+         */
+        public function to_json() {
+            parent::to_json();
+            $this->json['fields'] = $this->fields;
+            $this->json['responsive'] = $this->responsive;
+            $this->json['input_attrs'] = $this->input_attrs;
         }
     }
 

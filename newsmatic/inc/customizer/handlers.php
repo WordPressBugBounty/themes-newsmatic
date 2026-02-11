@@ -6,7 +6,7 @@ use Newsmatic\CustomizerDefault as ND;
 add_action( 'customize_preview_init', function() {
     wp_enqueue_script( 
         'newsmatic-customizer-preview',
-        get_template_directory_uri() . '/inc/customizer/assets/customizer-preview.min.js',
+        get_template_directory_uri() . '/inc/customizer/assets/customizer-preview.js',
         ['customize-preview'],
         NEWSMATIC_VERSION,
         true
@@ -43,6 +43,7 @@ add_action( 'customize_controls_enqueue_scripts', function() {
     wp_enqueue_script( 
         'newsmatic-customizer-control',
         get_template_directory_uri() . '/inc/customizer/assets/customizer-extends.min.js',
+        // get_template_directory_uri() . '/inc/customizer/controller/build/index.js',
         $buildControlsDeps,
         NEWSMATIC_VERSION,
         true
@@ -57,6 +58,68 @@ add_action( 'customize_controls_enqueue_scripts', function() {
             '_wpnonce'	=> wp_create_nonce( 'newsmatic-customizer-controls-live-nonce' ),
             'ajaxUrl'   => admin_url('admin-ajax.php')
         )
+    );
+    wp_enqueue_style( 
+        'newsmatic-customizer-builder',
+        get_template_directory_uri() . '/inc/customizer/assets/builder.min.css', 
+        array('wp-components'),
+        NEWSMATIC_VERSION,
+        'all'
+    );
+    wp_enqueue_script( 
+        'newsmatic-customizer-extras',
+        get_template_directory_uri() . '/inc/customizer/assets/extras.js',
+        [],
+        NEWSMATIC_VERSION,
+        true
+    );
+
+    // trendyize scripts
+    wp_localize_script( 'newsmatic-customizer-extras', 
+        'customizerExtrasObject', [
+            '_wpnonce'	=> wp_create_nonce( 'newsmatic-customizer-controls-nonce' ),
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'custom_callback'   =>  [
+                /* Header Builder custom callbacks */
+                'header_first_row_column'   =>  [
+                    '1' =>  [ 'header_first_row_column_one' ],
+                    '2' =>  [ 'header_first_row_column_one', 'header_first_row_column_two' ],
+                    '3' =>  [ 'header_first_row_column_one', 'header_first_row_column_two', 'header_first_row_column_three' ]
+                ],
+                'header_second_row_column'  =>  [
+                    '1' =>  [ 'header_second_row_column_one' ],
+                    '2' =>  [ 'header_second_row_column_one', 'header_second_row_column_two' ],
+                    '3' =>  [ 'header_second_row_column_one', 'header_second_row_column_two', 'header_second_row_column_three' ]
+                ],
+                'header_third_row_column'   =>  [
+                    '1' =>  [ 'header_third_row_column_one' ],
+                    '2' =>  [ 'header_third_row_column_one', 'header_third_row_column_two' ],
+                    '3' =>  [ 'header_third_row_column_one', 'header_third_row_column_two', 'header_third_row_column_three' ]
+                ],
+                /* Footer Builder custom callbacks */
+                'footer_first_row_column'   =>  [
+                    '1' =>  [ 'footer_first_row_column_one' ],
+                    '2' =>  [ 'footer_first_row_column_one', 'footer_first_row_column_two' ],
+                    '3' =>  [ 'footer_first_row_column_one', 'footer_first_row_column_two', 'footer_first_row_column_three' ],
+                    '4' =>  [ 'footer_first_row_column_one', 'footer_first_row_column_two', 'footer_first_row_column_three', 'footer_first_row_column_four' ],
+                ],
+                'footer_second_row_column'  =>  [
+                    '1' =>  [ 'footer_second_row_column_one' ],
+                    '2' =>  [ 'footer_second_row_column_one', 'footer_second_row_column_two' ],
+                    '3' =>  [ 'footer_second_row_column_one', 'footer_second_row_column_two', 'footer_second_row_column_three' ],
+                    '4' =>  [ 'footer_second_row_column_one', 'footer_second_row_column_two', 'footer_second_row_column_three', 'footer_second_row_column_four' ],
+                ],
+                'footer_third_row_column'   =>  [
+                    '1' =>  [ 'footer_third_row_column_one' ],
+                    '2' =>  [ 'footer_third_row_column_one', 'footer_third_row_column_two' ],
+                    '3' =>  [ 'footer_third_row_column_one', 'footer_third_row_column_two', 'footer_third_row_column_three' ],
+                    '4' =>  [ 'footer_third_row_column_one', 'footer_third_row_column_two', 'footer_third_row_column_three', 'footer_third_row_column_four' ],
+                ],
+                'header_buiilder_header_sticky' =>  [
+                    'true'  =>  [ 'header_first_row_header_sticky', 'header_second_row_header_sticky', 'header_third_row_header_sticky' ]
+                ],
+            ]
+        ]
     );
 });
 
@@ -756,11 +819,11 @@ if( !function_exists( 'newsmatic_customizer_global_panel' ) ) :
                 'choices'  => array(
                     'boxed--layout' => array(
                         'label' => esc_html__( 'Boxed', 'newsmatic' ),
-                        'url'   => '%s/assets/images/customizer/boxed-width.jpg'
+                        'url'   => '%s/assets/images/customizer/boxed-width.png'
                     ),
                     'full-width--layout' => array(
                         'label' => esc_html__( 'Full Width', 'newsmatic' ),
-                        'url'   => '%s/assets/images/customizer/full-width.jpg'
+                        'url'   => '%s/assets/images/customizer/full-width.png'
                     )
                 )
             )
@@ -1251,12 +1314,13 @@ if( !function_exists( 'newsmatic_customizer_global_panel' ) ) :
 
         // scroll to top pre sale
         $wp_customize->add_setting( 'stt_section_pre_sales', [
-            'sanitize_callback' => 'sanitize_text_field'
+            'sanitize_callback' => 'sanitize_text_field',
         ]);
         $wp_customize->add_control( 
             new Newsmatic_WP_Upsell_Control( $wp_customize, 'stt_section_pre_sales', array(
                 'label'	      => esc_html__( 'Need More scroll to top Options ?', 'newsmatic' ),
                 'section'     => 'newsmatic_stt_options_section',
+                'priority'  =>  20,
                 'features'  =>  [
                     esc_html__( 'Font Size', 'newsmatic' ),
                     esc_html__( 'Border Hover', 'newsmatic' ),
@@ -1298,1209 +1362,11 @@ if( !function_exists( 'newsmatic_customizer_global_panel' ) ) :
     add_action( 'customize_register', 'newsmatic_customizer_global_panel', 10 );
 endif;
 
-if( !function_exists( 'newsmatic_customizer_site_identity_panel' ) ) :
-    /**
-     * Register site identity settings
-     * 
-     */
-    function newsmatic_customizer_site_identity_panel( $wp_customize ) {
-        /**
-         * Register "Site Identity Options" panel
-         * 
-         */
-        $wp_customize->add_panel( 'newsmatic_site_identity_panel', array(
-            'title' => esc_html__( 'Site Identity', 'newsmatic' ),
-            'priority' => 5
-        ));
-        $wp_customize->get_section( 'title_tagline' )->panel = 'newsmatic_site_identity_panel'; // assing title tagline section to site identity panel
-        $wp_customize->get_section( 'title_tagline' )->title = esc_html__( 'Logo & Site Icon', 'newsmatic' ); // modify site logo label
-
-        /**
-         * Site Title Section
-         * 
-         * panel - newsmatic_site_identity_panel
-         */
-        $wp_customize->add_section( 'newsmatic_site_title_section', array(
-            'title' => esc_html__( 'Site Title & Tagline', 'newsmatic' ),
-            'panel' => 'newsmatic_site_identity_panel',
-            'priority'  => 30,
-        ));
-        $wp_customize->get_control( 'blogname' )->section = 'newsmatic_site_title_section';
-        $wp_customize->get_control( 'display_header_text' )->section = 'newsmatic_site_title_section';
-        $wp_customize->get_control( 'display_header_text' )->label = esc_html__( 'Display site title', 'newsmatic' );
-        $wp_customize->get_control( 'blogdescription' )->section = 'newsmatic_site_title_section';
-        
-        // site logo width
-        $wp_customize->add_setting( 'newsmatic_site_logo_width', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'newsmatic_site_logo_width' ),
-            'sanitize_callback' => 'newsmatic_sanitize_responsive_range',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control(
-            new Newsmatic_WP_Responsive_Range_Control( $wp_customize, 'newsmatic_site_logo_width', array(
-                    'label'	      => esc_html__( 'Logo Width (px)', 'newsmatic' ),
-                    'section'     => 'title_tagline',
-                    'settings'    => 'newsmatic_site_logo_width',
-                    'unit'        => 'px',
-                    'input_attrs' => array(
-                    'max'         => 400,
-                    'min'         => 1,
-                    'step'        => 1,
-                    'reset' => true
-                )
-            ))
-        );
-
-        // site title section tab
-        $wp_customize->add_setting( 'site_title_section_tab', array(
-            'sanitize_callback' => 'sanitize_text_field',
-            'default'   => 'general'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Section_Tab_Control( $wp_customize, 'site_title_section_tab', array(
-                'section'     => 'newsmatic_site_title_section',
-                'priority'  => 1,
-                'choices'  => array(
-                    array(
-                        'name'  => 'general',
-                        'title'  => esc_html__( 'General', 'newsmatic' )
-                    ),
-                    array(
-                        'name'  => 'design',
-                        'title'  => esc_html__( 'Design', 'newsmatic' )
-                    )
-                )
-            ))
-        );
-
-        // blog description option
-        $wp_customize->add_setting( 'blogdescription_option', array(
-            'default'        => true,
-            'sanitize_callback' => 'sanitize_text_field',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control( 'blogdescription_option', array(
-            'label'    => esc_html__( 'Display site description', 'newsmatic' ),
-            'section'  => 'newsmatic_site_title_section',
-            'type'     => 'checkbox',
-            'priority' => 50
-        ));
-
-        $wp_customize->get_control( 'header_textcolor' )->section = 'newsmatic_site_title_section';
-        $wp_customize->get_control( 'header_textcolor' )->priority = 60;
-        $wp_customize->get_control( 'header_textcolor' )->label = esc_html__( 'Site Title Color', 'newsmatic' );
-
-        // header text hover color
-        $wp_customize->add_setting( 'site_title_hover_textcolor', array(
-            'default' => ND\newsmatic_get_customizer_default( 'site_title_hover_textcolor' ),
-            'sanitize_callback' => 'sanitize_hex_color',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Default_Color_Control( $wp_customize, 'site_title_hover_textcolor', array(
-                'label'      => esc_html__( 'Site Title Hover Color', 'newsmatic' ),
-                'section'    => 'newsmatic_site_title_section',
-                'settings'   => 'site_title_hover_textcolor',
-                'priority'    => 70,
-                'tab'   => 'design'
-            ))
-        );
-
-        // site description color
-        $wp_customize->add_setting( 'site_description_color', array(
-            'default' => ND\newsmatic_get_customizer_default( 'site_description_color' ),
-            'sanitize_callback' => 'sanitize_hex_color',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Default_Color_Control( $wp_customize, 'site_description_color', array(
-                'label'      => esc_html__( 'Site Description Color', 'newsmatic' ),
-                'section'    => 'newsmatic_site_title_section',
-                'settings'   => 'site_description_color',
-                'priority'    => 70,
-                'tab'   => 'design'
-            ))
-        );
-
-        // site title & tagline pre sale
-        $wp_customize->add_setting( 'site_title_and_tagline_section_pre_sales', [
-            'sanitize_callback' => 'sanitize_text_field'
-        ]);
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Upsell_Control( $wp_customize, 'site_title_and_tagline_section_pre_sales', array(
-                'label' =>  esc_html__( 'Need More Site Title Options ?', 'newsmatic' ),
-                'section'   =>  'newsmatic_site_title_section',
-                'features'  =>  [
-                    esc_html__( 'More than 1500+ google fonts', 'newsmatic' )
-                ],
-                'tab'   =>  'design',
-                'priority'    => 100,
-            ))
-        );
-
-        // site title typo
-        $wp_customize->add_setting( 'site_title_typo', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'site_title_typo' ),
-            'sanitize_callback' => 'newsmatic_sanitize_typo_control',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Typography_Control( $wp_customize, 'site_title_typo', array(
-                'label'	      => esc_html__( 'Site Title Typography', 'newsmatic' ),
-                'section'     => 'newsmatic_site_title_section',
-                'settings'    => 'site_title_typo',
-                'tab'   => 'design',
-                'fields'    => array( 'font_family', 'font_weight', 'font_size', 'line_height', 'letter_spacing', 'text_transform', 'text_decoration')
-            ))
-        );
-
-        // site tagline typo
-        $wp_customize->add_setting( 'site_tagline_typo', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'site_tagline_typo' ),
-            'sanitize_callback' => 'newsmatic_sanitize_typo_control',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Typography_Control( $wp_customize, 'site_tagline_typo', array(
-                'label'	      => esc_html__( 'Site Tagline Typography', 'newsmatic' ),
-                'section'     => 'newsmatic_site_title_section',
-                'settings'    => 'site_tagline_typo',
-                'tab'   => 'design',
-                'fields'    => array( 'font_family', 'font_weight', 'font_size', 'line_height', 'letter_spacing', 'text_transform', 'text_decoration')
-            ))
-        );
-    }
-    add_action( 'customize_register', 'newsmatic_customizer_site_identity_panel', 10 );
-endif;
-
-if( !function_exists( 'newsmatic_customizer_top_header_panel' ) ) :
-    /**
-     * Register header options settings
-     * 
-     */
-    function newsmatic_customizer_top_header_panel( $wp_customize ) {
-        /**
-         * Top header section
-         * 
-         */
-        $wp_customize->add_section( 'newsmatic_top_header_section', array(
-            'title' => esc_html__( 'Top Header', 'newsmatic' ),
-            'priority'  => 68
-        ));
-        
-        // section tab
-        $wp_customize->add_setting( 'top_header_section_tab', array(
-            'sanitize_callback' => 'sanitize_text_field',
-            'default'   => 'general'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Section_Tab_Control( $wp_customize, 'top_header_section_tab', array(
-                'section'     => 'newsmatic_top_header_section',
-                'choices'  => array(
-                    array(
-                        'name'  => 'general',
-                        'title'  => esc_html__( 'General', 'newsmatic' )
-                    ),
-                    array(
-                        'name'  => 'design',
-                        'title'  => esc_html__( 'Design', 'newsmatic' )
-                    )
-                )
-            ))
-        );
-        
-        // Top header option
-        $wp_customize->add_setting( 'top_header_option', array(
-            'default'         => ND\newsmatic_get_customizer_default( 'top_header_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control',
-            'transport' => 'postMessage'
-        ));
-    
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Toggle_Control( $wp_customize, 'top_header_option', array(
-                'label'	      => esc_html__( 'Show top header', 'newsmatic' ),
-                'description' => esc_html__( 'Toggle to enable or disable top header bar', 'newsmatic' ),
-                'section'     => 'newsmatic_top_header_section',
-                'settings'    => 'top_header_option'
-            ))
-        );
-
-        // Top header date time option
-        $wp_customize->add_setting( 'top_header_date_time_option', array(
-            'default'         => ND\newsmatic_get_customizer_default( 'top_header_date_time_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control'
-        ));
-    
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Simple_Toggle_Control( $wp_customize, 'top_header_date_time_option', array(
-                'label'	      => esc_html__( 'Show date and time', 'newsmatic' ),
-                'section'     => 'newsmatic_top_header_section',
-                'settings'    => 'top_header_date_time_option',
-            ))
-        );
-
-        // top header right content type
-        $wp_customize->add_setting( 'top_header_right_content_type', array(
-            'default' => ND\newsmatic_get_customizer_default( 'top_header_right_content_type' ),
-            'sanitize_callback' => 'newsmatic_sanitize_select_control'
-        ));
-        
-        $wp_customize->add_control( 'top_header_right_content_type', array(
-            'type'      => 'select',
-            'section'   => 'newsmatic_top_header_section',
-            'label'     => __( 'Ticker news / Nav menu choices', 'newsmatic' ),
-            'choices'   => array(
-                'ticker-news' => esc_html__( 'Ticker News', 'newsmatic' ),
-                'nav-menu' => esc_html__( 'Nav Menu', 'newsmatic' )
-            )
-        ));
-
-        // Top header ticker news option
-        $wp_customize->add_setting( 'top_header_menu_option', array(
-            'default'         => ND\newsmatic_get_customizer_default( 'top_header_menu_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control'
-        ));
-    
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Simple_Toggle_Control( $wp_customize, 'top_header_menu_option', array(
-                'label'	      => esc_html__( 'Show nav menu', 'newsmatic' ),
-                'section'     => 'newsmatic_top_header_section',
-                'settings'    => 'top_header_menu_option',
-                'active_callback'   => function( $setting ) {
-                    if ( $setting->manager->get_setting( 'top_header_right_content_type' )->value() == 'nav-menu' ) {
-                        return true;
-                    }
-                    return false;
-                }
-            ))
-        );
-
-        // Top header ticker news option
-        $wp_customize->add_setting( 'top_header_ticker_news_option', array(
-            'default'         => ND\newsmatic_get_customizer_default( 'top_header_ticker_news_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control'
-        ));
-    
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Simple_Toggle_Control( $wp_customize, 'top_header_ticker_news_option', array(
-                'label'	      => esc_html__( 'Show ticker news', 'newsmatic' ),
-                'section'     => 'newsmatic_top_header_section',
-                'settings'    => 'top_header_ticker_news_option',
-                'active_callback'   => function( $setting ) {
-                    if ( $setting->manager->get_setting( 'top_header_right_content_type' )->value() == 'ticker-news' ) {
-                        return true;
-                    }
-                    return false;
-                }
-            ))
-        );
-
-        // Ticker News posts filter
-        $wp_customize->add_setting( 'top_header_ticker_news_post_filter', array(
-            'default' => ND\newsmatic_get_customizer_default( 'top_header_ticker_news_post_filter' ),
-            'sanitize_callback' => 'sanitize_text_field'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Radio_Bubble_Control( $wp_customize, 'top_header_ticker_news_post_filter', array(
-                'section'     => 'newsmatic_top_header_section',
-                'settings'    => 'top_header_ticker_news_post_filter',
-                'choices' => array(
-                    array(
-                        'value' => 'category',
-                        'label' => esc_html__('By category', 'newsmatic' )
-                    ),
-                    array(
-                        'value' => 'title',
-                        'label' => esc_html__('By title', 'newsmatic' )
-                    )
-                ),
-                'active_callback'   => function( $setting ) {
-                    if ( $setting->manager->get_setting( 'top_header_ticker_news_option' )->value() && $setting->manager->get_setting( 'top_header_right_content_type' )->value() == 'ticker-news' ) {
-                        return true;
-                    }
-                    return false;
-                }
-            ))
-        );
-
-        // Ticker News categories
-        $wp_customize->add_setting( 'top_header_ticker_news_categories', array(
-            'default' => ND\newsmatic_get_customizer_default( 'top_header_ticker_news_categories' ),
-            'sanitize_callback' => 'sanitize_text_field'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Categories_Multiselect_Control( $wp_customize, 'top_header_ticker_news_categories', array(
-                'label'     => esc_html__( 'Posts Categories', 'newsmatic' ),
-                'section'   => 'newsmatic_top_header_section',
-                'settings'  => 'top_header_ticker_news_categories',
-                'choices'   => newsmatic_get_multicheckbox_categories_simple_array(),
-                'active_callback'   => function( $setting ) {
-                    if ( $setting->manager->get_setting( 'top_header_ticker_news_option' )->value() && $setting->manager->get_setting( 'top_header_ticker_news_post_filter' )->value() == 'category' && $setting->manager->get_setting( 'top_header_right_content_type' )->value() == 'ticker-news' ) {
-                        return true;
-                    }
-                    return false;
-                }
-            ))
-        );
-
-        // Ticker News posts
-        $wp_customize->add_setting( 'top_header_ticker_news_posts', array(
-            'default' => ND\newsmatic_get_customizer_default( 'top_header_ticker_news_posts' ),
-            'sanitize_callback' => 'sanitize_text_field'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Posts_Multiselect_Control( $wp_customize, 'top_header_ticker_news_posts', array(
-                'label'     => esc_html__( 'Posts', 'newsmatic' ),
-                'section'   => 'newsmatic_top_header_section',
-                'settings'  => 'top_header_ticker_news_posts',
-                'choices'   => newsmatic_get_multicheckbox_posts_simple_array(),
-                'active_callback'   => function( $setting ) {
-                    if ( $setting->manager->get_setting( 'top_header_ticker_news_option' )->value() && $setting->manager->get_setting( 'top_header_ticker_news_post_filter' )->value() == 'title' && $setting->manager->get_setting( 'top_header_right_content_type' )->value() == 'ticker-news' ) {
-                        return true;
-                    }
-                    return false;
-                }
-            ))
-        );
-
-        // Ticker News date filter
-        $wp_customize->add_setting( 'top_header_ticker_news_date_filter', array(
-            'default' => ND\newsmatic_get_customizer_default( 'top_header_ticker_news_date_filter' ),
-            'sanitize_callback' => 'sanitize_text_field'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Radio_Bubble_Control( $wp_customize, 'top_header_ticker_news_date_filter', array(
-                'section'     => 'newsmatic_top_header_section',
-                'settings'    => 'top_header_ticker_news_date_filter',
-                'choices' => newsmatic_get_date_filter_choices_array(),
-                'active_callback'   => function( $setting ) {
-                    if ( $setting->manager->get_setting( 'top_header_ticker_news_option' )->value() && $setting->manager->get_setting( 'top_header_ticker_news_post_filter' )->value() == 'category' && $setting->manager->get_setting( 'top_header_right_content_type' )->value() == 'ticker-news' ) {
-                        return true;
-                    }
-                    return false;
-                }
-            ))
-        );
-
-        // top header pre sale
-        $wp_customize->add_setting( 'top_header_section_pre_sales', [
-            'sanitize_callback' => 'sanitize_text_field'
-        ]);
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Upsell_Control( $wp_customize, 'top_header_section_pre_sales', array(
-                'label'	      => esc_html__( 'Need More Preloader Options ?', 'newsmatic' ),
-                'section'     => 'newsmatic_top_header_section',
-                'features'  =>  [
-                    esc_html__( 'Ticker Number of posts to display', 'newsmatic' ),
-                    esc_html__( 'Ticker Offset', 'newsmatic' ),
-                    esc_html__( 'Ticker auto slide', 'newsmatic' ),
-                    esc_html__( 'Ticker slide horizontal direction', 'newsmatic' ),
-                    esc_html__( 'Show Social Icons', 'newsmatic' ),
-                    esc_html__( 'Border Bottom', 'newsmatic' ),
-                    esc_html__( 'Date / Time Color', 'newsmatic' ),
-                    esc_html__( 'Menu & Social Icon Color', 'newsmatic' )
-                ]
-            ))
-        );
-
-        // Top header background colors group control
-        $wp_customize->add_setting( 'top_header_background_color_group', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'top_header_background_color_group' ),
-            'transport' => 'postMessage',
-            'sanitize_callback' => 'sanitize_text_field'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Color_Group_Control( $wp_customize, 'top_header_background_color_group', array(
-                'label'	      => esc_html__( 'Background', 'newsmatic' ),
-                'section'     => 'newsmatic_top_header_section',
-                'settings'    => 'top_header_background_color_group',
-                'tab'   => 'design'
-            ))
-        );
-    }
-    add_action( 'customize_register', 'newsmatic_customizer_top_header_panel', 10 );
-endif;
-
-if( !function_exists( 'newsmatic_customizer_header_panel' ) ) :
-    /**
-     * Register header options settings
-     * 
-     */
-    function newsmatic_customizer_header_panel( $wp_customize ) {
-        /**
-         * Header panel
-         * 
-         */
-        $wp_customize->add_panel( 'newsmatic_header_panel', array(
-            'title' => esc_html__( 'Theme Header', 'newsmatic' ),
-            'priority'  => 69
-        ));
-        
-        // Header ads banner section
-        $wp_customize->add_section( 'newsmatic_header_ads_banner_section', array(
-            'title' => esc_html__( 'Ads Banner', 'newsmatic' ),
-            'panel' => 'newsmatic_header_panel',
-            'priority'  => 5
-        ));
-
-        // Header Ads Banner setting heading
-        $wp_customize->add_setting( 'newsmatic_header_ads_banner_header', array(
-            'sanitize_callback' => 'sanitize_text_field'
-        ));
-
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Section_Heading_Control( $wp_customize, 'newsmatic_header_ads_banner_header', array(
-                'label'	      => esc_html__( 'Ads Banner Setting', 'newsmatic' ),
-                'section'     => 'newsmatic_header_ads_banner_section',
-                'settings'    => 'newsmatic_header_ads_banner_header'
-            ))
-        );
-
-        // Resposive vivibility option
-        $wp_customize->add_setting( 'header_ads_banner_responsive_option', array(
-            'default' => ND\newsmatic_get_customizer_default( 'header_ads_banner_responsive_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_responsive_multiselect_control'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Responsive_Multiselect_Tab_Control( $wp_customize, 'header_ads_banner_responsive_option', array(
-                'label'	      => esc_html__( 'Ads Banner Visibility', 'newsmatic' ),
-                'section'     => 'newsmatic_header_ads_banner_section',
-                'settings'    => 'header_ads_banner_responsive_option'
-            ))
-        );
-
-        // ads image field
-        $wp_customize->add_setting( 'header_ads_banner_custom_image', array(
-            'default' => ND\newsmatic_get_customizer_default( 'header_ads_banner_custom_image' ),
-            'sanitize_callback' => 'absint',
-        ));
-        $wp_customize->add_control(new WP_Customize_Media_Control($wp_customize, 'header_ads_banner_custom_image', array(
-            'section' => 'newsmatic_header_ads_banner_section',
-            'mime_type' => 'image',
-            'label' => esc_html__( 'Ads Image', 'newsmatic' ),
-            'description' => esc_html__( 'Recommended size for ad image is 900 (width) * 350 (height)', 'newsmatic' )
-        )));
-
-        // ads url field
-        $wp_customize->add_setting( 'header_ads_banner_custom_url', array(
-            'default' => ND\newsmatic_get_customizer_default( 'header_ads_banner_custom_url' ),
-            'sanitize_callback' => 'esc_url_raw',
-        ));
-          
-        $wp_customize->add_control( 'header_ads_banner_custom_url', array(
-            'type'  => 'url',
-            'section'   => 'newsmatic_header_ads_banner_section',
-            'label'     => esc_html__( 'Ads url', 'newsmatic' )
-        ));
-
-        // ads link show on
-        $wp_customize->add_setting( 'header_ads_banner_custom_target', array(
-            'default' => ND\newsmatic_get_customizer_default( 'header_ads_banner_custom_target' ),
-            'sanitize_callback' => 'newsmatic_sanitize_select_control'
-        ));
-        
-        $wp_customize->add_control( 'header_ads_banner_custom_target', array(
-            'type'      => 'select',
-            'section'   => 'newsmatic_header_ads_banner_section',
-            'label'     => __( 'Open Ads link on', 'newsmatic' ),
-            'choices'   => array(
-                '_self' => esc_html__( 'Open in same tab', 'newsmatic' ),
-                '_blank' => esc_html__( 'Open in new tab', 'newsmatic' )
-            )
-        ));
-
-        // Ads Banner pre sale
-        $wp_customize->add_setting( 'ads_banner_section_pre_sales', [
-            'sanitize_callback' => 'sanitize_text_field'
-        ]);
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Upsell_Control( $wp_customize, 'ads_banner_section_pre_sales', array(
-                'label'	      => esc_html__( 'Need More Ads Banner Options ?', 'newsmatic' ),
-                'section'     => 'newsmatic_header_ads_banner_section',
-                'features'  =>  [
-                    esc_html__( 'Shortcode', 'newsmatic' ),
-                    esc_html__( 'Ads Banner Sidebar', 'newsmatic' )
-                ]
-            ))
-        );
-
-        // Header content section
-        $wp_customize->add_section( 'newsmatic_main_header_section', array(
-            'title' => esc_html__( 'Main Header', 'newsmatic' ),
-            'panel' => 'newsmatic_header_panel',
-            'priority'  => 10
-        ));
-
-        // section tab
-        $wp_customize->add_setting( 'main_header_section_tab', array(
-            'sanitize_callback' => 'sanitize_text_field',
-            'default'   => 'general'
-        ));
-        
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Section_Tab_Control( $wp_customize, 'main_header_section_tab', array(
-                'section'     => 'newsmatic_main_header_section',
-                'choices'  => array(
-                    array(
-                        'name'  => 'general',
-                        'title'  => esc_html__( 'General', 'newsmatic' )
-                    ),
-                    array(
-                        'name'  => 'design',
-                        'title'  => esc_html__( 'Design', 'newsmatic' )
-                    )
-                )
-            ))
-        );
-
-        // header elements order
-        $wp_customize->add_setting( 'main_header_elements_order', array(
-            'sanitize_callback' => 'newsmatic_sanitize_select_control',
-            'default'   => ND\newsmatic_get_customizer_default( 'main_header_elements_order' ),
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control( 'main_header_elements_order', array(
-            'type'      => 'select',
-            'section'   => 'newsmatic_main_header_section',
-            'label'     => esc_html__( 'Elements Display Order', 'newsmatic' ),
-            'description' => esc_html__( 'You can change the position of the social icons and buttons.', 'newsmatic' ),
-            'choices'   => array(
-                'social-logo-buttons'  => __( 'Social Icon - Site Logo - Buttons', 'newsmatic' ),
-                'buttons-logo-social'   => __( 'Buttons - Site Logo - Social Icon', 'newsmatic' )
-            )
-        ));
-
-        // redirect site logo section
-        $wp_customize->add_setting( 'header_site_logo_redirects', array(
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control',
-        ));
-
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Redirect_Control( $wp_customize, 'header_site_logo_redirects', array(
-                'section'     => 'newsmatic_main_header_section',
-                'settings'    => 'header_site_logo_redirects',
-                'choices'     => array(
-                    'header-social-icons' => array(
-                        'type'  => 'section',
-                        'id'    => 'title_tagline',
-                        'label' => esc_html__( 'Manage Site Logo', 'newsmatic' )
-                    )
-                )
-            ))
-        );
-
-        // redirect site title section
-        $wp_customize->add_setting( 'header_site_title_redirects', array(
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control',
-        ));
-
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Redirect_Control( $wp_customize, 'header_site_title_redirects', array(
-                'section'     => 'newsmatic_main_header_section',
-                'settings'    => 'header_site_title_redirects',
-                'choices'     => array(
-                    'header-social-icons' => array(
-                        'type'  => 'section',
-                        'id'    => 'newsmatic_site_title_section',
-                        'label' => esc_html__( 'Manage site & Tagline', 'newsmatic' )
-                    )
-                )
-            ))
-        );
-
-        // top header social option
-        $wp_customize->add_setting( 'top_header_social_option', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'top_header_social_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control',
-            'transport' => 'postMessage'
-        ));
-    
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Simple_Toggle_Control( $wp_customize, 'top_header_social_option', array(
-                'label'	      => esc_html__( 'Show social icons', 'newsmatic' ),
-                'section'     => 'newsmatic_main_header_section',
-                'settings'    => 'top_header_social_option',
-            ))
-        );
-
-        // Redirect header social icons link
-        $wp_customize->add_setting( 'top_header_social_icons_redirects', array(
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control',
-        ));
-
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Redirect_Control( $wp_customize, 'top_header_social_icons_redirects', array(
-                'section'     => 'newsmatic_main_header_section',
-                'settings'    => 'top_header_social_icons_redirects',
-                'choices'     => array(
-                    'header-social-icons' => array(
-                        'type'  => 'section',
-                        'id'    => 'newsmatic_social_icons_section',
-                        'label' => esc_html__( 'Manage social icons', 'newsmatic' )
-                    )
-                )
-            ))
-        );
-
-        // header sidebar toggle button option
-        $wp_customize->add_setting( 'header_sidebar_toggle_option', array(
-            'default'         => ND\newsmatic_get_customizer_default( 'header_sidebar_toggle_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control',
-            'transport' => 'postMessage'
-        ));
-    
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Simple_Toggle_Control( $wp_customize, 'header_sidebar_toggle_option', array(
-                'label'	      => esc_html__( 'Show sidebar toggle button', 'newsmatic' ),
-                'section'     => 'newsmatic_main_header_section',
-                'settings'    => 'header_sidebar_toggle_option'
-            ))
-        );
-
-        // redirect sidebar toggle button link
-        $wp_customize->add_setting( 'header_sidebar_toggle_button_redirects', array(
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control',
-        ));
-
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Redirect_Control( $wp_customize, 'header_sidebar_toggle_button_redirects', array(
-                'section'     => 'newsmatic_main_header_section',
-                'settings'    => 'header_sidebar_toggle_button_redirects',
-                'choices'     => array(
-                    'header-social-icons' => array(
-                        'type'  => 'section',
-                        'id'    => 'sidebar-widgets-header-toggle-sidebar',
-                        'label' => esc_html__( 'Manage sidebar from here', 'newsmatic' )
-                    )
-                )
-            ))
-        );
-
-        // header search option
-        $wp_customize->add_setting( 'header_search_option', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'header_search_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control',
-            'transport' => 'postMessage'
-        ));
-    
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Simple_Toggle_Control( $wp_customize, 'header_search_option', array(
-                'label'	      => esc_html__( 'Show search icon', 'newsmatic' ),
-                'section'     => 'newsmatic_main_header_section',
-                'settings'    => 'header_search_option'
-            ))
-        );
-
-        // live search redirect
-        $wp_customize->add_setting( 'website_search_live_search_redirects', array(
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control'
-        ));
-
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Redirect_Control( $wp_customize, 'website_search_live_search_redirects', array(
-                'section'     => 'newsmatic_main_header_section',
-                'choices'     => array(
-                    'header-social-icons' => array(
-                        'type'  => 'section',
-                        'id'    => 'newsmatic_header_live_search_section',
-                        'label' => esc_html__( 'Manage live search', 'newsmatic' )
-                    )
-                )
-            ))
-        );
-        
-        // header theme mode toggle option
-        $wp_customize->add_setting( 'header_theme_mode_toggle_option', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'header_theme_mode_toggle_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Simple_Toggle_Control( $wp_customize, 'header_theme_mode_toggle_option', array(
-                'label'	      => esc_html__( 'Show dark/light toggle icon', 'newsmatic' ),
-                'section'     => 'newsmatic_main_header_section',
-                'settings'    => 'header_theme_mode_toggle_option'
-            ))
-        );
-
-        // header sticky option
-        $wp_customize->add_setting( 'theme_header_sticky', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'theme_header_sticky' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Simple_Toggle_Control( $wp_customize, 'theme_header_sticky', array(
-                'label'	      => esc_html__( 'Enable header section sticky', 'newsmatic' ),
-                'section'     => 'newsmatic_main_header_section',
-                'settings'    => 'theme_header_sticky'
-            ))
-        );
-
-        // header top and bottom padding
-        $wp_customize->add_setting( 'header_vertical_padding', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'header_vertical_padding' ),
-            'sanitize_callback' => 'newsmatic_sanitize_responsive_range',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control(
-            new Newsmatic_WP_Responsive_Range_Control( $wp_customize, 'header_vertical_padding', array(
-                    'label'	      => esc_html__( 'Vertical Padding (px)', 'newsmatic' ),
-                    'section'     => 'newsmatic_main_header_section',
-                    'settings'    => 'header_vertical_padding',
-                    'unit'        => 'px',
-                    'tab'   => 'design',
-                    'input_attrs' => array(
-                    'max'         => 500,
-                    'min'         => 1,
-                    'step'        => 1,
-                    'reset' => true
-                )
-            ))
-        );
-
-        // header toggle sidebar color
-        $wp_customize->add_setting( 'header_sidebar_toggle_color', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'header_sidebar_toggle_color' ),
-            'transport' => 'postMessage',
-            'sanitize_callback' => 'newsmatic_sanitize_color_group_picker_control'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Color_Group_Picker_Control( $wp_customize, 'header_sidebar_toggle_color', array(
-                'label'	      => esc_html__( 'Toggle Bar Color', 'newsmatic' ),
-                'section'     => 'newsmatic_main_header_section',
-                'settings'    => 'header_sidebar_toggle_color',
-                'tab'   => 'design'
-            ))
-        );
-
-        // header search icon color
-        $wp_customize->add_setting( 'header_search_icon_color', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'header_search_icon_color' ),
-            'transport' => 'postMessage',
-            'sanitize_callback' => 'newsmatic_sanitize_color_group_picker_control'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Color_Group_Picker_Control( $wp_customize, 'header_search_icon_color', array(
-                'label'	      => esc_html__( 'Search Icon Color', 'newsmatic' ),
-                'section'     => 'newsmatic_main_header_section',
-                'settings'    => 'header_search_icon_color',
-                'tab'   => 'design'
-            ))
-        );
-
-        // Header background colors setting heading
-        $wp_customize->add_setting( 'header_background_color_group', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'header_background_color_group' ),
-            'sanitize_callback' => 'newsmatic_sanitize_color_image_group_control',
-            'transport' => 'postMessage'
-        ));
-        
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Color_Image_Group_Control( $wp_customize, 'header_background_color_group', array(
-                'label'	      => esc_html__( 'Background', 'newsmatic' ),
-                'section'     => 'newsmatic_main_header_section',
-                'settings'    => 'header_background_color_group',
-                'tab'   => 'design'
-            ))
-        );
-
-        // Header newsletter section
-        $wp_customize->add_section( 'newsmatic_header_newsletter_section', array(
-            'title' => esc_html__( 'Newsletter / Subscribe Button', 'newsmatic' ),
-            'panel' => 'newsmatic_header_panel',
-            'priority'  => 15
-        ));
-
-        // Header newsletter heading
-        $wp_customize->add_setting( 'newsmatic_header_newsletter_header', array(
-            'sanitize_callback' => 'sanitize_text_field'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Section_Heading_Control( $wp_customize, 'newsmatic_header_newsletter_header', array(
-                'label'	      => esc_html__( 'Newsletter/Subscribe Setting', 'newsmatic' ),
-                'section'     => 'newsmatic_header_newsletter_section',
-                'settings'    => 'newsmatic_header_newsletter_header'
-            ))
-        );
-
-        // header newsletter button option
-        $wp_customize->add_setting( 'header_newsletter_option', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'header_newsletter_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Simple_Toggle_Control( $wp_customize, 'header_newsletter_option', array(
-                'label'	      => esc_html__( 'Show newsletter button', 'newsmatic' ),
-                'section'     => 'newsmatic_header_newsletter_section',
-                'settings'    => 'header_newsletter_option'
-            ))
-        );
-
-        // newsletter label
-        $wp_customize->add_setting( 'header_newsletter_label', array(
-            'default' => ND\newsmatic_get_customizer_default( 'header_newsletter_label' ),
-            'sanitize_callback' => 'newsmatic_sanitize_custom_text_control',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Icon_Text_Control( $wp_customize, 'header_newsletter_label', array(
-                'label'     => esc_html__( 'Button Label', 'newsmatic' ),
-                'section'     => 'newsmatic_header_newsletter_section',
-                'settings'    => 'header_newsletter_label',
-                'icons' => array( "fas fa-ban", "far fa-envelope", "fas fa-mail-bulk", "fas fa-envelope", "fas fa-thumbs-up", "far fa-thumbs-up" )
-            ))
-        );
-
-        // newsletter redirect url
-        $wp_customize->add_setting( 'header_newsletter_redirect_href_link', array(
-            'default' => ND\newsmatic_get_customizer_default( 'header_newsletter_redirect_href_link' ),
-            'sanitize_callback' => 'newsmatic_sanitize_url',
-        ));
-        $wp_customize->add_control( 'header_newsletter_redirect_href_link', array(
-            'label' => esc_html__( 'Redirect URL.', 'newsmatic' ),
-            'description'   => esc_html__( 'Add url for the button to redirect.', 'newsmatic' ),
-            'section'   => 'newsmatic_header_newsletter_section',
-            'type'  => 'url'
-        ));
-
-        // Newsletter pre sale
-        $wp_customize->add_setting( 'newsletter_section_pre_sales', [
-            'sanitize_callback' => 'sanitize_text_field'
-        ]);
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Upsell_Control( $wp_customize, 'newsletter_section_pre_sales', array(
-                'label'	      => esc_html__( 'Need More Newsletter Options ?', 'newsmatic' ),
-                'section'     => 'newsmatic_header_newsletter_section',
-                'features'  =>  [
-                    esc_html__( 'Button Content Display As', 'newsmatic' ),
-                    esc_html__( 'Open in New / Same Tab', 'newsmatic' ),
-                    esc_html__( 'Label Color', 'newsmatic' )
-                ]
-            ))
-        );
-
-        // Header random news section
-        $wp_customize->add_section( 'newsmatic_header_random_news_section', array(
-            'title' => esc_html__( 'Random News', 'newsmatic' ),
-            'panel' => 'newsmatic_header_panel',
-            'priority'  => 15
-        ));
-
-        // Header random news heading
-        $wp_customize->add_setting( 'newsmatic_header_random_news_header', array(
-            'sanitize_callback' => 'sanitize_text_field'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Section_Heading_Control( $wp_customize, 'newsmatic_header_random_news_header', array(
-                'label'	      => esc_html__( 'Random News Setting', 'newsmatic' ),
-                'section'     => 'newsmatic_header_random_news_section',
-                'settings'    => 'newsmatic_header_random_news_header'
-            ))
-        );
-
-        // header random news button option
-        $wp_customize->add_setting( 'header_random_news_option', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'header_random_news_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Simple_Toggle_Control( $wp_customize, 'header_random_news_option', array(
-                'label'	      => esc_html__( 'Show random news button', 'newsmatic' ),
-                'section'     => 'newsmatic_header_random_news_section',
-                'settings'    => 'header_random_news_option'
-            ))
-        );
-
-        // newsletter label
-        $wp_customize->add_setting( 'header_random_news_label', array(
-            'default' => ND\newsmatic_get_customizer_default( 'header_random_news_label' ),
-            'sanitize_callback' => 'newsmatic_sanitize_custom_text_control',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Icon_Text_Control( $wp_customize, 'header_random_news_label', array(
-                'label'     => esc_html__( 'Button Label', 'newsmatic' ),
-                'section'     => 'newsmatic_header_random_news_section',
-                'settings'    => 'header_random_news_label',
-                'icons' => array( "fas fa-ban", "fas fa-bolt", "fas fa-newspaper", "far fa-newspaper", "fas fa-rss", "fas fa-calendar-week", "far fa-calendar", "far fa-calendar-alt", "fas fa-calendar-alt" )
-            ))
-        );
-
-        // random news filter
-        $wp_customize->add_setting( 'header_random_news_filter', array(
-            'default' => ND\newsmatic_get_customizer_default( 'header_random_news_filter' ),
-            'sanitize_callback' => 'sanitize_text_field'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Radio_Bubble_Control( $wp_customize, 'header_random_news_filter', array(
-                'label'	      => esc_html__( 'Type of posts to dislay', 'newsmatic' ),
-                'section'     => 'newsmatic_header_random_news_section',
-                'settings'    => 'header_random_news_filter',
-                'choices' => newsmatic_get_random_news_filter_choices_array()
-            ))
-        );
-
-        // Random News pre sale
-        $wp_customize->add_setting( 'random_news_section_pre_sales', [
-            'sanitize_callback' => 'sanitize_text_field'
-        ]);
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Upsell_Control( $wp_customize, 'random_news_section_pre_sales', array(
-                'label'	      => esc_html__( 'Need More Random News Options ?', 'newsmatic' ),
-                'section'     => 'newsmatic_header_random_news_section',
-                'features'  =>  [
-                    esc_html__( 'Open in New / Same Tab', 'newsmatic' ),
-                    esc_html__( 'Label Color', 'newsmatic' )
-                ]
-            ))
-        );
-
-        /**
-         * Menu Options Section
-         * 
-         * panel - newsmatic_header_options_panel
-         */
-        $wp_customize->add_section( 'newsmatic_header_menu_option_section', array(
-            'title' => esc_html__( 'Menu Options', 'newsmatic' ),
-            'panel' => 'newsmatic_header_panel',
-            'priority'  => 30,
-        ));
-
-        // header menu hover effect
-        $wp_customize->add_setting( 'header_menu_hover_effect', array(
-            'default' => ND\newsmatic_get_customizer_default( 'header_menu_hover_effect' ),
-            'sanitize_callback' => 'sanitize_text_field',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Radio_Tab_Control( $wp_customize, 'header_menu_hover_effect', array(
-                'label'	      => esc_html__( 'Hover Effect', 'newsmatic' ),
-                'section'     => 'newsmatic_header_menu_option_section',
-                'settings'    => 'header_menu_hover_effect',
-                'choices' => array(
-                    array(
-                        'value' => 'none',
-                        'label' => esc_html__('None', 'newsmatic' )
-                    ),
-                    array(
-                        'value' => 'one',
-                        'label' => esc_html__('One', 'newsmatic' )
-                    )
-                )
-            ))
-        );
-
-        // header menu text color
-        $wp_customize->add_setting( 'header_menu_color', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'header_menu_color' ),
-            'sanitize_callback' => 'newsmatic_sanitize_color_group_picker_control',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control(
-            new Newsmatic_WP_Color_Group_Picker_Control( $wp_customize, 'header_menu_color', array(
-                'label'     => esc_html__( 'Text Color', 'newsmatic' ),
-                'section'   => 'newsmatic_header_menu_option_section',
-                'settings'  => 'header_menu_color',
-                'tab'   => 'design'
-            ))
-        );
-
-        // menu border top
-        $wp_customize->add_setting( 'header_menu_top_border', array( 
-            'default' => ND\newsmatic_get_customizer_default( 'header_menu_top_border' ),
-            'sanitize_callback' => 'newsmatic_sanitize_array',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Border_Control( $wp_customize, 'header_menu_top_border', array(
-                'label'       => esc_html__( 'Border Top', 'newsmatic' ),
-                'section'     => 'newsmatic_header_menu_option_section',
-                'settings'    => 'header_menu_top_border'
-            ))
-        );
-        
-        // header menu background color group
-        $wp_customize->add_setting( 'header_menu_background_color_group', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'header_menu_background_color_group' ),
-            'transport' => 'postMessage',
-            'sanitize_callback' => 'sanitize_text_field'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Color_Group_Control( $wp_customize, 'header_menu_background_color_group', array(
-                'label'	      => esc_html__( 'Background', 'newsmatic' ),
-                'section'     => 'newsmatic_header_menu_option_section',
-                'settings'    => 'header_menu_background_color_group'
-            ))
-        );
-
-        /**
-         * Custom Button Section
-         * 
-         * panel - newsmatic_header_options_panel
-         */
-        $wp_customize->add_section( 'newsmatic_header_custom_button_section', array(
-            'title' => esc_html__( 'Custom Button', 'newsmatic' ),
-            'panel' => 'newsmatic_header_panel',
-            'priority'  => 40,
-        ));
-
-        // main banner section tab
-        $wp_customize->add_setting( 'newsmatic_header_custom_button_section_tab', array(
-            'sanitize_callback' => 'sanitize_text_field',
-            'default'   => 'general'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Section_Tab_Control( $wp_customize, 'newsmatic_header_custom_button_section_tab', array(
-                'section'     => 'newsmatic_header_custom_button_section',
-                'priority'  => 1,
-                'choices'  => array(
-                    array(
-                        'name'  => 'general',
-                        'title'  => esc_html__( 'General', 'newsmatic' )
-                    ),
-                    array(
-                        'name'  => 'design',
-                        'title'  => esc_html__( 'Design', 'newsmatic' )
-                    )
-                )
-            ))
-        );
-
-        // header custom button option
-        $wp_customize->add_setting( 'theme_header_custom_button_option', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'theme_header_custom_button_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Toggle_Control( $wp_customize, 'theme_header_custom_button_option', array(
-                'label'	      => esc_html__( 'Show header custom button', 'newsmatic' ),
-                'section'     => 'newsmatic_header_custom_button_section',
-                'settings'    => 'theme_header_custom_button_option'
-            ))
-        );
-
-        // custom button label
-        $wp_customize->add_setting( 'header_custom_button_label', array(
-            'default' => ND\newsmatic_get_customizer_default( 'header_custom_button_label' ),
-            'sanitize_callback' => 'newsmatic_sanitize_custom_text_control'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Icon_Text_Control( $wp_customize, 'header_custom_button_label', array(
-                'label'     => esc_html__( 'Button Label', 'newsmatic' ),
-                'section'     => 'newsmatic_header_custom_button_section',
-                'settings'    => 'header_custom_button_label',
-                'icons' => array( "fas fa-ban", "fab fa-youtube", "fab fa-youtube-square", "fas fa-film", "fas fa-record-vinyl", "fas fa-volume-up", "fas fa-circle", "far fa-circle", "fab fa-vimeo", "fab fa-vimeo-v", "fas fa-podcast" )
-            ))
-        );
-
-        // custom button redirect url
-        $wp_customize->add_setting( 'header_custom_button_redirect_href_link', array(
-            'default' => ND\newsmatic_get_customizer_default( 'header_custom_button_redirect_href_link' ),
-            'sanitize_callback' => 'newsmatic_sanitize_url',
-        ));
-        $wp_customize->add_control( 'header_custom_button_redirect_href_link', array(
-            'label' => esc_html__( 'Redirect URL.', 'newsmatic' ),
-            'description'   => esc_html__( 'Add url for the button to redirect.', 'newsmatic' ),
-            'section'   => 'newsmatic_header_custom_button_section',
-            'type'  => 'url'
-        ));
-
-        // custom button label color
-        $wp_customize->add_setting( 'header_custom_button_color_group', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'header_custom_button_color_group' ),
-            'sanitize_callback' => 'newsmatic_sanitize_color_group_picker_control',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control(
-            new Newsmatic_WP_Color_Group_Picker_Control( $wp_customize, 'header_custom_button_color_group', array(
-                'label'     => esc_html__( 'Icon / Text Color', 'newsmatic' ),
-                'section'   => 'newsmatic_header_custom_button_section',
-                'settings'  => 'header_custom_button_color_group',
-                'tab'   => 'design'
-            ))
-        );
-
-        // custom button background color
-        $wp_customize->add_setting( 'header_custom_button_background_color_group', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'header_custom_button_background_color_group' ),
-            'transport' => 'postMessage',
-            'sanitize_callback' => 'sanitize_text_field'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Color_Group_Control( $wp_customize, 'header_custom_button_background_color_group', array(
-                'label'	      => esc_html__( 'Background', 'newsmatic' ),
-                'section'     => 'newsmatic_header_custom_button_section',
-                'settings'    => 'header_custom_button_background_color_group',
-                'tab'   => 'design'
-            ))
-        );
-
-
-        // custom button background hover color
-        $wp_customize->add_setting( 'header_custom_button_background_hover_color_group', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'header_custom_button_background_hover_color_group' ),
-            'transport' => 'postMessage',
-            'sanitize_callback' => 'sanitize_text_field'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Color_Group_Control( $wp_customize, 'header_custom_button_background_hover_color_group', array(
-                'label'	      => esc_html__( 'Background Hover', 'newsmatic' ),
-                'section'     => 'newsmatic_header_custom_button_section',
-                'settings'    => 'header_custom_button_background_hover_color_group',
-                'tab'   => 'design'
-            ))
-        );
-
-        /**
-         * Live Search Section
-         * 
-         * panel - newsmatic_header_options_panel
-         */
-        $wp_customize->add_section( 'newsmatic_header_live_search_section', array(
-            'title' => esc_html__( 'Live Search', 'newsmatic' ),
-            'panel' => 'newsmatic_header_panel',
-            'priority'  => 50
-        ));
-
-        // header live search option
-        $wp_customize->add_setting( 'theme_header_live_search_option', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'theme_header_live_search_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Toggle_Control( $wp_customize, 'theme_header_live_search_option', array(
-                'label'	      => esc_html__( 'Enable live search', 'newsmatic' ),
-                'section'     => 'newsmatic_header_live_search_section'
-            ))
-        );
-
-        // live search pre sale
-        $wp_customize->add_setting( 'live_search_section_pre_sales', [
-            'sanitize_callback' => 'sanitize_text_field'
-        ]);
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Upsell_Control( $wp_customize, 'live_search_section_pre_sales', array(
-                'label'	      => esc_html__( 'Need More Live Search Options ?', 'newsmatic' ),
-                'section'     => 'newsmatic_header_live_search_section',
-                'features'  =>  [
-                    esc_html__( 'Show Post Thumbnail, Title & Date', 'newsmatic' ),
-                    esc_html__( 'Number Of Posts to Display', 'newsmatic' ),
-                    esc_html__( 'Show View all Button', 'newsmatic' ),
-                    esc_html__( 'Button Label', 'newsmatic' ),
-                    esc_html__( 'Open in New / Same Tab', 'newsmatic' ),
-                    esc_html__( 'More than 1500+ google fonts', 'newsmatic' )
-                ]
-            ))
-        );
-    }
-    add_action( 'customize_register', 'newsmatic_customizer_header_panel', 10 );
-endif;
-
 if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
     // Register header options settings
     function newsmatic_customizer_ticker_news_panel( $wp_customize ) {
         // Header ads banner section
-        $wp_customize->add_section( 'newsmatic_ticker_news_section', array(
+        $wp_customize->add_section( 'newsmatic_ticker_news_frontpage_section', array(
             'title' => esc_html__( 'Ticker News', 'newsmatic' ),
             'priority'  => 70
         ));
@@ -2513,7 +1379,7 @@ if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
         
         $wp_customize->add_control( 'ticker_news_visible', array(
             'type'      => 'select',
-            'section'   => 'newsmatic_ticker_news_section',
+            'section'   => 'newsmatic_ticker_news_frontpage_section',
             'priority'  => 10,
             'label'     => esc_html__( 'Show ticker on', 'newsmatic' ),
             'choices'   => array(
@@ -2532,7 +1398,7 @@ if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
         $wp_customize->add_control( 
             new Newsmatic_WP_Section_Heading_Control( $wp_customize, 'ticker_news_content_header', array(
                 'label'	      => esc_html__( 'Content Setting', 'newsmatic' ),
-                'section'     => 'newsmatic_ticker_news_section',
+                'section'     => 'newsmatic_ticker_news_frontpage_section',
                 'priority'  => 30,
                 'settings'    => 'ticker_news_content_header',
                 'type'        => 'section-heading',
@@ -2548,7 +1414,7 @@ if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
         $wp_customize->add_control( 
             new Newsmatic_WP_Icon_Text_Control( $wp_customize, 'ticker_news_title', array(
                 'label'     => esc_html__( 'Ticker title', 'newsmatic' ),
-                'section'     => 'newsmatic_ticker_news_section',
+                'section'     => 'newsmatic_ticker_news_frontpage_section',
                 'priority'  => 40,
                 'settings'    => 'ticker_news_title',
                 'icons' => array( "fas fa-ban", "fas fa-bolt", "fas fa-rss", "fas fa-newspaper", "far fa-newspaper", "fas fa-rss-square", "fas fa-fire", "fas fa-wifi", "fab fa-gripfire", "fab fa-free-code-camp", "fas fa-globe-americas" )
@@ -2562,7 +1428,7 @@ if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
         ));
         $wp_customize->add_control( 
             new Newsmatic_WP_Radio_Bubble_Control( $wp_customize, 'ticker_news_post_filter', array(
-                'section'     => 'newsmatic_ticker_news_section',
+                'section'     => 'newsmatic_ticker_news_frontpage_section',
                 'settings'    => 'ticker_news_post_filter',
                 'priority'  => 50,
                 'choices' => array(
@@ -2586,7 +1452,7 @@ if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
         $wp_customize->add_control( 
             new Newsmatic_WP_Categories_Multiselect_Control( $wp_customize, 'ticker_news_categories', array(
                 'label'     => esc_html__( 'Posts Categories', 'newsmatic' ),
-                'section'   => 'newsmatic_ticker_news_section',
+                'section'   => 'newsmatic_ticker_news_frontpage_section',
                 'settings'  => 'ticker_news_categories',
                 'priority'  => 60,
                 'choices'   => newsmatic_get_multicheckbox_categories_simple_array(),
@@ -2607,7 +1473,7 @@ if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
         $wp_customize->add_control( 
             new Newsmatic_WP_Posts_Multiselect_Control( $wp_customize, 'ticker_news_posts', array(
                 'label'     => esc_html__( 'Posts', 'newsmatic' ),
-                'section'   => 'newsmatic_ticker_news_section',
+                'section'   => 'newsmatic_ticker_news_frontpage_section',
                 'settings'  => 'ticker_news_posts',
                 'priority'  => 70,
                 'choices'   => newsmatic_get_multicheckbox_posts_simple_array(),
@@ -2627,7 +1493,7 @@ if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
         ));
         $wp_customize->add_control( 
             new Newsmatic_WP_Radio_Bubble_Control( $wp_customize, 'ticker_news_date_filter', array(
-                'section'     => 'newsmatic_ticker_news_section',
+                'section'     => 'newsmatic_ticker_news_frontpage_section',
                 'settings'    => 'ticker_news_date_filter',
                 'priority'  => 80,
                 'choices' => newsmatic_get_date_filter_choices_array(),
@@ -2648,7 +1514,7 @@ if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
         $wp_customize->add_control( 
             new Newsmatic_WP_Section_Heading_Control( $wp_customize, 'ticker_news_image_setting_header', array(
                 'label'	      => esc_html__( 'Image Setting', 'newsmatic' ),
-                'section'     => 'newsmatic_ticker_news_section',
+                'section'     => 'newsmatic_ticker_news_frontpage_section',
                 'priority'  => 80,
                 'settings'    => 'ticker_news_image_setting_header'
             ))
@@ -2662,7 +1528,7 @@ if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
         $wp_customize->add_control( 'ticker_news_image_size', array(
             'type'  => 'select',
             'priority'  => 80,
-            'section'   => 'newsmatic_ticker_news_section',
+            'section'   => 'newsmatic_ticker_news_frontpage_section',
             'label'     => esc_html__( 'Image Size', 'newsmatic' ),
             'choices'   => newsmatic_get_image_sizes_option_array()
         ));
@@ -2674,7 +1540,7 @@ if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
         $wp_customize->add_control( 
             new Newsmatic_WP_Upsell_Control( $wp_customize, 'ticker_news_section_pre_sales', array(
                 'label'	      => esc_html__( 'Need More Ticker News Options ?', 'newsmatic' ),
-                'section'   => 'newsmatic_ticker_news_section',
+                'section'   => 'newsmatic_ticker_news_frontpage_section',
                 'features'  =>  [
                     esc_html__( 'Order By', 'newsmatic' ),
                     esc_html__( 'Show Post thumbnail Image', 'newsmatic' ),
@@ -2694,7 +1560,7 @@ if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
         $wp_customize->add_control( 
             new Newsmatic_WP_Section_Heading_Control( $wp_customize, 'ticker_news_image_setting_header', array(
                 'label'	      => esc_html__( 'Image Setting', 'newsmatic' ),
-                'section'     => 'newsmatic_ticker_news_section',
+                'section'     => 'newsmatic_ticker_news_frontpage_section',
                 'priority'  => 80,
                 'settings'    => 'ticker_news_image_setting_header'
             ))
@@ -2708,7 +1574,7 @@ if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
         $wp_customize->add_control( 'ticker_news_image_size', array(
             'type'  => 'select',
             'priority'  => 80,
-            'section'   => 'newsmatic_ticker_news_section',
+            'section'   => 'newsmatic_ticker_news_frontpage_section',
             'label'     => esc_html__( 'Image Size', 'newsmatic' ),
             'choices'   => newsmatic_get_image_sizes_option_array()
         ));
@@ -2781,11 +1647,11 @@ if( !function_exists( 'newsmatic_customizer_main_banner_panel' ) ) :
                 'choices'  => array(
                     'four' => array(
                         'label' => esc_html__( 'Four', 'newsmatic' ),
-                        'url'   => '%s/assets/images/customizer/main_banner_four.jpg'
+                        'url'   => '%s/assets/images/customizer/main_banner_four.png'
                     ),
                     'five' => array(
                         'label' => esc_html__( 'Layout Five', 'newsmatic' ),
-                        'url'   => '%s/assets/images/customizer/main_banner_five.jpg'
+                        'url'   => '%s/assets/images/customizer/main_banner_five.png'
                     )
                 )
             )
@@ -3117,11 +1983,11 @@ if( !function_exists( 'newsmatic_customizer_main_banner_panel' ) ) :
                 'choices'  => array(
                     'row' => array(
                         'label' => esc_html__( 'Row Layout', 'newsmatic' ),
-                        'url'   => '%s/assets/images/customizer/main_banner_five_trailing_posts_layout_row.jpg'
+                        'url'   => '%s/assets/images/customizer/main_banner_five_trailing_posts_layout_row.png'
                     ),
                     'column' => array(
                         'label' => esc_html__( 'Column Layout', 'newsmatic' ),
-                        'url'   => '%s/assets/images/customizer/main_banner_five_trailing_posts_layout_column.jpg'
+                        'url'   => '%s/assets/images/customizer/main_banner_five_trailing_posts_layout_column.png'
                     )
                 ),
                 'active_callback'   => function( $setting ) {
@@ -3272,208 +2138,6 @@ if( !function_exists( 'newsmatic_customizer_main_banner_panel' ) ) :
         );
     }
     add_action( 'customize_register', 'newsmatic_customizer_main_banner_panel', 10 );
-endif;
-
-if( !function_exists( 'newsmatic_customizer_footer_panel' ) ) :
-    /**
-     * Register footer options settings
-     * 
-     */
-    function newsmatic_customizer_footer_panel( $wp_customize ) {
-        /**
-         * Theme Footer Section
-         * 
-         * panel - newsmatic_footer_panel
-         */
-        $wp_customize->add_section( 'newsmatic_footer_section', array(
-            'title' => esc_html__( 'Theme Footer', 'newsmatic' ),
-            'priority'  => 74
-        ));
-        
-        // section tab
-        $wp_customize->add_setting( 'footer_section_tab', array(
-            'sanitize_callback' => 'sanitize_text_field',
-            'default'   => 'general'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Section_Tab_Control( $wp_customize, 'footer_section_tab', array(
-                'section'     => 'newsmatic_footer_section',
-                'choices'  => array(
-                    array(
-                        'name'  => 'general',
-                        'title'  => esc_html__( 'General', 'newsmatic' )
-                    ),
-                    array(
-                        'name'  => 'design',
-                        'title'  => esc_html__( 'Design', 'newsmatic' )
-                    )
-                )
-            ))
-        );
-
-        // Footer Option
-        $wp_customize->add_setting( 'footer_option', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'footer_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control',
-            'transport'   => 'postMessage'
-        ));
-    
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Toggle_Control( $wp_customize, 'footer_option', array(
-                'label'	      => esc_html__( 'Enable footer section', 'newsmatic' ),
-                'section'     => 'newsmatic_footer_section',
-                'settings'    => 'footer_option',
-                'tab'   => 'general'
-            ))
-        );
-
-        // Add the footer layout control.
-        $wp_customize->add_setting( 'footer_widget_column', array(
-            'default'           => ND\newsmatic_get_customizer_default( 'footer_widget_column' ),
-            'sanitize_callback' => 'newsmatic_sanitize_select_control',
-            'transport'   => 'postMessage'
-            )
-        );
-        $wp_customize->add_control( new Newsmatic_WP_Radio_Image_Control(
-            $wp_customize,
-            'footer_widget_column',
-            array(
-                'section'  => 'newsmatic_footer_section',
-                'tab'   => 'general',
-                'choices'  => array(
-                    'column-one' => array(
-                        'label' => esc_html__( 'Column One', 'newsmatic' ),
-                        'url'   => '%s/assets/images/customizer/footer_column_one.jpg'
-                    ),
-                    'column-two' => array(
-                        'label' => esc_html__( 'Column Two', 'newsmatic' ),
-                        'url'   => '%s/assets/images/customizer/footer_column_two.jpg'
-                    ),
-                    'column-three' => array(
-                        'label' => esc_html__( 'Column Three', 'newsmatic' ),
-                        'url'   => '%s/assets/images/customizer/footer_column_three.jpg'
-                    ),
-                    'column-four' => array(
-                        'label' => esc_html__( 'Column Four', 'newsmatic' ),
-                        'url'   => '%s/assets/images/customizer/footer_column_four.jpg'
-                    )
-                )
-            )
-        ));
-        
-        // Redirect widgets link
-        $wp_customize->add_setting( 'footer_widgets_redirects', array(
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control',
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Redirect_Control( $wp_customize, 'footer_widgets_redirects', array(
-                'label'	      => esc_html__( 'Widgets', 'newsmatic' ),
-                'section'     => 'newsmatic_footer_section',
-                'settings'    => 'footer_widgets_redirects',
-                'tab'   => 'general',
-                'choices'     => array(
-                    'footer-column-one' => array(
-                        'type'  => 'section',
-                        'id'    => 'sidebar-widgets-footer-sidebar--column-1',
-                        'label' => esc_html__( 'Manage footer widget one', 'newsmatic' )
-                    ),
-                    'footer-column-two' => array(
-                        'type'  => 'section',
-                        'id'    => 'sidebar-widgets-footer-sidebar--column-2',
-                        'label' => esc_html__( 'Manage footer widget two', 'newsmatic' )
-                    ),
-                    'footer-column-three' => array(
-                        'type'  => 'section',
-                        'id'    => 'sidebar-widgets-footer-sidebar--column-3',
-                        'label' => esc_html__( 'Manage footer widget three', 'newsmatic' )
-                    ),
-                    'footer-column-four' => array(
-                        'type'  => 'section',
-                        'id'    => 'sidebar-widgets-footer-sidebar--column-4',
-                        'label' => esc_html__( 'Manage footer widget four', 'newsmatic' )
-                    )
-                )
-            ))
-        );
-
-        // footer border top
-        $wp_customize->add_setting( 'footer_top_border', array( 
-            'default' => ND\newsmatic_get_customizer_default( 'footer_top_border' ),
-            'sanitize_callback' => 'newsmatic_sanitize_array',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Border_Control( $wp_customize, 'footer_top_border', array(
-                'label'       => esc_html__( 'Border Top', 'newsmatic' ),
-                'section'     => 'newsmatic_footer_section',
-                'settings'    => 'footer_top_border',
-                'tab'   => 'design'
-            ))
-        );
-    }
-    add_action( 'customize_register', 'newsmatic_customizer_footer_panel', 10 );
-endif;
-
-if( !function_exists( 'newsmatic_customizer_bottom_footer_panel' ) ) :
-    /**
-     * Register bottom footer options settings
-     * 
-     */
-    function newsmatic_customizer_bottom_footer_panel( $wp_customize ) {
-        /**
-         * Bottom Footer Section
-         * 
-         * panel - newsmatic_footer_panel
-         */
-        $wp_customize->add_section( 'newsmatic_bottom_footer_section', array(
-            'title' => esc_html__( 'Bottom Footer', 'newsmatic' ),
-            'priority'  => 75
-        ));
-
-        // Bottom Footer Option
-        $wp_customize->add_setting( 'bottom_footer_option', array(
-            'default'         => ND\newsmatic_get_customizer_default( 'bottom_footer_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control',
-            'transport' => 'postMessage'
-        ));
-    
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Toggle_Control( $wp_customize, 'bottom_footer_option', array(
-                'label'	      => esc_html__( 'Enable bottom footer', 'newsmatic' ),
-                'section'     => 'newsmatic_bottom_footer_section',
-                'settings'    => 'bottom_footer_option'
-            ))
-        );
-
-        // Main Banner slider categories option
-        $wp_customize->add_setting( 'bottom_footer_menu_option', array(
-            'default'   => ND\newsmatic_get_customizer_default( 'bottom_footer_menu_option' ),
-            'sanitize_callback' => 'newsmatic_sanitize_toggle_control',
-            'transport' => 'postMessage'
-        ));
-        $wp_customize->add_control( 
-            new Newsmatic_WP_Simple_Toggle_Control( $wp_customize, 'bottom_footer_menu_option', array(
-                'label'	      => esc_html__( 'Show bottom footer menu', 'newsmatic' ),
-                'section'     => 'newsmatic_bottom_footer_section',
-                'settings'    => 'bottom_footer_menu_option'
-            ))
-        );
-
-        // copyright text
-        $wp_customize->add_setting( 'bottom_footer_site_info', array(
-            'default'    => ND\newsmatic_get_customizer_default( 'bottom_footer_site_info' ),
-            'sanitize_callback' => 'wp_kses_post',
-            'transport' =>  'postMessage'
-        ));
-        $wp_customize->add_control( 'bottom_footer_site_info', array(
-                'label'	      => esc_html__( 'Copyright Text', 'newsmatic' ),
-                'type'  => 'textarea',
-                'description' => esc_html__( 'Add %year% to retrieve current year.', 'newsmatic' ),
-                'section'     => 'newsmatic_bottom_footer_section'
-            )
-        );
-    }
-    add_action( 'customize_register', 'newsmatic_customizer_bottom_footer_panel', 10 );
 endif;
 
 if( !function_exists( 'newsmatic_customizer_front_sections_panel' ) ) :
@@ -3771,11 +2435,11 @@ if( !function_exists( 'newsmatic_customizer_blog_post_archive_panel' ) ) :
                 'choices'  => array(
                     'one' => array(
                         'label' => esc_html__( 'Layout One', 'newsmatic' ),
-                        'url'   => '%s/assets/images/customizer/archive_one.jpg'
+                        'url'   => '%s/assets/images/customizer/archive_one.png'
                     ),
                     'two' => array(
                         'label' => esc_html__( 'Layout Two', 'newsmatic' ),
-                        'url'   => '%s/assets/images/customizer/archive_two.jpg'
+                        'url'   => '%s/assets/images/customizer/archive_two.png'
                     )
                 )
             )
@@ -4000,6 +2664,9 @@ if( !function_exists( 'newsmatic_customizer_page_panel' ) ) :
     }
     add_action( 'customize_register', 'newsmatic_customizer_page_panel', 10 );
 endif;
+
+require get_template_directory() . '/inc/customizer/header-builders.php';
+require get_template_directory() . '/inc/customizer/footer-builders.php';
 
 // extract to the customizer js
 $newsmaticAddAction = function() {

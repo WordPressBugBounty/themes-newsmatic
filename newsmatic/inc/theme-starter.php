@@ -34,6 +34,25 @@
     }
  endif;
 
+  if( ! function_exists( 'newsmatic_has_theme_mod' ) ) :
+    /**
+     * Check if theme mod exists
+     * 
+     * @since 1.4.0
+     */
+    function newsmatic_has_theme_mod( $control_id, $default_value ) {
+        $mods = get_theme_mods();
+        $value = isset( $mods[ $control_id ] );
+        if( $value ) :
+            $current_value = get_theme_mod( $control_id, $default_value );
+            return $current_value;
+        else:
+            return true;
+        endif;
+        
+    }
+ endif;
+
  if( !function_exists( 'newsmatic_get_customizer_default' ) ) :
     /**
      * Gets customizer "theme_mods" value
@@ -42,6 +61,10 @@
      * @since 1.0.0
      */
     function newsmatic_get_customizer_default($key) {
+        $is_header_layout_two = ( get_theme_mod( 'header_layout', 'one' ) === 'two' );
+        $footer_social_icons = get_theme_mod( 'bottom_footer_social_option', false );
+        $footer_menu = get_theme_mod( 'bottom_footer_menu_option', false );
+
         $array_defaults = apply_filters( 'newsmatic_get_customizer_defaults', array(
             'theme_color'   => '#1B8415',
             'site_background_color'  => json_encode(array(
@@ -157,18 +180,12 @@
             'top_header_option' => true,
             'top_header_responsive_option' => true,
             'top_header_date_time_option'   => true,
-            'top_header_right_content_type' => 'ticker-news',
             'top_header_menu_option' => true,
-            'top_header_ticker_news_option' => true,
             'top_header_ticker_news_post_filter' => 'category',
             'top_header_ticker_news_categories' => '[]',
             'top_header_ticker_news_posts' => '[]',
             'top_header_ticker_news_date_filter' => 'all',
-            'top_header_background_color_group' => json_encode(array(
-                'type'  => 'solid',
-                'solid' => '#1b8415',
-                'gradient'  => null
-            )),
+            'custom_button_make_absolute'   =>  true,
             'header_custom_button_label' => array( "icon"  => "fas fa-record-vinyl", "text"   => esc_html__( 'Live Now', 'newsmatic' ) ),
             'header_custom_button_redirect_href_link'  => '',
             'header_custom_button_color_group' => array( 'color'   => "#ffffff", 'hover'   => "#ffffff" ),
@@ -210,20 +227,8 @@
             ),
             'header_sidebar_toggle_color' => array( 'color' => '#525252', 'hover' => '#1B8415' ),
             'header_search_icon_color' => array( 'color' => '#525252', 'hover' => '#1B8415' ),
-            'header_background_color_group' => json_encode(array(
-                'type'  => 'solid',
-                'solid' => null,
-                'gradient'  => null,
-                'image'     => array( 'media_id' => 0, 'media_url' => '' )
-            )),
             'header_menu_hover_effect'  => 'none',
             'header_menu_color'    => array( 'color' => null, 'hover' => null ),
-            'header_menu_background_color_group' => json_encode(array(
-                'type'  => 'solid',
-                'solid' => null,
-                'gradient'  => null
-            )),
-            'header_menu_top_border'    => array( "type"  => "solid", "width"   => "1", "color"   => "#1B8415" ),
             'theme_header_live_search_option'   => true,
             'social_icons_target' => '_blank',
             'social_icons' => json_encode(array(
@@ -421,11 +426,6 @@
             )),
             'opinons_section_option'    => false,
             'opinons_section_show_on'   => 'all',
-            'footer_option' => false,
-            'footer_widget_column'  => 'column-three',
-            'footer_top_border'    => array( "type"  => "solid", "width"   => "5", "color"   => "#1B8415" ),
-            'bottom_footer_option'  => true,
-            'bottom_footer_menu_option'     => false,
             'bottom_footer_site_info'   => esc_html__( 'Newsmatic - News WordPress Theme %year%.', 'newsmatic' ),
             'single_post_element_order'    => array(
                 array( 'value'  => 'categories', 'option' => true ),
@@ -476,7 +476,209 @@
             'stt_alignment' => 'right',
             'stt_color_group' => array( 'color'   => "#fff", 'hover'   => "#fff" ),
             'stt_background_color_group' => array( 'color'   => "#1B8415", 'hover'   => "#1B8415" ),
-            'newsmatic_disable_admin_notices'   => false
+            'newsmatic_disable_admin_notices'   => false,
+
+            // Mark: Header builder
+            'header_builder'    =>  newsmatic_get_header_builder_default(),
+            'header_width_layout'   => 'contain',
+            'theme_header_sticky'  => true,
+            'header_first_row_header_sticky'  => false,
+            'header_second_row_header_sticky'  => false,
+            'header_third_row_header_sticky'  => true,
+            'header_builder_border'  => [ "type"  => "none", "width"   => "1", "color"   => "#eee" ],
+            'header_builder_box_shadow'  => [
+                'option'    => 'adjust',
+                'hoffset'   => 0,
+                'voffset'   => 2,
+                'blur'  => 4,
+                'spread'    => 0,
+                'type'  => 'outset',
+                'color' => 'rgb(0 0 0 / 8%)'
+            ],
+            // MARK: Header 1st row
+            'header_first_row_column'   =>  $is_header_layout_two ? 3 : 2,
+            'header_first_row_column_layout'    =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'four', 'eight', 'eight' ) : newsmatic_get_responsive_defaults( 'one', 'three', 'three' ),
+            'header_first_row_full_width'   =>  true,
+            'top_header_background_color_group' => json_encode([
+                'type'  => 'solid',
+                'solid' => '#1b8415',
+                'gradient'  => null
+            ]),
+            'header_first_row_padding'  =>  [
+                'desktop'   =>  [ 'top' => '10px', 'right'  =>  '0px', 'bottom' =>  '10px', 'left'  =>  '0px' ], 
+                'tablet'    =>  [ 'top' => '10px', 'right'  =>  '0px', 'bottom' =>  '10px', 'left'  =>  '0px' ], 
+                'smartphone'    =>  [ 'top' => '10px', 'right'  =>  '0px', 'bottom' =>  '10px', 'left'  =>  '0px' ]
+            ],
+            'top_header_bottom_border'    => [ "type"  => "none", "width"   => "1", "color"   => "#E8E8E8" ],
+            'header_first_row_column_one'   =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'left', 'center', 'center' ) : newsmatic_get_responsive_defaults( 'left', 'center', 'center' ),
+            'header_first_row_column_two'   =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'center', 'center', 'center' ) : newsmatic_get_responsive_defaults( 'right', 'center', 'center' ),
+            'header_first_row_column_three' =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'right', 'center', 'center' ) : newsmatic_get_responsive_defaults( 'right', 'center', 'center' ),
+            // MARK: Header 2nd row
+            'header_second_row_column'   =>  $is_header_layout_two ? 2 : 3,
+            'header_second_row_column_layout'    =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'three', 'four', 'four' ) : newsmatic_get_responsive_defaults( 'two', 'five', 'five' ),
+            'header_second_row_full_width'   =>  true,
+            'header_background_color_group' => json_encode([
+                'type'  => 'solid',
+                'solid' => '#fff',
+                'gradient'  => null,
+                'image'     => [ 'media_id' => 0, 'media_url' => '' ]
+            ]),
+            'header_menu_top_border'    => array( "type"  => "solid", "width"   => "1", "color"   => "#1B8415" ),
+            'header_second_row_padding'  =>  [
+                'desktop'   =>  [ 'top' => '35px', 'right'  =>  '0px', 'bottom' =>  newsmatic_get_padding_value( 'desktop' ) . 'px', 'left'  =>  '0px' ], 
+                'tablet'    =>  [ 'top' => '35px', 'right'  =>  '0px', 'bottom' =>  newsmatic_get_padding_value( 'tablet' ) . 'px', 'left'  =>  '0px' ], 
+                'smartphone'    =>  [ 'top' => '35px', 'right'  =>  '0px', 'bottom' =>  newsmatic_get_padding_value( 'smartphone' ) . 'px', 'left'  =>  '0px' ]
+            ],
+            'header_second_row_column_one'   =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'left', 'left', 'center' ) : newsmatic_get_responsive_defaults( 'left', 'center', 'center' ),
+            'header_second_row_column_two'   =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'right', 'right', 'center' ) : newsmatic_get_responsive_defaults( 'center', 'center', 'center' ),
+            'header_second_row_column_three' =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'right', 'right', 'right' ) : newsmatic_get_responsive_defaults( 'right', 'center', 'center' ),
+            // MARK: Header 3rd row
+            'header_third_row_column'   =>  $is_header_layout_two ? 2 : 3,
+            'header_third_row_column_layout'    =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'two', 'four', 'four' ) : newsmatic_get_responsive_defaults( 'three', 'four', 'four' ),
+            'header_third_row_full_width'   =>  true,
+            'header_menu_background_color_group' => json_encode(array(
+                'type'  => 'solid',
+                'solid' => '#fff',
+                'gradient'  => null
+            )),
+            'header_third_row_padding'  =>  [
+                'desktop'   =>  [ 'top' => '0px', 'right'  =>  '0px', 'bottom' =>  '0px', 'left'  =>  '0px' ], 
+                'tablet'    =>  [ 'top' => '10px', 'right'  =>  '0px', 'bottom' =>  '10px', 'left'  =>  '0px' ], 
+                'smartphone'    =>  [ 'top' => '10px', 'right'  =>  '0px', 'bottom' =>  '10px', 'left'  =>  '0px' ]
+            ],
+            'header_third_row_column_one'   =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'left', 'left', 'center' ) : newsmatic_get_responsive_defaults( 'left', 'left', 'center' ),
+            'header_third_row_column_two'   =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'right', 'right', 'center' ) : newsmatic_get_responsive_defaults( 'center', 'right', 'right' ),
+            'header_third_row_column_three' =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'right', 'right', 'right' ) : newsmatic_get_responsive_defaults( 'right', 'right', 'right' ),
+            // Mark: Responsive Builder
+            'responsive_header_builder' =>  newsmatic_get_header_builder_default( true ),
+            // MARK: Dark Mode
+            'theme_default_mode'    =>  'light',
+            'light_mode_color'  =>  [ 'color' => '#000', 'hover' => '#1B8415' ],
+            'dark_mode_color'   =>  [ 'color' => '#1B8415', 'hover' => '#1B8415' ],
+            // MARK: Mobile Canvas
+            'mobile_canvas_alignment'   =>  'left',
+            'mobile_canvas_icon_color'  =>  array( 'color' => '#000', 'hover' => '#1B8415' ),
+            'mobile_canvas_text_color'  =>  array( 'color' => '#000', 'hover' => '#1B8415' ),
+            'mobile_canvas_background'  =>  '#fff',
+            // MARK: Footer Builder
+            'footer_builder'    =>  newsmatic_get_footer_builder_default(),
+            'footer_section_width'  => 'boxed-width',
+            // MARK: Footer 1st row
+            'footer_first_row_column'   =>  newsmatic_get_footer_first_row_column(),
+            'footer_first_row_column_layout'    =>  newsmatic_get_responsive_defaults( 'one', 'nine', 'nine' ),
+            'footer_first_row_full_width'   =>  true,
+            'footer_color'  => [ 'color'   => '#fff', 'hover'   => "#fff" ],
+            'footer_background_color_group' => json_encode([
+                'type'  => 'solid',
+                'solid' => '#000',
+                'gradient'  => null,
+                'image'     => [ 'media_id' => 0, 'media_url' => '' ]
+            ]),
+            'footer_top_border'    => [ "type"  => "solid", "width"   => "5", "color"   => "#1B8415" ],
+            'footer_first_row_padding'  =>  [
+                'desktop'   =>  [ 'top' => '35px', 'right'  =>  '0px', 'bottom' =>  '35px', 'left'  =>  '0px' ], 
+                'tablet'    =>  [ 'top' => '35px', 'right'  =>  '0px', 'bottom' =>  '35px', 'left'  =>  '0px' ], 
+                'smartphone'    =>  [ 'top' => '35px', 'right'  =>  '0px', 'bottom' =>  '35px', 'left'  =>  '0px' ]
+            ],
+            'footer_first_row_column_one'   =>  newsmatic_get_responsive_defaults( 'left', 'center', 'center' ),
+            'footer_first_row_column_two'   =>  newsmatic_get_responsive_defaults( 'center', 'center', 'center' ),
+            'footer_first_row_column_three' =>  newsmatic_get_responsive_defaults( 'center', 'center', 'center' ),
+            'footer_first_row_column_four'  =>  newsmatic_get_responsive_defaults( 'right', 'right', 'right' ),
+            // MARK: Footer 2nd row
+            'footer_second_row_column'   =>  1,
+            'footer_second_row_column_layout'    =>  newsmatic_get_responsive_defaults( 'one', 'four', 'four' ),
+            'footer_second_row_full_width'   =>  true,
+            'footer_second_row_background' => json_encode([
+                'type'  => 'solid',
+                'solid' => '#1b8415',
+                'gradient'  => null
+            ]),
+            'footer_second_row_border'    => [ "type"  => "none", "width"   => "1", "color"   => "#E8E8E8" ],
+            'footer_second_row_padding'  =>  [
+                'desktop'   =>  [ 'top' => '10px', 'right'  =>  '0px', 'bottom' =>  '10px', 'left'  =>  '0px' ], 
+                'tablet'    =>  [ 'top' => '10px', 'right'  =>  '0px', 'bottom' =>  '10px', 'left'  =>  '0px' ], 
+                'smartphone'    =>  [ 'top' => '10px', 'right'  =>  '0px', 'bottom' =>  '10px', 'left'  =>  '0px' ]
+            ],
+            'footer_second_row_column_one'   =>  newsmatic_get_responsive_defaults( 'center', 'center', 'center' ),
+            'footer_second_row_column_two'   =>  newsmatic_get_responsive_defaults( 'right', 'center', 'center' ),
+            'footer_second_row_column_three' =>  newsmatic_get_responsive_defaults( 'right', 'center', 'center' ),
+            'footer_second_row_column_four'  =>  newsmatic_get_responsive_defaults( 'right', 'right', 'right' ),
+            // MARK: Footer 3rd row
+            'footer_third_row_column'   =>  $footer_menu ? 2 : 1,
+            'footer_third_row_column_layout'    =>  newsmatic_get_responsive_defaults( 'one', 'four', 'four' ),
+            'footer_third_row_full_width'   =>  true,
+            'footer_third_row_background' => json_encode([
+                'type'  => 'solid',
+                'solid' => '#000',
+                'gradient'  => null
+            ]),
+            'footer_third_row_border'    => [ "type"  => "none", "width"   => "1", "color"   => "#E8E8E8" ],
+            'footer_third_row_padding'  =>  [
+                'desktop'   =>  [ 'top' => '20px', 'right'  =>  '0px', 'bottom' =>  '20px', 'left'  =>  '0px' ], 
+                'tablet'    =>  [ 'top' => '20px', 'right'  =>  '0px', 'bottom' =>  '20px', 'left'  =>  '0px' ], 
+                'smartphone'    =>  [ 'top' => '20px', 'right'  =>  '0px', 'bottom' =>  '20px', 'left'  =>  '0px' ]
+            ],
+            'footer_third_row_column_one'   =>  $footer_menu ? newsmatic_get_responsive_defaults( 'left', 'center', 'center' ) : newsmatic_get_responsive_defaults( 'center', 'center', 'center' ),
+            'footer_third_row_column_two'   =>  newsmatic_get_responsive_defaults( 'right', 'center', 'center' ),
+            'footer_third_row_column_three' =>  newsmatic_get_responsive_defaults( 'right', 'center', 'center' ),
+            'footer_third_row_column_four'  =>  newsmatic_get_responsive_defaults( 'right', 'right', 'right' ),
+            // MARK: Footer logo
+            'bottom_footer_logo_option' =>  0,
+            'bottom_footer_header_or_custom'    =>  'header',
+            'bottom_footer_logo_width'  =>  newsmatic_get_responsive_defaults( 200, 200, 200 ),
+            // MARK: Footer Social icons
+            'footer_social_icons_target'    =>  '_blank',
+            'footer_social_icons'   =>  json_encode([
+                [
+                    'icon_class'    => 'fab fa-facebook-f',
+                    'icon_url'      => '',
+                    'item_option'   => 'show'
+                ],
+                [
+                    'icon_class'    => 'fab fa-instagram',
+                    'icon_url'      => '',
+                    'item_option'   => 'show'
+                ],
+                [
+                    'icon_class'    => 'fab fa-x-twitter',
+                    'icon_url'      => '',
+                    'item_option'   => 'show'
+                ],
+                [
+                    'icon_class'    => 'fab fa-google-wallet',
+                    'icon_url'      => '',
+                    'item_option'   => 'show'
+                ],
+                [
+                    'icon_class'    => 'fab fa-youtube',
+                    'icon_url'      => '',
+                    'item_option'   => 'show'
+                ]
+            ]),
+            'footer_social_icons_color' =>  [ 'color' => null, 'hover' => null ],
+            // MARK: Footer menu
+            'footer_menu_hover_effect'  =>  'none',
+            // MARK: Date Time
+            'date_option'   =>  true,
+            'time_option'   =>  true,
+            'date_time_display_block'   =>  false,
+            'top_header_datetime_color' => '#fff',
+            // MARK: Off Canvas
+            'off_canvas_position'   =>  'left',
+            // Secondary Menu
+            'secondary_menu_hover_effect' => 'none',
+            'top_header_menu_color' => array( 'color' => null, 'hover' => null ),
+            'header_menu_bottom_border'    => array( "type"  => "none", "width"   => "1", "color"   => "#eee" ),
+            'header_random_news_label_color' => array( 'color' => '#525252', 'hover' => '#1B8415' ),
+            'header_newsletter_label_color' => array( 'color' => '#525252', 'hover' => '#1B8415' ),
+            'bottom_footer_background_color_group'  => json_encode(array(
+                'type'  => 'solid',
+                'solid' => '#000',
+                'gradient'  => null
+            )),
+            'bottom_footer_text_color'  => '#8a8a8a',
+            'top_header_social_icon_color' => array( 'color' => null, 'hover' => null ),
+            'use_ad_outside_of_header'  =>  true
         ));
         $totalCats = get_categories();
         if( $totalCats ) :
@@ -498,3 +700,233 @@
     }
  endif;
  
+ if( ! function_exists( 'newsmatic_get_responsive_defaults' ) ) :
+    /**
+     * Get default responsive values
+     * 
+     * @since 1.0.0
+     */
+    function newsmatic_get_responsive_defaults( $desktop = 0, $tablet = 0, $smartphone = 0 ){
+        $value = [
+            'desktop'   => $desktop,
+            'tablet'    => $tablet,
+            'smartphone' => $smartphone
+        ];
+        return $value;
+    }
+endif;
+
+if( ! function_exists( 'newsmatic_get_header_builder_default' ) ) :
+    /**
+     * Get header builder default
+     * 
+     * @since 1.4.0
+     */
+    function newsmatic_get_header_builder_default( $is_responsive = false ) {
+        $header_layout = get_theme_mod( 'header_layout', 'one' );
+        $top_header_option = newsmatic_has_theme_mod( 'top_header_option', true );
+        $date_time = newsmatic_has_theme_mod( 'top_header_date_time_option', true );
+        $ticker_news = newsmatic_has_theme_mod( 'top_header_ticker_news_option', true );
+        $secondary_menu = newsmatic_has_theme_mod( 'top_header_menu_option', true );
+        $top_header_right_content_type = get_theme_mod( 'top_header_right_content_type', 'ticker-news' );
+        $social_icons = newsmatic_has_theme_mod( 'top_header_social_option', true );
+        $newsletter = newsmatic_has_theme_mod( 'header_newsletter_option', true );
+        $random_news = newsmatic_has_theme_mod( 'header_random_news_option', true );
+        $off_canvas = get_theme_mod( 'header_sidebar_toggle_option', false );
+        $search = newsmatic_has_theme_mod( 'header_search_option', true );
+        $theme_mode = newsmatic_has_theme_mod( 'header_theme_mode_toggle_option', true );
+        $custom_button = get_theme_mod( 'theme_header_custom_button_option', false );
+        $main_header_elements_order = get_theme_mod( 'main_header_elements_order', 'social-logo-buttons' );
+        $header_ads_banner_responsive_option = get_theme_mod( 'header_ads_banner_responsive_option', [
+            'desktop'   => true,
+            'tablet'   => true,
+            'mobile'   => true
+        ]);
+        extract( $header_ads_banner_responsive_option );
+
+        $layout_two_21_value = $layout_one_12_value = $layout_one_22_value = $ticker_news_or_secondary_menu = $layout_one_10_value = $layout_two_11_value = [];
+        if( $top_header_option ) {
+            if( $top_header_right_content_type === 'nav-menu' ) {
+                if( $secondary_menu ) $ticker_news_or_secondary_menu[] = 'secondary-menu';
+            } else {
+                if( $ticker_news ) $ticker_news_or_secondary_menu[] = 'ticker-news';
+            }
+        }
+
+        if( $header_layout == 'one' ) :
+            if( $search ) $layout_one_22_value[] = 'search';
+            if( $theme_mode ) $layout_one_22_value[] = 'theme-mode';
+            if( $main_header_elements_order === 'social-logo-buttons' ) {
+                if( $social_icons ) $layout_one_10_value[] = 'social-icons';
+                if( $newsletter ) $layout_one_12_value[] = 'newsletter';
+                if( $random_news ) $layout_one_12_value[] = 'random-news';
+                if( $custom_button ) $layout_one_12_value[] = 'button';
+            } else {
+                if( $social_icons ) $layout_one_12_value[] = 'social-icons';
+                if( $newsletter ) $layout_one_10_value[] = 'newsletter';
+                if( $random_news ) $layout_one_10_value[] = 'random-news';
+                if( $custom_button ) $layout_one_10_value[] = 'button';
+            }
+
+            if( $is_responsive ) :
+                if( $tablet || $mobile ) $layout_one_22_value[] = 'image';
+                $builder_value = [
+                    '00'    =>  $ticker_news_or_secondary_menu,
+                    '01'    =>  [],
+                    '02'    =>  [],
+                    '03'    =>  [],
+                    '10'    =>  $layout_one_10_value,
+                    '11'    =>  [ 'site-logo' ],
+                    '12'    =>  $layout_one_12_value,
+                    '13'    =>  [],
+                    '20'    =>  [ 'toggle-button' ],
+                    '21'    =>  $layout_one_22_value,
+                    '22'    =>  [],
+                    '23'    =>  [],
+                    'responsive-canvas' =>  [ 'menu' ]
+                ];
+            else:
+                if( $desktop ) $layout_one_10_value[] = 'image';
+                $builder_value = [
+                    '00'    =>  ( $top_header_option && $date_time ) ? [ 'date-time' ] : [],
+                    '01'    =>  $ticker_news_or_secondary_menu,
+                    '02'    =>  [],
+                    '03'    =>  [],
+                    '10'    =>  $layout_one_10_value,
+                    '11'    =>  [ 'site-logo' ],
+                    '12'    =>  $layout_one_12_value,
+                    '13'    =>  [],
+                    '20'    =>  $off_canvas ? [ 'off-canvas' ] : [],
+                    '21'    =>  [ 'menu' ],
+                    '22'    =>  $layout_one_22_value,
+                    '23'    =>  []
+                ];
+            endif;
+        else:
+            if( $newsletter ) $layout_two_21_value[] = 'newsletter';
+            if( $random_news ) $layout_two_21_value[] = 'random-news';
+            if( $search ) $layout_two_21_value[] = 'search';
+            if( $theme_mode ) $layout_two_21_value[] = 'theme-mode';
+            if( $custom_button ) $layout_two_11_value[] = 'button';
+    
+            if( $is_responsive ) :
+                $responsive_layout_two_11_value = [];
+                if( $tablet || $mobile ) $responsive_layout_two_11_value[] = 'image';
+                $builder_value = [
+                    '00'    =>  $ticker_news_or_secondary_menu,
+                    '01'    =>  ( $top_header_option && $social_icons ) ? [ 'social-icons' ] : [],
+                    '02'    =>  [],
+                    '03'    =>  [],
+                    '10'    =>  [ 'site-logo' ],
+                    '11'    =>  $responsive_layout_two_11_value,
+                    '12'    =>  [],
+                    '13'    =>  [],
+                    '20'    =>  [ 'toggle-button' ],
+                    '21'    =>  $layout_two_21_value,
+                    '22'    =>  [],
+                    '23'    =>  [],
+                    'responsive-canvas' =>  [ 'menu' ]
+                ];
+            else:
+                if( $desktop ) $layout_two_11_value[] = 'image';
+                $builder_value = [
+                    '00'    =>  ( $top_header_option && $date_time ) ? [ 'date-time' ] : [],
+                    '01'    =>  $ticker_news_or_secondary_menu,
+                    '02'    =>  ( $top_header_option && $social_icons ) ? [ 'social-icons' ] : [],
+                    '03'    =>  [],
+                    '10'    =>  [ 'site-logo' ],
+                    '11'    =>  $layout_two_11_value,
+                    '12'    =>  [],
+                    '13'    =>  [],
+                    '20'    =>  $off_canvas ? [ 'off-canvas', 'menu' ] : [ 'menu' ],
+                    '21'    =>  $layout_two_21_value,
+                    '22'    =>  [],
+                    '23'    =>  []
+                ];
+            endif;
+        endif;
+
+        return $builder_value;
+    }
+endif;
+
+if( ! function_exists( 'newsmatic_get_footer_builder_default' ) ) :
+    /**
+     * Get footer builder default
+     * 
+     * @since 1.4.0
+     */
+    function newsmatic_get_footer_builder_default() {
+        $header_layout = get_theme_mod( 'header_layout', 'one' );
+        $footer_option = get_theme_mod( 'footer_option', false );
+        $bottom_footer_option = get_theme_mod( 'bottom_footer_option', true );
+        $social_icons = get_theme_mod( 'bottom_footer_social_option', false );
+        $footer_widget_column = get_theme_mod( 'footer_widget_column', 'column-three' );
+        $copyright = get_theme_mod( 'bottom_footer_site_info', esc_html__( 'Newsmatic - News WordPress Theme %year%.', 'newsmatic' ) );
+        $footer_menu = get_theme_mod( 'bottom_footer_menu_option', false );
+        $stt_responsive_option = get_theme_mod( 'stt_responsive_option', [ 'desktop' => true, 'tablet' => true, 'mobile' => false ]);
+        extract( $stt_responsive_option );
+        $stt = ( $desktop || $tablet || $mobile ) ? true : false;
+        
+        $column_10_value = $column_20_value = [];
+        if( $stt ) $column_20_value[] = 'scroll-to-top';
+        if( $bottom_footer_option && $copyright ) $column_20_value[] = 'copyright';
+        if( $bottom_footer_option && $social_icons ) $column_10_value[] = 'social-icons';
+
+        $builder_value = [
+            '00'    =>  ( $footer_option && in_array( $footer_widget_column, [ 'column-one', 'column-two', 'column-three', 'column-four' ] ) ) ? [ 'sidebar-one' ] : [],
+            '01'    =>  ( $footer_option && in_array( $footer_widget_column, [ 'column-two', 'column-three', 'column-four' ] ) ) ? [ 'sidebar-two' ] : [],
+            '02'    =>  ( $footer_option && in_array( $footer_widget_column, [ 'column-three', 'column-four' ] ) ) ? [ 'sidebar-three' ] : [],
+            '03'    =>  ( $footer_option && in_array( $footer_widget_column, [ 'column-four' ] ) ) ? [ 'sidebar-four' ] : [],
+            '10'    =>  $column_10_value,
+            '11'    =>  [],
+            '12'    =>  [],
+            '13'    =>  [],
+            '20'    =>  $column_20_value,
+            '21'    =>  ( $bottom_footer_option && $footer_menu ) ? [ 'menu' ] : [],
+            '22'    =>  [],
+            '23'    =>  [],
+        ];
+
+        return $builder_value;
+    }
+endif;
+
+if( ! function_exists( 'newsmatic_get_padding_value' ) ) :
+    /**
+     * Get padding value for header second row
+     * 
+     * @since 1.4.0
+     */
+    function newsmatic_get_padding_value( $device = '' ) {
+        $header_layout = get_theme_mod( 'header_layout', 'one' );
+        $header_vertical_padding = get_theme_mod( 'header_vertical_padding', [ 'desktop' => 35, 'tablet' => 30, 'smartphone' => 30 ] );
+        $device_value = ( ( $header_layout === 'two' ) ? ( $header_vertical_padding[ $device ] + 25 ) : $header_vertical_padding[ $device ] );
+        return $device ? $device_value : $header_vertical_padding;
+    }
+endif;
+
+if( ! function_exists( 'newsmatic_get_footer_first_row_column' ) ) :
+    /**
+     * Get padding value for header second row
+     * 
+     * @since 1.4.0
+     */
+    function newsmatic_get_footer_first_row_column() {
+        $footer_widget_column = get_theme_mod( 'footer_widget_column', 'column-three' );
+        switch( $footer_widget_column ) :
+            case 'column-one' :
+                return 1;
+                break;
+            case 'column-two' :
+                return 2;
+                break;
+            case 'column-three' :
+                return 3;
+                break;
+            case 'column-four' :
+                return 4;
+                break;
+        endswitch;
+    }
+endif;

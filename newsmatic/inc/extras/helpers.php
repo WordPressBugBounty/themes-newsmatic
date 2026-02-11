@@ -35,76 +35,6 @@ if( !function_exists( 'newsmatic_advertisement_block_html' ) ) :
     }
  endif;
 
- if( !function_exists( 'newsmatic_top_header_html' ) ) :
-    /**
-     * Calls top header hooks
-     * 
-     * @since 1.0.0
-     */
-    function newsmatic_top_header_html() {
-        if( ! ND\newsmatic_get_customizer_option( 'top_header_option' ) ) return;
-        require get_template_directory() . '/inc/hooks/top-header-hooks.php'; // top header hooks.
-        echo '<div class="top-header">';
-            echo '<div class="newsmatic-container">';
-                echo '<div class="row">';
-                /**
-                 * hook - newsmatic_top_header_hook
-                 * 
-                 * @hooked - newsmatic_top_header_ticker_news_part - 10
-                 * @hooked - newsmatic_top_header_social_part - 20
-                 */
-                if( has_action( 'newsmatic_top_header_hook' ) ) do_action( 'newsmatic_top_header_hook' );
-                echo '</div>';
-            echo '</div>';
-        echo '</div>';
-    }
-endif;
-
-if( !function_exists( 'newsmatic_header_html' ) ) :
-    /**
-     * Calls header hooks
-     * 
-     * @since 1.0.0
-     */
-    function newsmatic_header_html() {
-        require get_template_directory() . '/inc/hooks/header-hooks.php'; // top header hooks.
-        ?>
-        <div class="main-header <?php echo esc_attr( 'order--' . ND\newsmatic_get_customizer_option( 'main_header_elements_order' ) ); ?>">
-            <div class="site-branding-section">
-                <div class="newsmatic-container">
-                    <div class="row">
-                        <?php
-                            /**
-                             * hook - newsmatic_header__site_branding_section_hook
-                             * 
-                             * @hooked - newsmatic_header_menu_part - 10
-                             * @hooked - newsmatic_header_ads_banner_part - 20
-                             */
-                            if( has_action( 'newsmatic_header__site_branding_section_hook' ) ) do_action( 'newsmatic_header__site_branding_section_hook' );
-                        ?>
-                    </div>
-                </div>
-            </div>
-            <div class="menu-section">
-                <div class="newsmatic-container">
-                    <div class="row">
-                        <?php
-                            /**
-                             * hook - newsmatic_header__menu_section_hook
-                             * 
-                             * @hooked - newsmatic_header_menu_part - 10
-                             * @hooked - newsmatic_header_search_part - 20
-                             */
-                            if( has_action( 'newsmatic_header__menu_section_hook' ) ) do_action( 'newsmatic_header__menu_section_hook' );
-                        ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
-endif;
-
 if( !function_exists( 'newsmatic_after_header_html' ) ) :
     /**
      * Calls after header hooks
@@ -131,62 +61,6 @@ if( !function_exists( 'newsmatic_after_header_html' ) ) :
     }
 endif;
 
-require get_template_directory() . '/inc/hooks/footer-hooks.php'; // footer hooks.
-if( !function_exists( 'newsmatic_footer_sections_html' ) ) :
-    /**
-     * Calls footer hooks
-     * 
-     * @since 1.0.0
-     */
-    function newsmatic_footer_sections_html() {
-        if( ! ND\newsmatic_get_customizer_option( 'footer_option' ) ) return;
-        ?>
-        <div class="main-footer boxed-width">
-            <div class="footer-inner newsmatic-container">
-                <div class="row">
-                    <?php
-                        /**
-                         * hook - newsmatic_footer_hook
-                         * 
-                         * @hooked - newsmatic_footer_widgets_area_part - 10
-                         */
-                        if( has_action( 'newsmatic_footer_hook' ) ) do_action( 'newsmatic_footer_hook' );
-                    ?>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
-endif;
-
-if( !function_exists( 'newsmatic_bottom_footer_sections_html' ) ) :
-    /**
-     * Calls bottom footer hooks
-     * 
-     * @since 1.0.0
-     */
-    function newsmatic_bottom_footer_sections_html() {
-        if( ! ND\newsmatic_get_customizer_option( 'bottom_footer_option' ) ) return;
-        require get_template_directory() . '/inc/hooks/bottom-footer-hooks.php'; // footer hooks.
-        ?>
-        <div class="bottom-footer">
-            <div class="newsmatic-container">
-                <div class="row">
-                    <?php
-                        /**
-                         * hook - newsmatic_bottom_footer_sections_html
-                         * 
-                         * @hooked - newsmatic_bottom_footer_menu_part - 20
-                         * @hooked - newsmatic_bottom_footer_copyright_part - 3020
-                         */
-                        if( has_action( 'newsmatic_botttom_footer_hook' ) ) do_action( 'newsmatic_botttom_footer_hook' );
-                    ?>
-                </div>
-            </div>
-        </div>
-        <?php
-    }
-endif;
 require get_template_directory() . '/inc/hooks/inner-hooks.php'; // inner hooks.
 require get_template_directory() . '/inc/hooks/frontpage-sections-hooks.php'; // frontpage sections hooks.
 
@@ -404,32 +278,6 @@ if( ! function_exists( 'newsmatic_pagination_fnc' ) ) :
         echo '<div class="pagination">' .wp_kses_post( paginate_links( array( 'prev_text' => '<i class="fas fa-chevron-left"></i>', 'next_text' => '<i class="fas fa-chevron-right"></i>', 'type' => 'list' ) ) ). '</div>';
     }
     add_action( 'newsmatic_pagination_link_hook', 'newsmatic_pagination_fnc' );
- endif;
-
- if( ! function_exists( 'newsmatic_scroll_to_top_html' ) ) :
-    /**
-     * Scroll to top fnc
-     * 
-     * @package Newsmatic
-     * @since 1.0.0
-     */
-    function newsmatic_scroll_to_top_html() {
-        if( ! ND\newsmatic_get_multiselect_tab_option('stt_responsive_option') ) return;
-        $stt_text = ND\newsmatic_get_customizer_option( 'stt_text' );
-        $icon = isset( $stt_text['icon'] ) ? $stt_text['icon'] : 'fas fa-ban';
-        $icon_text = isset( $stt_text['text'] ) ? $stt_text['text'] : '';
-        $stt_alignment = ND\newsmatic_get_customizer_option( 'stt_alignment' );
-    ?>
-        <div id="newsmatic-scroll-to-top" class="<?php echo esc_attr( 'align--' . $stt_alignment ); ?>">
-            <?php if( $icon != 'fas fa-ban' ) : ?>
-                <span class="icon-holder"><i class="<?php echo esc_attr( $icon ); ?>"></i></span>
-            <?php endif;
-                if( $icon_text ) echo '<span class="icon-text">' .esc_html( $icon_text ). '</span>';
-            ?>
-        </div><!-- #newsmatic-scroll-to-top -->
-    <?php
-    }
-    add_action( 'newsmatic_after_footer_hook', 'newsmatic_scroll_to_top_html' );
  endif;
 
 if( ! function_exists( 'newsmatic_loader_html' ) ) :

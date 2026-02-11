@@ -4,13 +4,13 @@ Tags: news, blog, entertainment, one-column, two-columns, grid-layout, block-sty
 Requires at least: 5.3
 Tested up to: 6.0
 Requires PHP: 5.6
-Stable tag: 1.3.18
+Stable tag: 1.4.0
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 A complete and feature rich news/magazine theme.
 
-Newsmatic is complete solution for your news website with full Elementor compatibility. By integrating the News Kit Elementor Addons plugin on your site, you can now customize any part of the theme with the Elementor page builder. It is fast, features rich, customizer-based, and multipurpose free news theme. It is multilingual compatibility, gutenberg compatibility, elementor compatibility and can be integrated easily with newsletter/form plugins. This theme is schema ready, which makes it a favourite for search engines. Newsmatic Theme does not collect any kind of personal data restricted under GDPR, so you can sleep without any worry by using our theme on your website. Developed by dedicated developers, it has user friendly and easy to use advanced control fields like select2, react color picker, image selector, typography field and many more inside the theme. Check out our pre-build demos here: https://blazethemes.com/theme/newsmatic-free. Check out elementor addons: https://wordpress.org/plugins/news-kit-elementor-addons/
+Newsmatic is complete solution for your news website with full Elementor compatibility. By integrating the News Kit Elementor Addons plugin on your site, you can now customize any part of the theme with the Elementor page builder. It is fast, features rich, customizer-based, and multipurpose free news theme. It is multilingual compatibility, gutenberg compatibility, elementor compatibility and can be integrated easily with newsletter/form plugins. This theme is schema ready, which makes it a favourite for search engines. Newsmatic Theme does not collect any kind of personal data restricted under GDPR, so you can sleep without any worry by using our theme on your website. Developed by dedicated developers, it has user friendly and easy to use advanced control fields like select2, react color picker, image selector, typography field and many more inside the theme. Check out our pre-build demos here: https://blazethemes.com/theme/newsmatic-free. Check out elementor addons: https://wordpress.org/plugins/news-kit-elementor-addons/. Video Tutorial: https://www.youtube.com/watch?v=m9siCG4kqRc
 
 == Description ==
 Newsmatic is complete solution for your news website with full Elementor compatibility. By integrating the News Kit Elementor Addons plugin on your site, you can now customize any part of the theme with the Elementor page builder. It is fast, features rich, customizer-based, and multipurpose free news theme. It is multilingual compatibility, gutenberg compatibility, elementor compatibility and can be integrated easily with newsletter/form plugins. This theme is schema ready, which makes it a favourite for search engines. Newsmatic Theme does not collect any kind of personal data restricted under GDPR, so you can sleep without any worry by using our theme on your website. Developed by dedicated developers, it has user friendly and easy to use advanced control fields like select2, react color picker, image selector, typography field and many more inside the theme. Check out our pre-build demos here: https://blazethemes.com/theme/newsmatic-free. Check out news elementor addons: https://wordpress.org/plugins/news-kit-elementor-addons/
@@ -68,6 +68,9 @@ URL: http://github.com/kenwheeler/slick
 License: The MIT License
 
 == Changelog ==
+= 1.4.0 - Feb 10th, 2025 =
+	* Added - header and footer builder added
+
 = 1.3.18 - Oct 9th, 2025 =
 	* Fixed - read time duplicate suffix fixed
 

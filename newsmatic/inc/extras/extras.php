@@ -241,19 +241,19 @@ if( !function_exists( 'newsmatic_get_customizer_sidebar_array' ) ) :
         return array(
             'no-sidebar' => array(
                 'label' => esc_html__( 'No Sidebar', 'newsmatic' ),
-                'url'   => '%s/assets/images/customizer/no_sidebar.jpg'
+                'url'   => '%s/assets/images/customizer/no_sidebar.png'
             ),
             'left-sidebar' => array(
                 'label' => esc_html__( 'Left Sidebar', 'newsmatic' ),
-                'url'   => '%s/assets/images/customizer/left_sidebar.jpg'
+                'url'   => '%s/assets/images/customizer/left_sidebar.png'
             ),
             'right-sidebar' => array(
                 'label' => esc_html__( 'Right Sidebar', 'newsmatic' ),
-                'url'   => '%s/assets/images/customizer/right_sidebar.jpg'
+                'url'   => '%s/assets/images/customizer/right_sidebar.png'
             ),
             'both-sidebar' => array(
                 'label' => esc_html__( 'Both Sidebar', 'newsmatic' ),
-                'url'   => '%s/assets/images/customizer/both_sidebar.jpg'
+                'url'   => '%s/assets/images/customizer/both_sidebar.png'
             )
         );
     }

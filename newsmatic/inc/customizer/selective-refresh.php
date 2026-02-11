@@ -13,46 +13,6 @@ if( ! function_exists( 'newsmatic_customize_selective_refresh' ) ) :
      */
     function newsmatic_customize_selective_refresh( $wp_customize ) {
         if ( ! isset( $wp_customize->selective_refresh ) ) return;
-        // top header show hide
-        $wp_customize->selective_refresh->add_partial(
-            'top_header_option',
-            array(
-                'selector'        => '#masthead .top-header',
-                'render_callback' => 'newsmatic_top_header_html'
-            )
-        );
-        // top header social icons show hide
-        $wp_customize->selective_refresh->add_partial(
-            'top_header_social_option',
-            array(
-                'selector'        => '#masthead .main-header .social-icons-wrap',
-                'render_callback' => 'newsmatic_top_header_social_part_selective_refresh'
-            )
-        );
-        // header sidebar toggle show hide
-        $wp_customize->selective_refresh->add_partial(
-            'header_sidebar_toggle_option',
-            array(
-                'selector'        => '#masthead .sidebar-toggle-wrap',
-                'render_callback' => 'newsmatic_header_sidebar_toggle_part_selective_refresh'
-            )
-        );
-        // header search icon show hide
-        $wp_customize->selective_refresh->add_partial(
-            'header_search_option',
-            array(
-                'selector'        => '#masthead .search-wrap',
-                'render_callback' => 'newsmatic_header_search_part_selective_refresh'
-            )
-        );
-        // theme mode toggle show hide
-        $wp_customize->selective_refresh->add_partial(
-            'header_theme_mode_toggle_option',
-            array(
-                'selector'        => '#masthead .mode_toggle_wrap',
-                'render_callback' => 'newsmatic_header_theme_mode_icon_part_selective_refresh'
-            )
-        );
         // site title
         $wp_customize->selective_refresh->add_partial(
             'blogname',
@@ -119,7 +79,7 @@ if( ! function_exists( 'newsmatic_customize_selective_refresh' ) ) :
         $wp_customize->selective_refresh->add_partial(
             'header_newsletter_label',
             array(
-                'selector'        => '.newsletter-element',
+                'selector'        => '.newsletter-element a',
                 'render_callback' => 'newsmatic_customizer_newsletter_button_label',
             )
         );
@@ -128,7 +88,7 @@ if( ! function_exists( 'newsmatic_customize_selective_refresh' ) ) :
         $wp_customize->selective_refresh->add_partial(
             'header_random_news_label',
             array(
-                'selector'        => '.random-news-element',
+                'selector'        => '.random-news-element a',
                 'render_callback' => 'newsmatic_customizer_random_news_button_label',
             )
         );
@@ -141,43 +101,23 @@ if( ! function_exists( 'newsmatic_customize_selective_refresh' ) ) :
                 'render_callback' => 'newsmatic_single_related_posts',
             )
         );
-        
-        // footer option
-        $wp_customize->selective_refresh->add_partial(
-            'footer_option',
-            array(
-                'selector'        => 'footer .main-footer',
-                'render_callback' => 'newsmatic_footer_sections_html',
-                'container_inclusive'=> true
-            )
-        );
 
-        // footer column option
-        $wp_customize->selective_refresh->add_partial(
-            'footer_widget_column',
-            array(
-                'selector'        => 'footer .main-footer',
-                'render_callback' => 'newsmatic_footer_sections_html',
-            )
-        );
+        // custom button label
+        $wp_customize->selective_refresh->add_partial( 'header_custom_button_label', [
+            'selector'        => '.header-custom-button',
+            'render_callback' => 'newsmatic_customizer_custom_button_label',
+            'settings'  =>  [ 'header_custom_button_label', 'header_custom_button_redirect_href_link' ]
+        ]);
 
-        // bottom footer option
-        $wp_customize->selective_refresh->add_partial(
-            'bottom_footer_option',
-            array(
-                'selector'        => 'footer .bottom-footer',
-                'render_callback' => 'newsmatic_bottom_footer_sections_html',
-            )
-        );
+        // Header Builder Edit button
+        $wp_customize->selective_refresh->add_partial( 'header_builder_section_tab', [
+            'selector'        => 'header.site-header'
+        ]);
 
-        // bottom footer menu option
-        $wp_customize->selective_refresh->add_partial(
-            'bottom_footer_menu_option',
-            array(
-                'selector'        => 'footer .bottom-footer .bottom-menu',
-                'render_callback' => 'newsmatic_bottom_footer_menu_part_selective_refresh',
-            )
-        );
+        // Footer Builder Edit button
+        $wp_customize->selective_refresh->add_partial( 'footer_builder_section_tab', [
+            'selector'        => 'footer.site-footer'
+        ]);
     }
     add_action( 'customize_register', 'newsmatic_customize_selective_refresh' );
 endif;
@@ -239,83 +179,21 @@ function newsmatic_customizer_random_news_button_label() {
     return $content;
 }
 
-// top header social icons part
-function newsmatic_top_header_social_part_selective_refresh() {
-    if( ! ND\newsmatic_get_customizer_option( 'top_header_social_option' ) ) return;
+// custom button label
+function newsmatic_customizer_custom_button_label() {
+    $header_custom_button_redirect_href_link = ND\newsmatic_get_customizer_option( 'header_custom_button_redirect_href_link' );
+    $header_custom_button_label = ND\newsmatic_get_customizer_option( 'header_custom_button_label' );
     ?>
-       <div class="social-icons-wrap">
-          <?php newsmatic_customizer_social_icons(); ?>
-       </div>
+        <a class="header-custom-button" href="<?php echo esc_url($header_custom_button_redirect_href_link); ?>" target="_blank">
+            <?php if( $header_custom_button_label['icon'] != "fas fa-ban" ) : ?>
+                <span class="icon">
+                    <i class="<?php echo esc_attr($header_custom_button_label['icon']); ?>"></i>
+                </span>
+            <?php endif;
+            if( $header_custom_button_label['text'] ) :
+            ?>
+                <span class="ticker_label_title_string"><?php echo esc_html( $header_custom_button_label['text'] ); ?></span>
+            <?php endif; ?>
+        </a>
     <?php
 }
-
-function newsmatic_header_sidebar_toggle_part_selective_refresh() {
-    if( ! ND\newsmatic_get_customizer_option( 'header_sidebar_toggle_option' ) ) return;
-    ?>
-       <div class="sidebar-toggle-wrap">
-           <a class="sidebar-toggle-trigger" href="javascript:void(0);">
-               <div class="newsmatic_sidetoggle_menu_burger">
-                 <span></span>
-                 <span></span>
-                 <span></span>
-             </div>
-           </a>
-           <div class="sidebar-toggle hide">
-             <div class="newsmatic-container">
-               <div class="row">
-                 <?php dynamic_sidebar( 'header-toggle-sidebar' ); ?>
-               </div>
-             </div>
-           </div>
-       </div>
-    <?php
-}
-
-function newsmatic_header_search_part_selective_refresh() {
-    if( ! ND\newsmatic_get_customizer_option( 'header_search_option' ) ) return;
-    ?>
-        <div class="search-wrap">
-            <button class="search-trigger">
-                <i class="fas fa-search"></i>
-            </button>
-            <div class="search-form-wrap hide">
-                <?php echo get_search_form(); ?>
-            </div>
-        </div>
-    <?php
-}
-
-function newsmatic_header_theme_mode_icon_part_selective_refresh() {
-    if( ! ND\newsmatic_get_customizer_option( 'header_theme_mode_toggle_option' ) ) return;
-    ?>
-        <div class="mode_toggle_wrap">
-            <input class="mode_toggle" type="checkbox">
-        </div>
-    <?php
- }
-
-// bottom footer menu part
-function newsmatic_bottom_footer_menu_part_selective_refresh() {
-    if( ! ND\newsmatic_get_customizer_option( 'bottom_footer_menu_option' ) ) return;
-    ?>
-       <div class="bottom-menu">
-          <?php
-          if( has_nav_menu( 'menu-3' ) ) :
-             wp_nav_menu(
-                array(
-                   'theme_location' => 'menu-3',
-                   'menu_id'        => 'bottom-footer-menu',
-                   'depth' => 1
-                )
-             );
-             else :
-                if ( is_user_logged_in() && current_user_can( 'edit_theme_options' ) ) {
-                   ?>
-                      <a href="<?php echo esc_url( admin_url( '/nav-menus.php?action=locations' ) ); ?>"><?php esc_html_e( 'Setup Bottom Footer Menu', 'newsmatic' ); ?></a>
-                   <?php
-                }
-             endif;
-          ?>
-       </div>
-    <?php
- }

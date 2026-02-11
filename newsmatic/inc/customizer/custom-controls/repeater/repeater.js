@@ -139,13 +139,14 @@ jQuery(document).ready(function($) {
 
         // on click heading toggle content
         container.on( "click", ".newsmatic-repeater-item.visible .settings-icon", function() {
-            $(this).parents(".newsmatic-repeater-item").siblings().removeClass("popupActive").find(".item-control-fields").removeClass("isShow").addClass("isHidden")
-            $(this).parents(".newsmatic-repeater-item").siblings().find( ".fontawesome-icon-picker .icons-list" ).hide()
-            $(this).parents(".newsmatic-repeater-item").toggleClass("popupActive")
-            $(this).parent().next().toggleClass( "isHidden isShow" );
-            $(this).parent().next().find( ".fontawesome-icon-picker .icons-list" ).hide();
+            let _this = $( this )
+            _this.parents(".newsmatic-repeater-item").siblings().removeClass("popupActive").find(".item-control-fields").removeClass("isShow").addClass("isHidden")
+            _this.parents(".newsmatic-repeater-item").siblings().find( ".fontawesome-icon-picker .icons-list" ).hide()
+            _this.parents(".newsmatic-repeater-item").toggleClass("popupActive")
+            _this.parent().next().toggleClass( "isHidden isShow" );
+            _this.parent().next().find( ".fontawesome-icon-picker .icons-list" ).hide();
             // close popup on outside click
-            var fieldsPopup =  $(this).parents(".newsmatic-repeater-item").find( ".item-control-fields.isShow" )
+            var fieldsPopup =  _this.parents(".newsmatic-repeater-item").find( ".item-control-fields.isShow" ).add( _this )
             newsmaticClickOutSideElm( fieldsPopup, function() {
                 fieldsPopup.parents( ".newsmatic-repeater-item" ).removeClass("popupActive")
                 fieldsPopup.removeClass( "isShow" ).addClass( "isHidden" )

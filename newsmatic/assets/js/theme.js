@@ -6,7 +6,9 @@
  */
 jQuery(document).ready(function($) {
     "use strict"
-    var ajaxUrl = newsmaticObject.ajaxUrl, _wpnonce = newsmaticObject._wpnonce, sttOption = newsmaticObject.stt, query_vars = newsmaticObject.query_vars, paged = newsmaticObject.paged,  stickeyHeader = newsmaticObject.stickey_header;
+    var ajaxUrl = newsmaticObject.ajaxUrl, _wpnonce = newsmaticObject._wpnonce, sttOption = newsmaticObject.stt, query_vars = newsmaticObject.query_vars, paged = newsmaticObject.paged;
+    const wpadminbar = $( 'body #wpadminbar' ).height(),
+        isLoggedIn = $( 'body' ).hasClass( 'admin-bar' )
     
     setTimeout(function() {
         $('body .newsmatic_loading_box').hide();
@@ -18,6 +20,22 @@ jQuery(document).ready(function($) {
         nrtl = true;
         ndir = "right";
     };
+
+    function newsmaticAddDeviceClass() {
+        let selector = $('body')
+        if( $( window ).width() <= 426 ) {
+            selector.removeClass( 'is-desktop is-tablet' ).addClass( 'is-smartphone' )
+        } else if( $( window ).width() <= 769 ) {
+            selector.removeClass( 'is-desktop is-smartphone' ).addClass( 'is-tablet' )
+        } else {
+            selector.removeClass( 'is-smartphone is-tablet' ).addClass( 'is-desktop' )
+        }
+    }
+    newsmaticAddDeviceClass();
+
+    $( window ).on("resize", function() {
+        newsmaticAddDeviceClass();
+    })
     
     // theme trigger modal close
     function newsmaticclosemodal( elm, callback ) {
@@ -344,25 +362,6 @@ jQuery(document).ready(function($) {
         }
     });
 
-
-    // header sticky
-    if( stickeyHeader ) {
-        var lastScroll = 0;
-        $(window).on('scroll',function() {  
-            var scroll = $(window).scrollTop();
-            if(scroll > 50){        
-                if(lastScroll - scroll > 0) {
-                    $(".main-header .menu-section").addClass("fixed_header");
-                } else {
-                    $(".main-header .menu-section").removeClass("fixed_header");
-                }
-                lastScroll = scroll;
-            }else{
-                $(".main-header .menu-section").removeClass("fixed_header");
-            }
-        });
-    }
-
     // back to top script
     if( sttOption && $( "#newsmatic-scroll-to-top" ).length ) {
         var scrollContainer = $( "#newsmatic-scroll-to-top" );
@@ -385,5 +384,66 @@ jQuery(document).ready(function($) {
     if( featuredPost.length > 0 ) {
         var postHide = "#post-" + featuredPost.data("id")
         $(postHide).addClass( "sticky-hide" );
+    }
+
+    /**
+     * Header Sticky
+     */
+    const { headerSticky } = newsmaticObject
+    if( headerSticky ) {
+        let lastScroll = 0,
+            sidebarSelector = $( 'aside#secondary.widget-area' ),
+            allStickyRows = $( 'header#masthead .row-sticky' ),
+            dynamicTopValue = 0
+            allStickyRows.each(function(){
+                let _this = $( this )
+                dynamicTopValue += _this.outerHeight()
+            })
+        if( isLoggedIn ) dynamicTopValue += wpadminbar
+        $( window ).on('scroll',function() {
+            let scroll = $( this ).scrollTop(),
+                mainHeaderContainer = $('body header.site-header')
+
+            if( $( 'header#masthead' ).hasClass( 'fixed--on' ) && $( 'body' ).hasClass( 'newsmatic-sticky-sidebar--enabled' ) ) {
+                sidebarSelector.css({
+                    'top': `${ dynamicTopValue }px`
+                })
+            } else {
+                sidebarSelector.css({
+                    'top': ( isLoggedIn ) ? `${ wpadminbar }px` : '0px'
+                })
+            }
+            if( scroll >= 200 ) {
+                mainHeaderContainer.addClass( 'header-sticky--enabled' ).removeClass( 'header-sticky--disabled' )
+            } else {
+                mainHeaderContainer.addClass( 'header-sticky--disabled' ).removeClass( 'header-sticky--enabled' )
+            }
+
+            if( scroll > 50 ) {
+                if ( scroll > lastScroll ) {
+                    mainHeaderContainer.removeClass( 'fixed--on' ).addClass( 'fixed--off' )
+                } else {
+                    mainHeaderContainer.addClass( 'fixed--on' ).removeClass( 'fixed--off' )
+                }
+                lastScroll = scroll
+            } else {
+                $( mainHeaderContainer ).addClass("header-sticky--disabled fixed--off").removeClass( 'fixed--on' );
+            }
+        });
+    }
+
+    /**
+     * Responsive header builder toggle button
+     * 
+     * @since 1.4.0
+     */
+    var responsiveHeaderBuilderWrapper = $('.bb-bldr--responsive')
+    if( responsiveHeaderBuilderWrapper.length > 0 ) {
+        let toggleButton = responsiveHeaderBuilderWrapper.find( '.toggle-button-wrapper' )
+        toggleButton.on("click", function() {
+            let _this = $(this)
+            _this.parents( '.row-wrap' ).siblings( '.bb-bldr-row.mobile-canvas' ).toggleClass( 'open' )
+            _this.toggleClass( 'active' )
+        })
     }
 })

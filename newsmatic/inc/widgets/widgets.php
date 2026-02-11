@@ -128,6 +128,19 @@ function newsmatic_widgets_init() {
 		)
 	);
 
+	// Header builder widget area
+	register_sidebar(
+		array(
+			'name'          => esc_html__( 'Header Builder - Widget Area', 'newsmatic' ),
+			'id'            => 'header-builder-widget-area',
+			'description'   => esc_html__( 'Add widgets here.', 'newsmatic' ),
+			'before_widget' => '<section id="%1$s" class="widget %2$s">',
+			'after_widget'  => '</section>',
+			'before_title'  => '<h2 class="widget-title"><span>',
+			'after_title'   => '</span></h2>',
+		)
+	);
+
 	// Register custom widgets
     register_widget( 'Newsmatic_Widget_Title_Widget' ); // custom widget title
 	register_widget( 'Newsmatic_Posts_List_Widget' ); // post lists widget

@@ -144,6 +144,7 @@ require get_template_directory() . '/inc/template-tags.php';
  * Functions which enhance the theme by hooking into WordPress.
  */
 require get_template_directory() . '/inc/template-functions.php';
+require get_template_directory() . '/builder/base.php';
 
 add_filter( 'get_the_archive_title_prefix', 'newsmatic_prefix_string' );
 function newsmatic_prefix_string($prefix) {

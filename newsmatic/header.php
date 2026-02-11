@@ -9,6 +9,8 @@
  * @package Newsmatic
  */
 use Newsmatic\CustomizerDefault as ND;
+require get_template_directory() . '/builder/responsive-header.php';
+use Newsmatic_Builder as NB;
 ?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
@@ -51,21 +53,8 @@ use Newsmatic\CustomizerDefault as ND;
 			
 			<header id="masthead" class="site-header layout--default layout--one">
 				<?php
-					/**
-					 * Function - newsmatic_top_header_html
-					 * 
-					 * @since 1.0.0
-					 * 
-					 */
-					newsmatic_top_header_html();
-
-					/**
-					 * Function - newsmatic_header_html
-					 * 
-					 * @since 1.0.0
-					 * 
-					 */
-					newsmatic_header_html();
+					new NB\Header_Builder_Render();
+					new NB\Responsive_Header_Builder_Render();
 				?>
 			</header><!-- #masthead -->
 			

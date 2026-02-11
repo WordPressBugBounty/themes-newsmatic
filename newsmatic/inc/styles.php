@@ -267,23 +267,22 @@ if(! function_exists('newsmatic_visibility_options')):
    * @since 1.0.0 
    */
    function newsmatic_visibility_options( $selector, $control ) {
-   $decoded_control =  ND\newsmatic_get_customizer_option( $control );
+      $decoded_control =  ND\newsmatic_get_customizer_option( $control );
       if( ! $decoded_control ) return;
 
       if( isset( $decoded_control['desktop'] ) ) :
          if($decoded_control['desktop'] == false) echo $selector . "{ display : none;}";
+         if($decoded_control['desktop'] == true) echo $selector . "{ display : block;}";
       endif;
 
       if( isset( $decoded_control['tablet'] ) ) :
-      if($decoded_control['tablet'] == false) echo "@media(max-width: 940px) and (min-width:611px) { " .$selector . "{ display : none;} }";
+         if($decoded_control['tablet'] == false) echo "@media(max-width: 940px) and (min-width:611px) { " .$selector . "{ display : none;} }";
+         if($decoded_control['tablet'] == true) echo "@media(max-width: 940px) and (min-width:611px) { " .$selector . "{ display : block;} }";
       endif;
 
       if( isset( $decoded_control['mobile'] ) ) :
-      if($decoded_control['mobile'] == false) { 
-         echo "@media(max-width: 610px) { " .$selector . "{ display : none;} }";
-      }if($decoded_control['mobile'] == true){
-         echo "@media(max-width: 610px) { " .$selector . "{ display : block;} }";
-      }
+         if($decoded_control['mobile'] == false) echo "@media(max-width: 610px) { " .$selector . "{ display : none;} }";
+         if($decoded_control['mobile'] == true) echo "@media(max-width: 610px) { " .$selector . "{ display : block;} }";
       endif;
    }
 endif;
@@ -388,5 +387,103 @@ if( ! function_exists( 'newsmatic_category_colors_styles' ) ) :
             echo "body.single .post-categories .cat-item.cat-" . absint($singleCat->term_id) . " { background-color : " .newsmatic_get_color_format( ND\newsmatic_get_customizer_option( 'category_' .absint($singleCat->term_id). '_color' ) ). "} ";
          endforeach;
       endif;
+   }
+endif;
+
+if( ! function_exists( 'newsmatic_adjust_builder_border' ) ) :
+   /**
+    * Adjust border of 2nd and 3rd row in header builder
+    * 
+    * @since 1.4.0
+    */
+   function newsmatic_adjust_builder_border( $builder_id ) {
+      $css = [];
+      $prefix_class = ( $builder_id !== 'responsive_header_builder' ) ? '.bb-bldr--normal' : '.bb-bldr--responsive';
+      $header_builder = ND\newsmatic_get_customizer_option( $builder_id );
+      $custom_button_make_absolute = ND\newsmatic_get_customizer_option( 'custom_button_make_absolute' );
+      $row_padding_control_id = '';
+      // Logic to find which row the 'button' widget is located in
+      if( $custom_button_make_absolute ) :
+         if( ! empty( $header_builder ) && is_array( $header_builder ) ) :
+            $first_row = [ '00', '01', '02', '03' ];
+            $second_row = [ '10', '11', '12', '13' ];
+            $third_row = [ '20', '21', '22', '23' ];
+            foreach( $header_builder as $column => $widgets ) :
+               if( in_array( 'button', $widgets ) && in_array( $column, $first_row ) ) :
+                  $row_padding_control_id = 'header_first_row_padding';
+                  break;
+               endif;
+               if( in_array( 'button', $widgets ) && in_array( $column, $second_row ) ) :
+                  $row_padding_control_id = 'header_second_row_padding';
+                  break;
+               endif;
+               if( in_array( 'button', $widgets ) && in_array( $column, $third_row ) ) :
+                  $row_padding_control_id = 'header_third_row_padding';
+                  break;
+               endif;
+            endforeach;
+         endif;
+      endif;
+
+      // First Row
+      if( $custom_button_make_absolute && ( $row_padding_control_id === 'header_first_row_padding' ) ) :
+         $first_row_padding = ND\newsmatic_get_customizer_option( 'header_first_row_padding' );
+         $first_row_padding_desktop = $first_row_padding[ 'desktop' ][ 'bottom' ];
+         $first_row_padding_tablet = $first_row_padding[ 'tablet' ][ 'bottom' ];
+         $first_row_padding_smartphone = $first_row_padding[ 'smartphone' ][ 'bottom' ];
+         $selector = 'body '. esc_html( $prefix_class ) .' .custom-button-absolute';
+         $css[] = "$selector{ bottom: -$first_row_padding_desktop; }";
+         $css[] = "@media(max-width: 940px){ $selector{ bottom: -$first_row_padding_tablet; } }";
+         $css[] = "@media(max-width: 610px){ $selector{ bottom: -$first_row_padding_smartphone; } }";
+      endif;
+
+      // Second Row
+      $second_row_border = ND\newsmatic_get_customizer_option( 'header_menu_top_border' );
+      if( ( $second_row_border[ 'type' ] !== 'none' ) || ( $custom_button_make_absolute && ( $row_padding_control_id === 'header_second_row_padding' ) ) ) :
+         $second_row_padding = ND\newsmatic_get_customizer_option( 'header_second_row_padding' );
+         $second_row_padding_desktop = $second_row_padding[ 'desktop' ][ 'bottom' ];
+         $second_row_padding_tablet = $second_row_padding[ 'tablet' ][ 'bottom' ];
+         $second_row_padding_smartphone = $second_row_padding[ 'smartphone' ][ 'bottom' ];
+         $selector = esc_html( $prefix_class ) . ' .row-two .bb-bldr-row:before, '. esc_html( $prefix_class ) .' .custom-button-absolute';
+         $css[] = "$selector{ bottom: -$second_row_padding_desktop; }";
+         $css[] = "@media(max-width: 940px){ $selector{ bottom: -$second_row_padding_tablet; } }";
+         $css[] = "@media(max-width: 610px){ $selector{ bottom: -$second_row_padding_smartphone; } }";
+      endif;
+
+      // Third row
+      $third_row_border = ND\newsmatic_get_customizer_option( 'header_menu_bottom_border' );
+      if( ( $third_row_border[ 'type' ] !== 'none' ) || ( $custom_button_make_absolute && ( $row_padding_control_id === 'header_third_row_padding' ) ) ) :
+         $third_row_padding = ND\newsmatic_get_customizer_option( 'header_third_row_padding' );
+         $third_row_padding_desktop = $third_row_padding[ 'desktop' ][ 'bottom' ];
+         $third_row_padding_tablet = $third_row_padding[ 'tablet' ][ 'bottom' ];
+         $third_row_padding_smartphone = $third_row_padding[ 'smartphone' ][ 'bottom' ];
+         $selector = esc_html( $prefix_class ) . ' .row-three .bb-bldr-row:before, '. esc_html( $prefix_class ) .' .custom-button-absolute';
+         $css[] = "$selector{ bottom: -$third_row_padding_desktop; }";
+         $css[] = "@media(max-width: 940px){ $selector{ bottom: -$third_row_padding_tablet; } }";
+         $css[] = "@media(max-width: 610px){ $selector{ bottom: -$third_row_padding_smartphone; } }";
+      endif;
+
+      echo implode( "\n", $css );
+   }
+endif;
+
+// box shadow
+if( ! function_exists( 'newsmatic_box_shadow_styles' ) ) :
+   /**
+    * Generates css code for box shadow
+    *
+    * @package Newsmatic Pro
+    * @since 1.4.0
+    */
+   function newsmatic_box_shadow_styles( $control, $selector ) {
+      $newsmatic_box_shadow = ND\newsmatic_get_customizer_option( $control );
+      if( ! $newsmatic_box_shadow['option'] ) {
+         echo $selector."{ box-shadow: 0px 0px 0px 0px;
+         }\n";
+      } else {
+         if( $newsmatic_box_shadow['type'] == 'outset') $newsmatic_box_shadow['type'] = '';
+         $box_shadow_value = esc_html( $newsmatic_box_shadow['type'] ) ." ".esc_html( $newsmatic_box_shadow['hoffset'] ).  "px ". esc_html( $newsmatic_box_shadow['voffset'] ). "px ".esc_html( $newsmatic_box_shadow['blur'] ).  "px ".esc_html( $newsmatic_box_shadow['spread'] ).  "px ".newsmatic_get_color_format( $newsmatic_box_shadow['color'] );
+         echo $selector."{ box-shadow : " . $box_shadow_value . "; -webkit-box-shadow: ". $box_shadow_value ."; -moz-box-shadow: " . $box_shadow_value . " }\n";
+      }
    }
 endif;

@@ -288,3 +288,85 @@ if( !function_exists( 'newsmatic_sanitize_array' )  ) :
         return apply_filters( NEWSMATIC_PREFIX . 'box_shadow_control_value', $control );
     }
  endif;
+
+ if( ! function_exists( 'newsmatic_sanitize_builder_control' ) ) :
+    /**
+     * Sanitize Builder Control
+     * @var $value holds the current value of the control
+     * @var $setting holds the instance of WP_Customize_Setting class
+     * 
+     * @since 1.0.0
+     */
+    function newsmatic_sanitize_builder_control( $values, $setting ) {
+        $default = $setting->default;
+        if( empty( $values ) || ! is_array( $values ) ) return $default;   /* Return Default if $values is ( empty || not array ) */
+        $control_widgets = $setting->manager->get_control( $setting->id )->widgets;
+        $all_widgets = array_keys( $control_widgets );
+        $sanitized_value = [];
+        foreach( $values as $container_id => $widgets ) :
+            if( empty( $widgets ) ) :
+                $sanitized_value[ $container_id ] = $widgets;
+            else: 
+                $filtered_widgets = [];
+                foreach( $widgets as $widget ):
+                    if( in_array( $widget, $all_widgets ) ) :
+                        $filtered_widgets[] = sanitize_text_field( $widget );
+                    else:
+                        return $default;
+                    endif;
+                endforeach;
+                $sanitized_value[ $container_id ] = $filtered_widgets;
+            endif;
+        endforeach;
+        return $sanitized_value;
+    }
+endif;
+
+if( ! function_exists( 'newsmatic_sanitize_responsive_radio_image' ) ) :
+    /**
+     * Sanitize preset colors
+     * @var $value holds the current value of the control
+     * @var $setting holds the instance of WP_Customize_Setting class
+     * 
+     * @since 1.0.0
+     */
+    function newsmatic_sanitize_responsive_radio_image( $value, $setting ) {
+        $default = $setting->default;
+        if( empty( $value ) || ! is_array( $value ) ) return $default;   /* Return Default if $values is ( empty || not array ) */
+        if( array_key_exists( 'desktop', $value ) && array_key_exists( 'tablet', $value ) && array_key_exists( 'smartphone', $value ) ) :
+            $sanitized_value['desktop'] = sanitize_text_field( $value['desktop'] );
+            $sanitized_value['tablet'] = sanitize_text_field( $value['tablet'] );
+            $sanitized_value['smartphone'] = sanitize_text_field( $value['smartphone'] );
+            return $sanitized_value;
+        else:
+            return $default;
+        endif;
+    }
+endif;
+
+if( ! function_exists( 'newsmatic_sanitize_responsive_radio_tab' ) ) :
+    /**
+     * Sanitize preset colors
+     * @var $value holds the current value of the control
+     * @var $setting holds the instance of WP_Customize_Setting class
+     * 
+     * @since 1.0.0
+     */
+    function newsmatic_sanitize_responsive_radio_tab( $value, $setting ) {
+        $default = $setting->default;
+        if( empty( $value ) || ! is_array( $value ) ) return $default;   /* Return Default if $values is ( empty || not array ) */
+        $choices = $setting->manager->get_control( $setting->id )->choices;
+        $choice_keys = [];
+        foreach( $choices as $choice ):
+            $choice_keys[] = $choice['value'];
+        endforeach;
+        if( array_key_exists( 'desktop', $value ) && array_key_exists( 'tablet', $value ) && array_key_exists( 'smartphone', $value ) ) :
+            $sanitized_value['desktop'] = in_array( $value['desktop'], $choice_keys ) ? sanitize_text_field( $value['desktop'] ) : $default['desktop'];
+            $sanitized_value['tablet'] = in_array( $value['tablet'], $choice_keys ) ? sanitize_text_field( $value['tablet'] ) : $default['tablet'];
+            $sanitized_value['smartphone'] = in_array( $value['smartphone'], $choice_keys ) ? sanitize_text_field( $value['smartphone'] ) : $default['smartphone'];
+            return $sanitized_value;
+        else:
+            return $default;
+        endif;
+    }
+endif;
