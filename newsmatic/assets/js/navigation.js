@@ -159,5 +159,32 @@
 		});
 	}
 	dropdownMenuMobileHandle();
+			console.log('addEventListener');
+
+	/* Responsive builder menu focus trap */
+	const builderToggleButton = document.querySelector( '.bb-bldr--responsive .toggle-button-wrapper' )
+	const builderNavigationElement = document.querySelector( '.bb-bldr--responsive #site-navigation' )
+	if( builderToggleButton ) {
+		builderToggleButton.addEventListener( 'click', function() {
+			console.log('addEventListener');
+			
+			builderNavigationElement.classList.toggle( 'toggled' );
+	
+			// focus trap for menu
+			var menuElement = document.querySelector( '.bb-bldr-widget #site-navigation.toggled' );
+			if( menuElement ) {
+				document.addEventListener('keydown', function(e) {
+					var focusable = menuElement.querySelectorAll( 'input, a, button, ul.sub-menu.isShow a' );
+					focusable = Array.prototype.slice.call( focusable );
+					focusable = focusable.filter( function( focusableelement ) {
+						return null !== focusableelement.offsetParent;
+					} );
+					var firstFocusable = builderToggleButton
+					var lastFocusable = focusable[focusable.length - 1];
+					newsmatic_focus_trap( firstFocusable, lastFocusable, e );
+				})
+			}
+		});
+	}
 
 }(jQuery) );

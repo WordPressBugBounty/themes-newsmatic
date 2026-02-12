@@ -410,16 +410,17 @@
         grid-template-columns: repeat(3, 1fr);
     }
 
-    #customize-control-header_builder .column-3.layout-two .column-wrapper {
+    #sub-accordion-section-newsmatic_header_builder_section .column-3.layout-two .column-wrapper {
         grid-template-columns: 1fr 3fr 1fr;
     }
 
-    #customize-control-header_builder .column-3.layout-three .column-wrapper,
-    #customize-control-footer_builder .column-3.layout-two .column-wrapper {
+    #sub-accordion-section-newsmatic_header_builder_section .column-3.layout-three .column-wrapper,
+    #sub-accordion-section-newsmatic_footer_builder_section .column-3.layout-two .column-wrapper {
 		grid-template-columns: 15fr 70fr 15fr;
 	}
 	
-	#customize-control-header_builder .column-3.layout-five .column-wrapper,
+	.customize-control-responsive-builder .column-3.layout-four .column-wrapper,
+	.customize-control-responsive-builder .column-3.layout-five .column-wrapper,
 	#customize-control-footer_builder .column-3.layout-three .column-wrapper {
         grid-template-columns: 1fr 1fr 1fr;
     }

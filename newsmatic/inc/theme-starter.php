@@ -546,7 +546,7 @@
                 'tablet'    =>  [ 'top' => '10px', 'right'  =>  '0px', 'bottom' =>  '10px', 'left'  =>  '0px' ], 
                 'smartphone'    =>  [ 'top' => '10px', 'right'  =>  '0px', 'bottom' =>  '10px', 'left'  =>  '0px' ]
             ],
-            'header_third_row_column_one'   =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'left', 'left', 'center' ) : newsmatic_get_responsive_defaults( 'left', 'left', 'center' ),
+            'header_third_row_column_one'   =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'left', 'left', 'center' ) : newsmatic_get_responsive_defaults( 'left', 'left', 'left' ),
             'header_third_row_column_two'   =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'right', 'right', 'center' ) : newsmatic_get_responsive_defaults( 'center', 'right', 'right' ),
             'header_third_row_column_three' =>  $is_header_layout_two ? newsmatic_get_responsive_defaults( 'right', 'right', 'right' ) : newsmatic_get_responsive_defaults( 'right', 'right', 'right' ),
             // Mark: Responsive Builder
@@ -565,7 +565,7 @@
             'footer_section_width'  => 'boxed-width',
             // MARK: Footer 1st row
             'footer_first_row_column'   =>  newsmatic_get_footer_first_row_column(),
-            'footer_first_row_column_layout'    =>  newsmatic_get_responsive_defaults( 'one', 'nine', 'nine' ),
+            'footer_first_row_column_layout'    =>  newsmatic_get_responsive_defaults( 'one', 'three', 'three' ),
             'footer_first_row_full_width'   =>  true,
             'footer_color'  => [ 'color'   => '#fff', 'hover'   => "#fff" ],
             'footer_background_color_group' => json_encode([

@@ -6,7 +6,7 @@ use Newsmatic\CustomizerDefault as ND;
 add_action( 'customize_preview_init', function() {
     wp_enqueue_script( 
         'newsmatic-customizer-preview',
-        get_template_directory_uri() . '/inc/customizer/assets/customizer-preview.js',
+        get_template_directory_uri() . '/inc/customizer/assets/customizer-preview.min.js',
         ['customize-preview'],
         NEWSMATIC_VERSION,
         true
@@ -43,7 +43,6 @@ add_action( 'customize_controls_enqueue_scripts', function() {
     wp_enqueue_script( 
         'newsmatic-customizer-control',
         get_template_directory_uri() . '/inc/customizer/assets/customizer-extends.min.js',
-        // get_template_directory_uri() . '/inc/customizer/controller/build/index.js',
         $buildControlsDeps,
         NEWSMATIC_VERSION,
         true
@@ -61,14 +60,14 @@ add_action( 'customize_controls_enqueue_scripts', function() {
     );
     wp_enqueue_style( 
         'newsmatic-customizer-builder',
-        get_template_directory_uri() . '/inc/customizer/assets/builder.min.css', 
+        get_template_directory_uri() . '/inc/customizer/assets/builder.css', 
         array('wp-components'),
         NEWSMATIC_VERSION,
         'all'
     );
     wp_enqueue_script( 
         'newsmatic-customizer-extras',
-        get_template_directory_uri() . '/inc/customizer/assets/extras.js',
+        get_template_directory_uri() . '/inc/customizer/assets/extras.min.js',
         [],
         NEWSMATIC_VERSION,
         true
@@ -1361,6 +1360,8 @@ if( !function_exists( 'newsmatic_customizer_global_panel' ) ) :
     }
     add_action( 'customize_register', 'newsmatic_customizer_global_panel', 10 );
 endif;
+
+require get_template_directory() . '/inc/customizer/header-builders.php';
 
 if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
     // Register header options settings
@@ -2665,7 +2666,6 @@ if( !function_exists( 'newsmatic_customizer_page_panel' ) ) :
     add_action( 'customize_register', 'newsmatic_customizer_page_panel', 10 );
 endif;
 
-require get_template_directory() . '/inc/customizer/header-builders.php';
 require get_template_directory() . '/inc/customizer/footer-builders.php';
 
 // extract to the customizer js

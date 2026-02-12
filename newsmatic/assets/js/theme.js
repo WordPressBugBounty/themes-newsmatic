@@ -20,22 +20,6 @@ jQuery(document).ready(function($) {
         nrtl = true;
         ndir = "right";
     };
-
-    function newsmaticAddDeviceClass() {
-        let selector = $('body')
-        if( $( window ).width() <= 426 ) {
-            selector.removeClass( 'is-desktop is-tablet' ).addClass( 'is-smartphone' )
-        } else if( $( window ).width() <= 769 ) {
-            selector.removeClass( 'is-desktop is-smartphone' ).addClass( 'is-tablet' )
-        } else {
-            selector.removeClass( 'is-smartphone is-tablet' ).addClass( 'is-desktop' )
-        }
-    }
-    newsmaticAddDeviceClass();
-
-    $( window ).on("resize", function() {
-        newsmaticAddDeviceClass();
-    })
     
     // theme trigger modal close
     function newsmaticclosemodal( elm, callback ) {
@@ -386,6 +370,42 @@ jQuery(document).ready(function($) {
         $(postHide).addClass( "sticky-hide" );
     }
 
+    var desktopHeaderHeight = $( 'header#masthead .bb-bldr--normal' ).outerHeight(),
+        responsiveHeaderHeight = $( 'header#masthead .bb-bldr--responsive' ).outerHeight()
+
+    /**
+     * Calculate header Height
+     * 
+     * @since 1.0.2
+     */
+    const oneNewspaperCalculateHeaderHeight = () => {
+        let isDesktop = $( 'body' ).hasClass( 'is-desktop' )
+        $( 'header#masthead' ).height( isDesktop ? desktopHeaderHeight : responsiveHeaderHeight )   
+    }
+
+    function newsmaticAddDeviceClass() {
+        let selector = $('body')
+        if( $( window ).width() <= 426 ) {
+            selector.removeClass( 'is-desktop is-tablet' ).addClass( 'is-smartphone' )
+        } else if( $( window ).width() <= 769 ) {
+            selector.removeClass( 'is-desktop is-smartphone' ).addClass( 'is-tablet' )
+        } else {
+            selector.removeClass( 'is-smartphone is-tablet' ).addClass( 'is-desktop' )
+        }
+    }
+    newsmaticAddDeviceClass();
+
+    $( window ).on("resize", function() {
+        newsmaticAddDeviceClass();
+        let isDesktop = $( 'body' ).hasClass( 'is-desktop' )
+        if( isDesktop ) {
+            desktopHeaderHeight = $( 'header#masthead .bb-bldr--normal' ).outerHeight()
+        } else {
+            responsiveHeaderHeight = $( 'header#masthead .bb-bldr--responsive' ).outerHeight()
+        }
+        oneNewspaperCalculateHeaderHeight()
+    })
+
     /**
      * Header Sticky
      */
@@ -401,6 +421,7 @@ jQuery(document).ready(function($) {
             })
         if( isLoggedIn ) dynamicTopValue += wpadminbar
         $( window ).on('scroll',function() {
+            oneNewspaperCalculateHeaderHeight()
             let scroll = $( this ).scrollTop(),
                 mainHeaderContainer = $('body header.site-header')
 

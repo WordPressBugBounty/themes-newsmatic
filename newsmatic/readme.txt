@@ -68,6 +68,10 @@ URL: http://github.com/kenwheeler/slick
 License: The MIT License
 
 == Changelog ==
+
+= 1.4.1 - Feb 11th, 2025 =
+	* Fixed - Header stickey issue fixed
+
 = 1.4.0 - Feb 10th, 2025 =
 	* Added - header and footer builder added
 

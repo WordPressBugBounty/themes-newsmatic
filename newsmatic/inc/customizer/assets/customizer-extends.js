@@ -21061,23 +21061,21 @@ const NewsmaticBlockRepeater = props => {
   }, [repeater]);
   const onSortEnd = e => {
     setRepeater(prev => {
-      console.log((0,array_move__WEBPACK_IMPORTED_MODULE_2__.arrayMoveImmutable)(prev, e.oldIndex, e.newIndex), 'new value');
       return (0,array_move__WEBPACK_IMPORTED_MODULE_2__.arrayMoveImmutable)(prev, e.oldIndex, e.newIndex);
     });
   };
   function updateValue(key, block) {
-    repeater[key] = block;
-    setRepeater(JSON.parse(JSON.stringify(repeater)));
+    setRepeater(prev => {
+      const newRepeater = [...prev];
+      newRepeater[key] = block;
+      return newRepeater;
+    });
   }
-  const onSortStart = () => {
-    console.log('Start sorting');
-  };
   return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("label", {
     className: "customize-control-title"
   }, label), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("span", {
     className: "customize-control-description"
   }, description), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(BlockSortableList, {
-    onSortStart: onSortStart,
     onSortEnd: onSortEnd,
     hideSortableGhost: false,
     repeater: repeater,
