@@ -71,6 +71,10 @@
 		margin: 0;
 	}
 
+	.newsmatic-box-shadow-control-popover .components-button-group {
+		outline: 1px solid #5fa1ff;
+	}
+
 	/* typography preset select */
 	.customize-control .dashicon.preset-isactive:before {
 		padding: 4px;

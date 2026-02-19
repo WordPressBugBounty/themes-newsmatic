@@ -20019,6 +20019,7 @@ const NewsmaticBoxShadow = props => {
       flip: true,
       placement: 'bottom-start'
     },
+    contentClassName: "newsmatic-box-shadow-control-popover",
     renderToggle: ({
       isOpen,
       onToggle

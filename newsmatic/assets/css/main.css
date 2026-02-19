@@ -1181,6 +1181,10 @@
 	    -webkit-box-orient: vertical;
 	}
 
+	.top-ticker-news .ticker-item-wrap:not(.slick-initialized) {
+		height: 20px;
+	}
+
 	/* Top Header Nav */
 	.top-header .top-nav-menu {
 		flex: 1 1 70%;

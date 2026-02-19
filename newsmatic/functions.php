@@ -251,3 +251,14 @@ if( ! function_exists( 'newsmatic_set_transient' ) ) :
 	}
 add_action( 'after_switch_theme', 'newsmatic_set_transient' );
 endif;
+
+add_filter( 'sanitize_title', function( $title, $raw_title, $context ) {
+
+    // Prevent collapsing double dashes for footer sidebar IDs
+    if ( strpos( $raw_title, 'footer-sidebar--column-' ) === 0 ) {
+        return $raw_title;
+    }
+
+    return $title;
+
+}, 10, 3 );

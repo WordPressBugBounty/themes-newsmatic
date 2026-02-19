@@ -2,9 +2,9 @@
 Contributors: BlazeThemes
 Tags: news, blog, entertainment, one-column, two-columns, grid-layout, block-styles, left-sidebar, right-sidebar, custom-header, flexible-header, custom-background, custom-colors, custom-menu, featured-images, full-width-template, post-formats, sticky-post, rtl-language-support, footer-widgets, theme-options, threaded-comments, translation-ready
 Requires at least: 5.3
-Tested up to: 6.0
+Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 1.4.0
+Stable tag: 1.4.2
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -68,11 +68,13 @@ URL: http://github.com/kenwheeler/slick
 License: The MIT License
 
 == Changelog ==
+= 1.4.2 - Feb 19th, 2026 =
+	* Fixed - footer sidebar render issue fixed
 
-= 1.4.1 - Feb 11th, 2025 =
-	* Fixed - Header stickey issue fixed
+= 1.4.1 - Feb 13th, 2026 =
+	* Fixed - header stickey fixes
 
-= 1.4.0 - Feb 10th, 2025 =
+= 1.4.0 - Feb 10th, 2026 =
 	* Added - header and footer builder added
 
 = 1.3.18 - Oct 9th, 2025 =
