@@ -18,7 +18,18 @@ $demos_array = array(
         ),
         'home_slug' => '',
         'blog_slug' => '',
-        'plugins' => [],
+        'plugins' => [
+            'mailpoet' => array(
+                'name' => 'MailPoet',
+                'source' => 'wordpress',
+                'file_path' => 'mailpoet/mailpoet.php'
+            ),
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
+            )
+        ],
         'tags' => array(
             'free' => 'Free'
         )
@@ -29,7 +40,9 @@ $demos_array = array(
         'external_url' => 'https://preview.blazethemes.com/import-files/newsmatic/newsmatic-ten.zip',
         'image' => 'https://blazethemes.com/wp-content/uploads/2022/12/newsmatic-ten-600x657-min.jpg',
         'preview_url' => 'https://preview.blazethemes.com/newsmatic-ten/',
-        'menu_array' => array(),
+        'menu_array' => array(
+            'menu-2'    =>  'Header Menu'
+        ),
         'home_slug' => 'nekit-home',
         'blog_slug' => '',
         'plugins' => array(
@@ -42,6 +55,11 @@ $demos_array = array(
                 'name' => 'News Kit Elementor Addons',
                 'source' => 'wordpress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
+            ),
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
         'pagebuilder' => array(
@@ -74,7 +92,15 @@ $demos_array = array(
                 'name' => 'News Kit Elementor Addons',
                 'source' => 'wordpress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
+            ),
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
             )
+        ),
+        'pagebuilder' => array(
+            'elementor' => 'Elementor'
         ),
         'tags' => array(
             'free' => 'Free',
@@ -104,7 +130,15 @@ $demos_array = array(
                 'name' => 'News Kit Elementor Addons',
                 'source' => 'wordpress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
+            ),
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
             )
+        ),
+        'pagebuilder' => array(
+            'elementor' => 'Elementor'
         ),
         'tags' => array(
             'free' => 'Free',
@@ -119,6 +153,8 @@ $demos_array = array(
         'image' => 'https://blazethemes.com/wp-content/uploads/2024/05/newsmatic-elementor-one.jpg',
         'preview_url' => 'https://preview.blazethemes.com/newsmatic-elementor-one/',
         'menu_array' => array(
+            'menu-2'    =>  'menu one',
+            'menu-3'    =>  'menu two'
         ),
         'home_slug' => 'newsmatic-elementor-one-home',
         'blog_slug' => '',
@@ -132,6 +168,11 @@ $demos_array = array(
                 'name' => 'News Kit Elementor Addons',
                 'source' => 'wordpress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
+            ),
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
         'pagebuilder' => array(
@@ -150,6 +191,7 @@ $demos_array = array(
         'image' => 'https://blazethemes.com/wp-content/uploads/2024/05/newsmatic-elementor-three.jpg',
         'preview_url' => 'https://preview.blazethemes.com/newsmatic-elementor-two/',
         'menu_array' => array(
+            'menu-1'    =>  'Main Header'
         ),
         'home_slug' => 'newsmatic-elementor-two-home',
         'blog_slug' => '',
@@ -181,6 +223,8 @@ $demos_array = array(
         'image' => 'https://blazethemes.com/wp-content/uploads/2024/05/newsmatic-elementor-two.jpg',
         'preview_url' => 'https://preview.blazethemes.com/newsmatic-elementor-three/',
         'menu_array' => array(
+            'menu-2'    =>  'Header-menu-one',
+            'menu-3'    =>  'Footer-menu'
         ),
         'home_slug' => 'newsmatic-elementor-three-home',
         'blog_slug' => '',
@@ -194,6 +238,11 @@ $demos_array = array(
                 'name' => 'News Kit Elementor Addons',
                 'source' => 'wordpress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
+            ),
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
         'pagebuilder' => array(
@@ -215,11 +264,31 @@ $demos_array = array(
             'menu-2' => 'Header',
             'menu-3' => 'Bottom Footer'
         ),
-        'home_slug' => '',
+        'home_slug' => 'home',
         'blog_slug' => '',
-        'plugins' => array(),
+        'plugins' => [
+            'elementor' => array(
+                'name' => 'Elementor',
+                'source' => 'wordpress',
+                'file_path' => 'elementor/elementor.php'
+            ),
+            'news-kit-elementor-addons' => array(
+                'name' => 'News Kit Elementor Addons',
+                'source' => 'wordpress',
+                'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
+            ),
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
+            )
+        ],
+        'pagebuilder' => array(
+            'elementor' => 'Elementor'
+        ),
         'tags' => array(
-            'free' => 'Free'
+            'free' => 'Free',
+            'elementor' => 'Elementor',
         )
     ),
     'newsmatic-three' => array(
@@ -233,7 +302,13 @@ $demos_array = array(
         ),
         'home_slug' => '',
         'blog_slug' => '',
-        'plugins' => array(),
+        'plugins' => array(
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
+            )
+        ),
         'tags' => array(
             'free' => 'Free'
         )
@@ -251,7 +326,13 @@ $demos_array = array(
         ),
         'home_slug' => '',
         'blog_slug' => '',
-        'plugins' => array(),
+        'plugins' => array(
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
+            )
+        ),
         'tags' => array(
             'free' => 'Free'
         )
@@ -352,10 +433,10 @@ $demos_array = array(
         'home_slug' => '',
         'blog_slug' => '',
         'plugins' => array(
-            'email-subscribers' => array(
-                'name' => 'Email Subscribers',
+            'mailpoet' => array(
+                'name' => 'MailPoet',
                 'source' => 'wordpress',
-                'file_path' => 'email-subscribers/email-subscribers.php'
+                'file_path' => 'mailpoet/mailpoet.php'
             ),
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
@@ -374,7 +455,9 @@ $demos_array = array(
         'external_url' => 'https://preview.blazethemes.com/import-files/newsmatic/newsmatic-elementor-pro-one.zip',
         'image' => 'https://blazethemes.com/wp-content/uploads/2024/06/newsmatic-elementor-one-1.jpg',
         'preview_url' => 'https://preview.blazethemes.com/newsmatic-elementor-pro-one/',
-        'menu_array' => array(),
+        'menu_array' => array(
+            'menu-2'    =>  'Main Header',
+        ),
         'home_slug' => 'newsmatic-elementor-pro-home-one',
         'blog_slug' => '',
         'plugins' => array(
@@ -405,7 +488,10 @@ $demos_array = array(
         'external_url' => 'https://preview.blazethemes.com/import-files/newsmatic/newsmatic-elementor-pro-two.zip',
         'image' => 'https://blazethemes.com/wp-content/uploads/2024/06/newsmatic-elementor-two.jpg',
         'preview_url' => 'https://preview.blazethemes.com/newsmatic-elementor-pro-two/',
-        'menu_array' => array(),
+        'menu_array' => array(
+            'menu-1'    =>  'Top Header Menu',
+            'menu-2'    =>  'Main Menu',
+        ),
         'home_slug' => 'newsmatic-elementor-pro-home-two',
         'blog_slug' => '',
         'plugins' => array(
@@ -449,6 +535,11 @@ $demos_array = array(
                 'name' => 'News Kit Elementor Addons',
                 'source' => 'wordpress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
+            ),
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
         'pagebuilder' => array(
@@ -473,16 +564,7 @@ $demos_array = array(
         ),
         'home_slug' => '',
         'blog_slug' => '',
-        'plugins' => array(
-            'email-subscribers' => array(
-                'name' => 'Email Subscribers',
-                'source' => 'wordpress',
-                'file_path' => 'email-subscribers/email-subscribers.php'
-            )
-        ),
-        'pagebuilder' => array(
-            'elementor' => 'Elementor'
-        ),
+        'plugins' => [],
         'tags' => array(
             'pro' => 'Pro'
         )
@@ -547,13 +629,7 @@ $demos_array = array(
         ),
         'home_slug' => '',
         'blog_slug' => '',
-        'plugins' => array(
-            'contact-form-7' => array(
-                'name' => 'Contact Form 7',
-                'source' => 'wordpress',
-                'file_path' => 'contact-form-7/contact-form-7.php'
-            )
-        ),
+        'plugins' => array(),
         'tags' => array(
             'pro' => 'Pro'
         )
@@ -596,7 +672,7 @@ $demos_array = array(
         'preview_url' => 'https://preview.blazethemes.com/newsmatic-pro-five/',
         'menu_array' => array(
             'menu-2' => 'Header Menu',
-            'menu-3' => 'Bottom Menu'
+            'menu-3' => 'Bottom Footer'
         ),
         'home_slug' => '',
         'blog_slug' => '',
@@ -666,13 +742,7 @@ $demos_array = array(
         ),
         'home_slug' => '',
         'blog_slug' => '',
-        'plugins' => array(
-            'contact-form-7' => array(
-                'name' => 'Contact Form 7',
-                'source' => 'wordpress',
-                'file_path' => 'contact-form-7/contact-form-7.php'
-            )
-        ),
+        'plugins' => array(),
         'tags' => array(
             'pro' => 'Pro'
         )
@@ -686,7 +756,7 @@ $demos_array = array(
         'preview_url' => 'https://preview.blazethemes.com/newsmatic-pro-nine/',
         'menu_array' => array(
             'menu-2' => 'Header Menu',
-            'menu-3' => 'Footer Menu'
+            'menu-3' => 'Bottom Footer Menu'
         ),
         'home_slug' => '',
         'blog_slug' => '',
@@ -706,14 +776,27 @@ $demos_array = array(
             'menu-2' => 'Header Menu',
             'menu-3' => 'Footer Menu'
         ),
-        'home_slug' => '',
+        'home_slug' => 'home',
         'blog_slug' => '',
         'plugins' => array(
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
                 'source' => 'wordpress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
-            )
+            ),
+            'elementor' => array(
+                'name' => 'Elementor',
+                'source' => 'wordpress',
+                'file_path' => 'elementor/elementor.php'
+            ),
+            'news-kit-elementor-addons' => array(
+                'name' => 'News Kit Elementor Addons',
+                'source' => 'wordpress',
+                'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
+            ),
+        ),
+        'pagebuilder' => array(
+            'elementor' => 'Elementor'
         ),
         'tags' => array(
             'pro' => 'Pro'
@@ -726,7 +809,11 @@ $demos_array = array(
         'external_url' => 'https://preview.blazethemes.com/import-files/newsmatic/newsmatic-pro-eleven.zip',
         'image' => 'https://blazethemes.com/wp-content/uploads/2023/01/newsmatic-pro-eleven.jpg',
         'preview_url' => 'https://preview.blazethemes.com/newsmatic-pro-eleven/',
-        'menu_array' => array(),
+        'menu_array' => array(
+            'menu-1'    =>  'canvas-Menu',
+            'menu-2'    =>  'Header Menu',
+            'menu-3'    =>  'Footer Menu',
+        ),
         'home_slug' => 'nekit-home',
         'blog_slug' => '',
         'plugins' => array(
@@ -739,6 +826,11 @@ $demos_array = array(
                 'name' => 'News Kit Elementor Addons',
                 'source' => 'wordpress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
+            ),
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
         'pagebuilder' => array(
@@ -789,13 +881,7 @@ $demos_array = array(
         ),
         'home_slug' => '',
         'blog_slug' => '',
-        'plugins' => array(
-            'contact-form-7' => array(
-                'name' => 'Contact Form 7',
-                'source' => 'wordpress',
-                'file_path' => 'contact-form-7/contact-form-7.php'
-            )
-        ),
+        'plugins' => array(),
         'tags' => array(
             'pro' => 'Pro'
         )
@@ -830,10 +916,38 @@ $demos_array = array(
         ),
         'home_slug' => '',
         'blog_slug' => '',
-        'plugins' => array(),
+        'plugins' => array(
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
+            )
+        ),
         'tags' => array(
             'pro' => 'Pro'
         )
-    )
+    ),
+    'newsmatic-eleven' => array(
+        'name' => 'Tech News',
+        'type' => 'free',
+        'external_url' => 'https://preview.blazethemes.com/import-files/newsmatic/newsmatic-eleven.zip',
+        'image' => 'https://blazethemes.com/wp-content/uploads/2024/03/free-eleven.jpg',
+        'preview_url' => 'https://preview.blazethemes.com/newsmatic-eleven/',
+        'menu_array' => array(
+            'menu-2' => 'header menu'
+        ),
+        'home_slug' => '',
+        'blog_slug' => '',
+        'plugins' => array(
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
+            )
+        ),
+        'tags' => array(
+            'free' => 'free'
+        )
+    ),
 );
 return apply_filters( 'newsmatic__demos_array_filter', $demos_array );

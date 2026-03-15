@@ -304,13 +304,13 @@
             public function get_ordinals( $number ) {
                 switch( $number ) :
                     case 1:
-                        return esc_html__( 'first', 'newsmatic' );
+                        return 'first';
                         break;
                     case 2:
-                        return esc_html__( 'second', 'newsmatic' );
+                        return 'second';
                         break;
                     case 3:
-                        return esc_html__( 'third', 'newsmatic' );
+                        return 'third';
                         break;
                 endswitch;
             }
