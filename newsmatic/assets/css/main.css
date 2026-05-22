@@ -2994,7 +2994,8 @@
 	.newsmatic_site_block_border_top .comments-area:before,
 	.newsmatic_site_block_border_top .single-related-posts-section:before,
 	.archive.author.newsmatic_site_block_border_top .newsmatic-container.newsmatic-author-section .row:before,
-	.newsmatic_site_block_border_top .sidebar-toggle .widget:before {
+	.newsmatic_site_block_border_top .sidebar-toggle .widget:before,
+	.single.woocommerce .content-area:before {
 	    content: '';
 	    height: var(--theme-block-top-border-height);
 	    background: var(--theme-block-top-border-color);
@@ -4921,7 +4922,8 @@
 		flex: 0 1 30%;
 	}
 
-	.single .post-inner {
+	.single .post-inner,
+	.single.woocommerce .content-area {
 		padding: 20px;
 		background: var(--single-content-bk-color);
 	}
@@ -7305,14 +7307,16 @@ body .newsmatic-category-no-bk .post-categories .cat-item {
 		.ticker-news-wrap,
 		.single-related-posts-section,
 		.archive.author .newsmatic-container.newsmatic-author-section .row,
-		.sidebar-toggle .widget {
+		.sidebar-toggle .widget,
+		.single.woocommerce .content-area {
 			box-shadow: var(--horizontal-shadow-offset) var(--vertical-shadow-offset) var(--blur-radius) var(--spread-radus) var(--shadow-color);
 			-webkit-box-shadow: var(--horizontal-shadow-offset) var(--vertical-shadow-offset) var(--blur-radius) var(--spread-radus) var(--shadow-color);
 			-moz-box-shadow: var(--horizontal-shadow-offset) var(--vertical-shadow-offset) var(--blur-radius) var(--spread-radus) var(--shadow-color);
 		}
 
 		.single.single-post #theme-content .primary-content,
-		.widget.widget_newsmatic_widget_title_widget {
+		.widget.widget_newsmatic_widget_title_widget,
+		.single.woocommerce #theme-content .primary-content {
 			box-shadow: none;
 		}
 

@@ -159,14 +159,12 @@
 		});
 	}
 	dropdownMenuMobileHandle();
-			console.log('addEventListener');
 
 	/* Responsive builder menu focus trap */
 	const builderToggleButton = document.querySelector( '.bb-bldr--responsive .toggle-button-wrapper' )
 	const builderNavigationElement = document.querySelector( '.bb-bldr--responsive #site-navigation' )
 	if( builderToggleButton ) {
 		builderToggleButton.addEventListener( 'click', function() {
-			console.log('addEventListener');
 			
 			builderNavigationElement.classList.toggle( 'toggled' );
 	

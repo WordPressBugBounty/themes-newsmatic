@@ -68,6 +68,9 @@ URL: http://github.com/kenwheeler/slick
 License: The MIT License
 
 == Changelog ==
+= 1.4.4 - May 22nd, 2026 =
+	* Added - woocommerce compatibility
+
 = 1.4.3 - March 13th, 2026 =
 	* Updated - demos file updated
 

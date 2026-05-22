@@ -48,7 +48,7 @@
 			margin-bottom: 20px;
 		}
 
-		body #theme-content .row .secondary-sidebar {
+		body #theme-content .site-main .row .secondary-sidebar {
 			order: 3;
 			margin: 0;
 		}
@@ -156,6 +156,11 @@
 			flex-direction: row;
 		}
 
+		body.right-sidebar #theme-content .row .primary-content,
+		body.left-sidebar #theme-content .row .primary-content {
+			max-width: 100%;
+		}
+
 	}
 
 /** 940 tab**/
@@ -180,11 +185,6 @@
 		}
 
 		body.both-sidebar #theme-content .row .primary-content {
-			max-width: 100%;
-		}
-
-		body.right-sidebar #theme-content .row .primary-content,
-		body.left-sidebar #theme-content .row .primary-content{
 			max-width: 100%;
 		}
 

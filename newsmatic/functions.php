@@ -115,6 +115,9 @@ function newsmatic_setup() {
 			'flex-height' => true,
 		)
 	);
+
+	// for woocommerce support
+	add_theme_support( 'woocommerce' );
 }
 add_action( 'after_setup_theme', 'newsmatic_setup' );
 
@@ -262,3 +265,10 @@ add_filter( 'sanitize_title', function( $title, $raw_title, $context ) {
     return $title;
 
 }, 10, 3 );
+
+/**
+ * Check if woocommerce is activated.
+ * 
+ * @since 1.4.4
+ */
+if( class_exists( 'WooCommerce' ) ) require_once get_template_directory() . '/inc/compat/woocommerce.php';
