@@ -10,6 +10,43 @@ jQuery(document).ready(function($) {
     const wpadminbar = $( 'body #wpadminbar' ).height(),
         isLoggedIn = $( 'body' ).hasClass( 'admin-bar' )
     
+    /**
+     * Nonce manager
+     * to prevent nonce from going state when a cache plugin is used
+     * that caches the site and when an ajax call is triggered nonce has
+     * already expired causing 403(forbidden) when ajax is called.
+     * 
+     * @since 1.4.5
+     */
+    const NonceManager = {
+        /**
+         * Current nonce
+         * 
+         * @since 1.4.5
+         */
+        nonce: null,
+        /**
+         * Get a fresh new nonce
+         * 
+         * @since 1.4.5
+         */
+        getNonce: function() {
+            let self = this
+            return new Promise( resolve => {
+                if( self.nonce ) {
+                    resolve( self.nonce )
+                    return
+                }
+                $.post( ajaxUrl, { action: 'newsmatic_get_nonce' }, function( res ) {
+                    if( res.success ) {
+                        self.nonce = res.data.nonce
+                        resolve( self.nonce )
+                    }
+                })
+            })
+        }
+    }
+
     setTimeout(function() {
         $('body .newsmatic_loading_box').hide();
     }, 3000);
@@ -86,27 +123,29 @@ jQuery(document).ready(function($) {
             searchContainer.on( 'change, keyup', 'input[type="search"]', function() {
                 var searchKey = $(this).val()
                 if(searchKey) {
-                    $.ajax({
-                        method: 'post',
-                        url: ajaxUrl,
-                        data: {
-                            action: 'newsmatic_search_posts_content',
-                            search_key : searchKey.trim(),
-                            _wpnonce: _wpnonce
-                        },
-                        beforeSend: function() {
-                            searchFormContainer.addClass( 'retrieving-posts' );
-                            searchFormContainer.removeClass( 'results-loaded' )
-                        },
-                        success : function(res) {
-                            var parsedRes = JSON.parse(res)
-                                searchContainer.find(".search-results-wrap").remove()
-                                searchFormContainer.after(parsedRes.posts)
-                                searchFormContainer.removeClass( 'retrieving-posts' ).addClass( 'results-loaded' );
-                        },
-                        complete: function() {
-                            // render search content here
-                        }
+                    NonceManager.getNonce().then(function( nonce ){
+                        $.ajax({
+                            method: 'post',
+                            url: ajaxUrl,
+                            data: {
+                                action: 'newsmatic_search_posts_content',
+                                search_key : searchKey.trim(),
+                                _wpnonce: nonce
+                            },
+                            beforeSend: function() {
+                                searchFormContainer.addClass( 'retrieving-posts' );
+                                searchFormContainer.removeClass( 'results-loaded' )
+                            },
+                            success : function(res) {
+                                var parsedRes = JSON.parse(res)
+                                    searchContainer.find(".search-results-wrap").remove()
+                                    searchFormContainer.after(parsedRes.posts)
+                                    searchFormContainer.removeClass( 'retrieving-posts' ).addClass( 'results-loaded' );
+                            },
+                            complete: function() {
+                                // render search content here
+                            }
+                        })
                     })
                 } else {
                     searchContainer.find(".search-results-wrap").remove()
@@ -212,27 +251,29 @@ jQuery(document).ready(function($) {
           a.addClass( "isActive" ).siblings().removeClass( "isActive" );
           if( newTabsContent.find( ".tab-content.content-" + aT ).length < 1 ) {
             $scopeOptions.category_name = aT
-            $.ajax({
-                method: 'get',
-                url: ajaxUrl,
-                data: {
-                    action: 'newsmatic_filter_posts_load_tab_content',
-                    options : JSON.stringify( $scopeOptions ),
-                    _wpnonce: _wpnonce
-                },
-                beforeSend: function() {
-                    $scope.addClass( 'retrieving-posts' );
-                },
-                success : function(res) {
-                    var parsedRes = JSON.parse(res)
-                    if( parsedRes.loaded ) {
-                        newTabsContent.append(parsedRes.posts)
-                        $scope.removeClass( 'retrieving-posts' );
+            NonceManager.getNonce().then(function( nonce ){
+                $.ajax({
+                    method: 'get',
+                    url: ajaxUrl,
+                    data: {
+                        action: 'newsmatic_filter_posts_load_tab_content',
+                        options : JSON.stringify( $scopeOptions ),
+                        _wpnonce: nonce
+                    },
+                    beforeSend: function() {
+                        $scope.addClass( 'retrieving-posts' );
+                    },
+                    success : function(res) {
+                        var parsedRes = JSON.parse(res)
+                        if( parsedRes.loaded ) {
+                            newTabsContent.append(parsedRes.posts)
+                            $scope.removeClass( 'retrieving-posts' );
+                        }
+                    },
+                    complete: function() {
+                        newTabsContent.find( ".tab-content.content-" + aT ).show().siblings().hide()
                     }
-                },
-                complete: function() {
-                    newTabsContent.find( ".tab-content.content-" + aT ).show().siblings().hide()
-                }
+                })
             })
           } else {
             newTabsContent.find( ".tab-content.content-" + aT ).show().siblings().hide()

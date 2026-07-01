@@ -987,3 +987,18 @@ if( ! function_exists( 'newsmatic_get_footer_builder_layouts' ) ) :
 		];
 	}
 endif;
+
+if( ! function_exists( 'newsmatic_get_nonce' ) ) {
+ 	/**
+	 * Get nonce 
+	 * 
+	 * @since 1.4.5
+	 */
+	function newsmatic_get_nonce() {
+		wp_send_json_success([
+			'nonce' => wp_create_nonce( 'newsmatic-nonce' )
+		]);
+	}
+	add_action( 'wp_ajax_newsmatic_get_nonce', 'newsmatic_get_nonce');
+	add_action( 'wp_ajax_nopriv_newsmatic_get_nonce', 'newsmatic_get_nonce' );
+ }

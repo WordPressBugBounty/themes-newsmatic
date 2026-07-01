@@ -34,6 +34,44 @@ $demos_array = array(
             'free' => 'Free'
         )
     ),
+    'free-three' => array(
+        'name' => 'Movy News',
+        'type' => 'free',
+        'external_url' => 'https://prev.blazethemes.com/demo-data/news-kit-elementor-addons/sites/free-three.zip',
+        'image' => 'https://blazethemes.com/wp-content/uploads/2024/05/nekit-demo-free-three-home.jpg',
+        'preview_url' => 'https://prev.blazethemes.com/news-elementor-free-three',
+        'menu_array' => array(
+            'menu-2'    =>  'Header Menu'
+        ),
+        'home_slug' => 'nekit-free-three-home',
+        'blog_slug' => '',
+        'plugins' => array(
+            'elementor' => array(
+                'name' => 'Elementor',
+                'source' => 'wordpress',
+                'file_path' => 'elementor/elementor.php'
+            ),
+            'news-kit-elementor-addons' => array(
+                'name' => 'News Kit Elementor Addons',
+                'source' => 'wordpress',
+                'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
+            ),
+            'contact-form-7' => array(
+                'name' => 'Contact Form 7',
+                'source' => 'wordpress',
+                'file_path' => 'contact-form-7/contact-form-7.php'
+            )
+        ),
+        'pagebuilder' => array(
+            'elementor' => 'Elementor'
+        ),
+        'tags' => array(
+            'free' => 'Free',
+            'new' => 'New',
+            'elementor' => 'Elementor'
+        )
+    ),
+
     'newsmatic-ten' => array(
         'name' => 'News Ai',
         'type' => 'free',

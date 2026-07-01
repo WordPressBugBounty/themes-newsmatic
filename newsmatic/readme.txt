@@ -68,6 +68,9 @@ URL: http://github.com/kenwheeler/slick
 License: The MIT License
 
 == Changelog ==
+= 1.4.5 -June 30th, 2026 =
+	* Fixed - Ajax load issue in filter layout
+
 = 1.4.4 - May 22nd, 2026 =
 	* Added - woocommerce compatibility
 
