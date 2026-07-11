@@ -68,6 +68,9 @@ URL: http://github.com/kenwheeler/slick
 License: The MIT License
 
 == Changelog ==
+= 1.4.5 -July 10th, 2026 =
+	* Fixed - Header layout row three issue fixed
+
 = 1.4.5 -June 30th, 2026 =
 	* Fixed - Ajax load issue in filter layout
 

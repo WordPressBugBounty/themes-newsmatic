@@ -76,8 +76,11 @@ body:not(.home) .site-header {
         grid-template-columns: 25fr 50fr 25fr;
     }
 
-    .site-footer .bb-bldr-row.column-3.layout-two,
     .site-header .bb-bldr-row.column-3.layout-three {
+        grid-template-columns: 10fr 80fr 10fr;
+    }
+
+    .site-footer .bb-bldr-row.column-3.layout-two {
         grid-template-columns: 15fr 70fr 15fr;
     }
 
@@ -165,7 +168,10 @@ body:not(.home) .site-header {
         grid-template-columns: 25fr 50fr 25fr;
     }
 
-    .bb-bldr--responsive .bb-bldr-row.column-3.tablet-layout-three,
+    .bb-bldr--responsive .bb-bldr-row.column-3.tablet-layout-three {
+        grid-template-columns: 10fr 80fr 10fr;
+    }
+
     footer .bb-bldr-row.column-3.tablet-layout-two {
         grid-template-columns: 15fr 70fr 15fr;
     }
@@ -220,8 +226,11 @@ body:not(.home) .site-header {
         grid-template-columns: 25fr 50fr 25fr;
     }
 
-    .bb-bldr--responsive .bb-bldr-row.column-3.tablet-layout-three,
-    footer .bb-bldr-row.column-3.tablet-layout-two {
+    .bb-bldr--responsive .bb-bldr-row.column-3.smartphone-layout-three {
+        grid-template-columns: 10fr 80fr 10fr;
+    }
+
+    footer .bb-bldr-row.column-3.smartphone-layout-two {
         grid-template-columns: 15fr 70fr 15fr;
     }
 
