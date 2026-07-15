@@ -22,9 +22,14 @@ if( !function_exists( 'newsmatic_advertisement_block_html' ) ) :
                 if( $echo ) {
                     if( isset( $options->title ) && $options->title ) echo '<h2 class="newsmatic-block-title">' .esc_html( $options->title ). '</h2>';
                     if( $media->media_id != 0 ) {
+                        $title = get_the_title( $media->media_id );
                     ?>
                         <figure class="inner-ad-block">
-                            <a href="<?php echo esc_url( $options->url ); ?>" target="<?php echo esc_attr( $options->targetAttr ); ?>" rel="<?php echo esc_attr( $options->relAttr ); ?>"><img src="<?php echo esc_url( wp_get_attachment_url( $media->media_id ) ); ?>"></a>
+                            <a href="<?php echo esc_url( $options->url ); ?>" target="<?php echo esc_attr( $options->targetAttr ); ?>" rel="<?php echo esc_attr( $options->relAttr ); ?>" aria-label="<?php echo esc_attr( $title ); ?>">
+                                <?php
+                                    echo wp_get_attachment_image( $media->media_id, 'full', false, [ 'alt' => $title ] );
+                                ?>
+                            </a>
                         </figure>
                     <?php
                     }

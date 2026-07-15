@@ -81,7 +81,11 @@ class Newsmatic_Category_Collection_Widget extends WP_Widget {
                                      'compare' => 'EXISTS'
                                     ),
                                 ),
-                                'ignore_sticky_posts'    => true
+                                'ignore_sticky_posts'   =>  true,
+                                'fields'    =>  'ids',
+                                'no_found_rows' =>  true,
+                                'update_post_meta_cache'    =>  false,
+                                'update_post_term_cache'    =>  false,
                             )
                         );
                         $thumbnail_url = '';

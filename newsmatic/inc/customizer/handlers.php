@@ -9,7 +9,7 @@ add_action( 'customize_preview_init', function() {
         get_template_directory_uri() . '/inc/customizer/assets/customizer-preview.min.js',
         ['customize-preview'],
         NEWSMATIC_VERSION,
-        true
+        [ 'strategy' => 'defer', 'in_footer' => true ]
     );
     // newsmatic scripts
 	wp_localize_script( 
@@ -38,14 +38,14 @@ add_action( 'customize_controls_enqueue_scripts', function() {
         get_template_directory_uri() . '/inc/customizer/assets/customizer-controls.min.css', 
         array('wp-components'),
         NEWSMATIC_VERSION,
-        'all'
+        'print'
     );
     wp_enqueue_script( 
         'newsmatic-customizer-control',
         get_template_directory_uri() . '/inc/customizer/assets/customizer-extends.min.js',
         $buildControlsDeps,
         NEWSMATIC_VERSION,
-        true
+        [ 'strategy' => 'defer', 'in_footer' => true ]
     );
     // newsmatic scripts
     wp_localize_script( 
@@ -63,14 +63,14 @@ add_action( 'customize_controls_enqueue_scripts', function() {
         get_template_directory_uri() . '/inc/customizer/assets/builder.css', 
         array('wp-components'),
         NEWSMATIC_VERSION,
-        'all'
+        'print'
     );
     wp_enqueue_script( 
         'newsmatic-customizer-extras',
         get_template_directory_uri() . '/inc/customizer/assets/extras.min.js',
         [],
         NEWSMATIC_VERSION,
-        true
+        [ 'strategy' => 'defer', 'in_footer' => true ]
     );
 
     // trendyize scripts

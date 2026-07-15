@@ -5,6 +5,8 @@
  * @package Newsmatic
  */
 use Newsmatic\CustomizerDefault as ND;
+use Newsmatic\Cache_Manager;
+
 /**
  * Adds custom classes to the array of body classes.
  *
@@ -90,24 +92,24 @@ define( 'NEWSMATIC_INCLUDES_PATH', get_template_directory() . '/inc/' );
 function newsmatic_scripts() {
 	global $wp_query;
 	require_once get_theme_file_path( 'inc/wptt-webfont-loader.php' );
-	wp_enqueue_style( 'fontawesome', get_template_directory_uri() . '/assets/lib/fontawesome/css/all.min.css', array(), '5.15.3', 'all' );
-	wp_enqueue_style( 'fontawesome-6', get_template_directory_uri() . '/assets/lib/fontawesome-6/css/all.min.css', array(), '6.5.1', 'all' );
-	wp_enqueue_style( 'slick', get_template_directory_uri() . '/assets/lib/slick/slick.css', array(), '1.8.1', 'all' );
-	wp_enqueue_style( 'newsmatic-typo-fonts', wptt_get_webfont_url( newsmatic_typo_fonts_url() ), array(), null );
+	wp_enqueue_style( 'fontawesome', get_template_directory_uri() . '/assets/lib/fontawesome/css/all.min.css', array(), '5.15.3', 'print' );
+	wp_enqueue_style( 'fontawesome-6', get_template_directory_uri() . '/assets/lib/fontawesome-6/css/all.min.css', array(), '6.5.1', 'print' );
+	wp_enqueue_style( 'slick', get_template_directory_uri() . '/assets/lib/slick/slick.css', array(), '1.8.1', 'print' );
+	wp_enqueue_style( 'newsmatic-typo-fonts', wptt_get_webfont_url( newsmatic_typo_fonts_url() ), array(), null, 'print' );
 	// enqueue inline style
 	wp_enqueue_style( 'newsmatic-style', get_stylesheet_uri(), array(), NEWSMATIC_VERSION );
 	wp_enqueue_style( 'newsmatic-builder', get_template_directory_uri().'/assets/css/builder.css', array(), NEWSMATIC_VERSION );
-	wp_add_inline_style( 'newsmatic-style', newsmatic_current_styles() );
+	wp_add_inline_style( 'newsmatic-style', Cache_Manager::get_dynamic_css() );
 	wp_enqueue_style( 'newsmatic-main-style', get_template_directory_uri().'/assets/css/main.css', array(), NEWSMATIC_VERSION );
-	wp_enqueue_style( 'newsmatic-loader-style', get_template_directory_uri().'/assets/css/loader.css', array(), NEWSMATIC_VERSION );
+	if( ND\newsmatic_get_customizer_option( 'preloader_option' ) ) wp_enqueue_style( 'newsmatic-loader-style', get_template_directory_uri().'/assets/css/loader.css', array(), NEWSMATIC_VERSION );
 	wp_enqueue_style( 'newsmatic-responsive-style', get_template_directory_uri().'/assets/css/responsive.css', array(), NEWSMATIC_VERSION );
 	wp_style_add_data( 'newsmatic-style', 'rtl', 'replace' );
-	wp_enqueue_script( 'slick', get_template_directory_uri() . '/assets/lib/slick/slick.min.js', array( 'jquery' ), '1.8.1', true );
-	wp_enqueue_script( 'js-marquee', get_template_directory_uri() . '/assets/lib/js-marquee/jquery.marquee.min.js', array( 'jquery' ), '1.6.0', true );
-	wp_enqueue_script( 'newsmatic-navigation', get_template_directory_uri() . '/assets/js/navigation.js', array(), NEWSMATIC_VERSION, true );
+	$js_strategy = [ 'strategy' => 'defer', 'in_footer' => true ];
+	wp_enqueue_script( 'slick', get_template_directory_uri() . '/assets/lib/slick/slick.min.js', array( 'jquery' ), '1.8.1', $js_strategy );
+	wp_enqueue_script( 'js-marquee', get_template_directory_uri() . '/assets/lib/js-marquee/jquery.marquee.min.js', array( 'jquery' ), '1.6.0', $js_strategy );
+	wp_enqueue_script( 'newsmatic-navigation', get_template_directory_uri() . '/assets/js/navigation.js', array(), NEWSMATIC_VERSION, $js_strategy );
 	wp_enqueue_script( 'jquery-cookie', get_template_directory_uri() . '/assets/lib/jquery-cookie/jquery-cookie.js', array( 'jquery' ), '1.4.1', true );
-	wp_enqueue_script( 'newsmatic-theme', get_template_directory_uri() . '/assets/js/theme.js', array( 'jquery' ), NEWSMATIC_VERSION, true );
-	wp_enqueue_script( 'waypoint', get_template_directory_uri() . '/assets/lib/waypoint/jquery.waypoint.min.js', array( 'jquery' ), '4.0.1', true );
+	wp_enqueue_script( 'newsmatic-theme', get_template_directory_uri() . '/assets/js/theme.js', array( 'jquery' ), NEWSMATIC_VERSION, $js_strategy );
 
 	$scriptVars['_wpnonce'] = wp_create_nonce( 'newsmatic-nonce' );
 	$scriptVars['ajaxUrl'] 	= admin_url('admin-ajax.php');
@@ -126,228 +128,6 @@ function newsmatic_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'newsmatic_scripts' );
 
-if( ! function_exists( 'newsmatic_current_styles' ) ) :
-	/**
-	 * Generates the current changes in styling of the theme.
-	 * 
-	 * @package Newsmatic
-	 * @since 1.0.0
-	 */
-	function newsmatic_current_styles() {
-		// enqueue inline style
-		ob_start();
-			// inline style call
-			$nPresetCode = function($var,$id) {
-				newsmatic_assign_preset_var($var,$id);
-			};
-			$nPresetCode( "--newsmatic-global-preset-color-1", "preset_color_1" );
-			$nPresetCode( "--newsmatic-global-preset-color-2", "preset_color_2" );
-			$nPresetCode( "--newsmatic-global-preset-color-3", "preset_color_3" );
-			$nPresetCode( "--newsmatic-global-preset-color-4", "preset_color_4" );
-			$nPresetCode( "--newsmatic-global-preset-color-5", "preset_color_5" );
-			$nPresetCode( "--newsmatic-global-preset-color-6", "preset_color_6" );
-			$nPresetCode( "--newsmatic-global-preset-color-7", "preset_color_7" );
-			$nPresetCode( "--newsmatic-global-preset-color-8", "preset_color_8" );
-			$nPresetCode( "--newsmatic-global-preset-color-9", "preset_color_9" );
-			$nPresetCode( "--newsmatic-global-preset-color-10", "preset_color_10" );
-			$nPresetCode( "--newsmatic-global-preset-color-11", "preset_color_11" );
-			$nPresetCode( "--newsmatic-global-preset-color-12", "preset_color_12" );
-			$nPresetCode( "--newsmatic-global-preset-gradient-color-1", "preset_gradient_1" );
-			$nPresetCode( "--newsmatic-global-preset-gradient-color-2", "preset_gradient_2" );
-			$nPresetCode( "--newsmatic-global-preset-gradient-color-3", "preset_gradient_3" );
-			$nPresetCode( "--newsmatic-global-preset-gradient-color-4", "preset_gradient_4" );
-			$nPresetCode( "--newsmatic-global-preset-gradient-color-5", "preset_gradient_5" );
-			$nPresetCode( "--newsmatic-global-preset-gradient-color-6", "preset_gradient_6" );
-			$nPresetCode( "--newsmatic-global-preset-gradient-color-7", "preset_gradient_7" );
-			$nPresetCode( "--newsmatic-global-preset-gradient-color-8", "preset_gradient_8" );
-			$nPresetCode( "--newsmatic-global-preset-gradient-color-9", "preset_gradient_9" );
-			$nPresetCode( "--newsmatic-global-preset-gradient-color-10", "preset_gradient_10" );
-			$nPresetCode( "--newsmatic-global-preset-gradient-color-11", "preset_gradient_11" );
-			$nPresetCode( "--newsmatic-global-preset-gradient-color-12", "preset_gradient_12" );
-			if( ND\newsmatic_get_customizer_option('website_block_border_top_option') ) :
-				newsmatic_assign_var( "--theme-block-top-border-color", "website_block_border_top_color" );
-			endif;
-			$nBackgroundCode = function($identifier,$id) {
-				newsmatic_get_background_style($identifier,$id);
-			};
-			$nBackgroundCode('.newsmatic_font_typography .header-custom-button','header_custom_button_background_color_group');
-			$nBackgroundCode('.newsmatic_font_typography .header-custom-button:hover','header_custom_button_background_hover_color_group');
-			$nSpacingCode = function($identifier,$id, $property = 'padding') {
-				newsmatic_get_responsive_spacing_style($identifier,$id, $property);
-			};
-			$nTypoCode = function($identifier,$id) {
-				newsmatic_get_typo_style($identifier,$id);
-			};
-			$nTypoCode( "--site-title", 'site_title_typo' );
-			$nTypoCode( "--site-tagline", 'site_tagline_typo' );
-			newsmatic_site_logo_width_fnc("body .site-branding img.custom-logo", 'newsmatic_site_logo_width');
-			newsmatic_site_logo_width_fnc("body .site-footer .footer-site-logo img", 'bottom_footer_logo_width');
-			$nColorGroupCode = function($identifier,$id,$property='color') {
-				newsmatic_color_options_one($identifier,$id,$property);
-			};
-			$nColorCode = function($identifier,$id) {
-				newsmatic_text_color_var($identifier,$id);
-			};
-			$nColorCode('--menu-color','header_menu_color');
-			$nColorCode('--sidebar-toggle-color','header_sidebar_toggle_color');
-			$nColorCode('--search-color','header_search_icon_color');
-			newsmatic_get_background_style_var('--site-bk-color', 'site_background_color');
-			$nColorCode('--move-to-top-background-color','stt_background_color_group');
-			$nColorCode('--move-to-top-color','stt_color_group');
-			newsmatic_visibility_options('.ads-banner','header_ads_banner_responsive_option');
-			newsmatic_visibility_options('body #newsmatic-scroll-to-top.show','stt_responsive_option');
-			newsmatic_border_option('body .site-footer .row-one.full-width, body .site-footer .row-one .full-width','footer_top_border', 'border-top');
-			$nColorCode('--custom-btn-color','header_custom_button_color_group');
-			$nColorCode('--mode-toggle-color','light_mode_color');
-			$nColorCode('--mode-toggle-color-dark','dark_mode_color');
-			newsmatic_theme_color('--theme-color-red','theme_color');
-			$nColorCode('--footer-social-color','footer_social_icons_color');
-			newsmatic_box_shadow_styles( 'header_builder_box_shadow', 'body .site .site-header' );
-			newsmatic_category_colors_styles();
-			
-			// banner image border radius setting styles
-			$banner_slider_image_border_radius = ND\newsmatic_get_customizer_option( 'banner_slider_image_border_radius' );
-			$banner_slider_block_posts_image_border_radius = ND\newsmatic_get_customizer_option( 'banner_slider_block_posts_image_border_radius' );
-			if ( $banner_slider_image_border_radius) {
-				echo " #main-banner-section .main-banner-slider figure.post-thumb { border-radius: " . $banner_slider_image_border_radius['desktop'] . "px; } #main-banner-section .main-banner-slider .post-element{ border-radius: " . $banner_slider_image_border_radius['desktop'] . "px;}\n";
-				echo " @media (max-width: 769px){ #main-banner-section .main-banner-slider figure.post-thumb { border-radius: " . $banner_slider_image_border_radius['tablet']. "px; } #main-banner-section .main-banner-slider .post-element { border-radius: " . $banner_slider_image_border_radius['desktop'] . "px; } }\n";
-				echo " @media (max-width: 548px){ #main-banner-section .main-banner-slider figure.post-thumb  { border-radius: " . $banner_slider_image_border_radius['smartphone']. "px; } #main-banner-section .main-banner-slider .post-element { border-radius: " . $banner_slider_image_border_radius['desktop'] . "px; } }\n";
-			}
-
-			if ( $banner_slider_block_posts_image_border_radius) {
-				echo " #main-banner-section .main-banner-trailing-posts figure.post-thumb, #main-banner-section .banner-trailing-posts figure.post-thumb { border-radius: " . $banner_slider_block_posts_image_border_radius['desktop'] . "px } #main-banner-section .banner-trailing-posts .post-element { border-radius: " . $banner_slider_block_posts_image_border_radius['desktop'] . "px;}\n";
-
-				echo " @media (max-width: 769px){ #main-banner-section .main-banner-trailing-posts figure.post-thumb,
-				#main-banner-section .banner-trailing-posts figure.post-thumb { border-radius: " . $banner_slider_block_posts_image_border_radius['tablet']. "px } #main-banner-section .banner-trailing-posts .post-element { border-radius: " . $banner_slider_block_posts_image_border_radius['tablet'] . "px;} }\n";
-
-				echo " @media (max-width: 548px){ #main-banner-section .main-banner-trailing-posts figure.post-thumb,
-				#main-banner-section .banner-trailing-posts figure.post-thumb  { border-radius: " . $banner_slider_block_posts_image_border_radius['smartphone']. "px  } #main-banner-section .banner-trailing-posts .post-element { border-radius: " . $banner_slider_block_posts_image_border_radius['smartphone'] . "px;} }\n";
-			}
-
-			// archive page image setting styles
-			$archive_page_image_ratio = ND\newsmatic_get_customizer_option( 'archive_page_image_ratio' );
-			$archive_page_image_border_radius = ND\newsmatic_get_customizer_option( 'archive_page_image_border_radius' );
-			if ( $archive_page_image_ratio) {
-				echo " main.site-main .primary-content article figure.post-thumb-wrap { padding-bottom: calc( " . $archive_page_image_ratio['desktop']. " * 100% ) }\n";
-				echo " @media (max-width: 769px){ main.site-main .primary-content article figure.post-thumb-wrap { padding-bottom: calc( " . $archive_page_image_ratio['tablet']. " * 100% ) } }\n";
-				echo " @media (max-width: 548px){ main.site-main .primary-content article figure.post-thumb-wrap { padding-bottom: calc( " . $archive_page_image_ratio['smartphone']. " * 100% ) } }\n";
-			}
-			if ( $archive_page_image_border_radius) {
-				echo " main.site-main .primary-content article figure.post-thumb-wrap { border-radius: " . $archive_page_image_border_radius['desktop'] . "px}\n";
-				echo " @media (max-width: 769px){ main.site-main .primary-content article figure.post-thumb-wrap { border-radius: " . $archive_page_image_border_radius['tablet']. "px } }\n";
-				echo " @media (max-width: 548px){ main.site-main .primary-content article figure.post-thumb-wrap { border-radius: " . $archive_page_image_border_radius['smartphone']. "px  } }\n";
-			}
-
-			// front sections image settings styles
-			$full_width_blocks = ND\newsmatic_get_customizer_option( 'full_width_blocks' );
-			$full_width_blocks = json_decode( $full_width_blocks );
-			foreach( $full_width_blocks as $block ) : 
-				if( $block->option && isset( $block->uniqueId ) ) {
-					if( isset( $block->imageRatio ) ) {
-						echo "#block--" . $block->uniqueId . " article figure.post-thumb-wrap { padding-bottom: calc( " . $block->imageRatio->desktop . " * 100% ) }\n";
-						echo " @media (max-width: 769px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { padding-bottom: calc( " . $block->imageRatio->tablet . " * 100% ) } }\n";
-						echo " @media (max-width: 548px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { padding-bottom: calc( " . $block->imageRatio->smartphone . " * 100% ) }}\n";
-					}
-					if( isset( $block->imageRadius ) ) {
-						echo "#block--" . $block->uniqueId . " article figure.post-thumb-wrap { border-radius: " . $block->imageRadius->desktop . "px }\n";
-						echo " @media (max-width: 769px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { border-radius: " . $block->imageRadius->tablet . "px } }\n";
-						echo " @media (max-width: 548px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { border-radius: " . $block->imageRadius->smartphone . "px } }\n";
-
-					}
-				}
-			endforeach;
-			
-			$leftc_rights_blocks = ND\newsmatic_get_customizer_option( 'leftc_rights_blocks' );
-			$leftc_rights_blocks = json_decode( $leftc_rights_blocks );
-			foreach( $leftc_rights_blocks as $block ) : 
-				if( $block->option && isset( $block->uniqueId ) ) {
-					if( isset( $block->imageRatio ) ) {
-						echo "#block--" . $block->uniqueId . " article figure.post-thumb-wrap { padding-bottom: calc( " . $block->imageRatio->desktop . " * 100% ) }\n";
-						echo " @media (max-width: 769px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { padding-bottom: calc( " . $block->imageRatio->tablet . " * 100% ) } }\n";
-						echo " @media (max-width: 548px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { padding-bottom: calc( " . $block->imageRatio->smartphone . " * 100% ) }}\n";
-					}
-					if( isset( $block->imageRadius ) ) {
-						echo "#block--" . $block->uniqueId . " article figure.post-thumb-wrap { border-radius: " . $block->imageRadius->desktop . "px }\n";
-						echo " @media (max-width: 769px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { border-radius: " . $block->imageRadius->tablet . "px } }\n";
-						echo " @media (max-width: 548px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { border-radius: " . $block->imageRadius->smartphone . "px } }\n";
-					}
-				}
-			endforeach;
-
-			$lefts_rightc_blocks = ND\newsmatic_get_customizer_option( 'lefts_rightc_blocks' );
-			$lefts_rightc_blocks = json_decode( $lefts_rightc_blocks );
-			foreach( $lefts_rightc_blocks as $block ) : 
-				if( $block->option && isset( $block->uniqueId ) ) {
-					if( isset( $block->imageRatio ) ) {
-						echo "#block--" . $block->uniqueId . " article figure.post-thumb-wrap { padding-bottom: calc( " . $block->imageRatio->desktop . " * 100% ) }\n";
-						echo " @media (max-width: 769px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { padding-bottom: calc( " . $block->imageRatio->tablet . " * 100% ) } }\n";
-						echo " @media (max-width: 548px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { padding-bottom: calc( " . $block->imageRatio->smartphone . " * 100% ) }}\n";
-					}
-					if( isset( $block->imageRadius ) ) {
-						echo "#block--" . $block->uniqueId . " article figure.post-thumb-wrap { border-radius: " . $block->imageRadius->desktop . "px }\n";
-
-						echo " @media (max-width: 769px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { border-radius: " . $block->imageRadius->tablet . "px } }\n";
-
-						echo " @media (max-width: 548px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { border-radius: " . $block->imageRadius->smartphone . "px } }\n";
-						
-					}
-				}
-			endforeach;
-
-			$bottom_full_width_blocks = ND\newsmatic_get_customizer_option( 'bottom_full_width_blocks' );
-			$bottom_full_width_blocks = json_decode( $bottom_full_width_blocks );
-			foreach( $bottom_full_width_blocks as $block ) : 
-				if( $block->option && isset( $block->uniqueId ) ) {
-					if( isset( $block->imageRatio ) ) {
-						echo "#block--" . $block->uniqueId . " article figure.post-thumb-wrap { padding-bottom: calc( " . $block->imageRatio->desktop . " * 100% ) }\n";
-						echo " @media (max-width: 769px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { padding-bottom: calc( " . $block->imageRatio->tablet . " * 100% ) } }\n";
-						echo " @media (max-width: 548px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { padding-bottom: calc( " . $block->imageRatio->smartphone . " * 100% ) }}\n";
-					}
-					if( isset( $block->imageRadius ) ) {
-						echo "#block--" . $block->uniqueId . " article figure.post-thumb-wrap { border-radius: " . $block->imageRadius->desktop . "px }\n";
-						echo " @media (max-width: 769px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { border-radius: " . $block->imageRadius->tablet . "px } }\n";
-						echo " @media (max-width: 548px){ #block--" . $block->uniqueId . " article figure.post-thumb-wrap { border-radius: " . $block->imageRadius->smartphone . "px } }\n";
-					}
-				}
-			endforeach;
-
-			$nBackgroundCode('.newsmatic_main_body .site-header .row-one.full-width, .newsmatic_main_body .site-header .row-one .full-width', 'top_header_background_color_group');
-			$nBackgroundCode('.newsmatic_main_body .site-header .row-two.full-width, .newsmatic_main_body .site-header .row-two .full-width','header_background_color_group');
-			$nBackgroundCode('.newsmatic_main_body .site-header .row-three.full-width, .newsmatic_main_body .site-header .row-three .full-width','header_menu_background_color_group');
-
-			$nBackgroundCode('body.newsmatic_main_body .site-footer .row-one.full-width, body.newsmatic_main_body .site-footer .row-one .full-width','footer_background_color_group');
-			$nBackgroundCode('body.newsmatic_main_body .site-footer .row-two.full-width, body.newsmatic_main_body .site-footer .row-two .full-width','bottom_footer_background_color_group');
-			$nBackgroundCode('body.newsmatic_main_body .site-footer .row-three.full-width, body.newsmatic_main_body .site-footer .row-three .full-width','footer_third_row_background');
-
-			newsmatic_border_option('body .site-header.layout--default','header_builder_border', 'border');
-			newsmatic_border_option('body .site-header .row-one.full-width, body .site-header .row-one .full-width','top_header_bottom_border', 'border-bottom');
-			newsmatic_border_option('body .site-header .row-two .bb-bldr-row:before','header_menu_top_border', 'border-bottom');
-			newsmatic_border_option('body .site-header .row-three .bb-bldr-row:before','header_menu_bottom_border', 'border-bottom');
-			newsmatic_border_option('body .site-footer .row-two.full-width, body .site-footer .row-two .full-width','footer_second_row_border', 'border-top');
-			newsmatic_border_option('body .site-footer .row-three.full-width, body .site-footer .row-three .full-width','footer_third_row_border', 'border-top');
-
-			$nSpacingCode( 'body .site-header .row-one.full-width, body .site-header .row-one .full-width' , 'header_first_row_padding', 'padding' );
-			$nSpacingCode( 'body .site-header .row-two.full-width, body .site-header .row-two .full-width' , 'header_second_row_padding', 'padding' );
-			$nSpacingCode( 'body .site-header .row-three.full-width, body .site-header .row-three .full-width' , 'header_third_row_padding', 'padding' );
-			$nSpacingCode( 'body .site-footer .row-one.full-width, body .site-footer .row-one .full-width' , 'footer_first_row_padding', 'padding' );
-			$nSpacingCode( 'body .site-footer .row-two.full-width, body .site-footer .row-two .full-width' , 'footer_second_row_padding', 'padding' );
-			$nSpacingCode( 'body .site-footer .row-three.full-width, body .site-footer .row-three .full-width' , 'footer_third_row_padding', 'padding' );
-
-			newsmatic_adjust_builder_border( 'header_builder' );
-			newsmatic_adjust_builder_border( 'responsive_header_builder' );
-
-			$nColorCode('--top-header-menu-color','top_header_menu_color');
-			$nColorGroupCode('body.newsmatic_main_body .site-header.layout--default .top-date-time, body.newsmatic_main_body .site-header.layout--default .top-date-time:after','top_header_datetime_color', 'color');
-			$nColorCode('--random-news-color','header_random_news_label_color');
-			$nColorCode('--newsletter-color','header_newsletter_label_color');
-			$nColorCode('--footer-text-color','footer_color');
-			$nColorGroupCode('.newsmatic_main_body .site-footer .site-info','bottom_footer_text_color');
-			$nColorCode('--top-header-social-color','top_header_social_icon_color');
-		$current_styles = ob_get_clean();
-		return apply_filters( 'newsmatic_current_styles', wp_strip_all_tags($current_styles) );
-	}
-endif;
-
 if( ! function_exists( 'newsmatic_customizer_social_icons' ) ) :
 	/**
 	 * Functions get social icons
@@ -360,7 +140,8 @@ if( ! function_exists( 'newsmatic_customizer_social_icons' ) ) :
 		echo '<div class="social-icons">';
 			foreach( $decoded_social_icons as $icon ) :
 				if( $icon->item_option === 'show' ) {
-					echo '<a class="social-icon" href="', esc_url( $icon->icon_url ), '" target="', esc_attr( $social_icons_target ), '"><i class="', esc_attr( $icon->icon_class ), '"></i></a>';
+					$label = explode( '-', $icon->icon_class )[ 1 ];
+					echo '<a class="social-icon" href="', esc_url( $icon->icon_url ), '" target="', esc_attr( $social_icons_target ), '" aria-label="', esc_attr( $label ) ,'"><i class="', esc_attr( $icon->icon_class ), '"></i></a>';
 				}
 			endforeach;
 		echo '</div>';
@@ -683,7 +464,11 @@ if( ! function_exists( 'newsmatic_filter_posts_load_tab_content' ) ) :
 			'order' => esc_html( $orderArray[1] ),
 			'orderby' => esc_html( $orderArray[0] ),
 			'category_name' => esc_html( $options->category_name ),
-			'ignore_sticky_posts'    => true
+			'ignore_sticky_posts'    => true,
+			'fields'    =>  'ids',
+			'no_found_rows' =>  true,
+			'update_post_meta_cache'    =>  false,
+			'update_post_term_cache'    =>  false,
 		);
 		if( $query->ids ) $post_args['post__not_in'] = newsmatic_get_array_key_string_to_int( $query->ids );
 		$posts_args = apply_filters( 'newsmatic_query_args_filter', $posts_args );
@@ -748,7 +533,12 @@ if( ! function_exists( 'newsmatic_search_posts_content' ) ) :
 			'post_type'	=> 'post',
 			'post_status'	=> 'publish',
 			'posts_per_page'	=> 4,
-			's'	=> esc_html($search_key)
+			's'	=> esc_html($search_key),
+			'ignore_sticky_posts'   =>  true,
+			'fields'    =>  'ids',
+			'no_found_rows' =>  true,
+			'update_post_meta_cache'    =>  false,
+			'update_post_term_cache'    =>  false,
 		];
 		$n_posts = new WP_Query( $query_vars );
 		$res['loaded'] = false;

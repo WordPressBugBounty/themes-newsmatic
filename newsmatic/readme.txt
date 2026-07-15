@@ -2,9 +2,9 @@
 Contributors: BlazeThemes
 Tags: news, blog, entertainment, one-column, two-columns, grid-layout, block-styles, left-sidebar, right-sidebar, custom-header, flexible-header, custom-background, custom-colors, custom-menu, featured-images, full-width-template, post-formats, sticky-post, rtl-language-support, footer-widgets, theme-options, threaded-comments, translation-ready
 Requires at least: 5.3
-Tested up to: 6.9
+Tested up to: 8.5.0
 Requires PHP: 5.6
-Stable tag: 1.4.3
+Stable tag: 1.5.0
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -58,17 +58,20 @@ Author: Aamir Afridi
 URL: http://aamirafridi.com/jquery/jquery-marquee-plugin
 License: The MIT License
 
-Waypoints
-URL: https://github.com/imakewebthings/waypoints/blob/master/licenses.txt
-License: The MIT License
-
 Slick
 Author: Ken Wheeler
 URL: http://github.com/kenwheeler/slick
 License: The MIT License
 
 == Changelog ==
-= 1.4.5 -July 10th, 2026 =
+= 1.5.0 -July 14th, 2026 =
+	* Fixed - Changes all the query parameters for site speed.
+	* Fixed - Make theme 100% SEO friendly
+	* Fixed - Make theme more Accesibility ready
+	* Fixed - Make theme 100% best Practises
+
+
+= 1.4.6 -July 10th, 2026 =
 	* Fixed - Header layout row three issue fixed
 
 = 1.4.5 -June 30th, 2026 =

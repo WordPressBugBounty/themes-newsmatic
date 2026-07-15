@@ -72,7 +72,7 @@
                 'solid' => '#F0F1F2',
                 'gradient'  => null
             )),
-            'global_button_text'    => array( "icon"  => "fas fa-angle-right", "text"   => esc_html__( 'Read More', 'newsmatic' ) ),
+            'global_button_text'    => array( "icon"  => "fas fa-angle-right", "text"   => esc_html__( 'Read Full News', 'newsmatic' ) ),
             'preloader_option'  => false,
             'website_layout'    => 'full-width--layout',
             'website_block_border_top_option' => true,

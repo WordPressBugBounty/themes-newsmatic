@@ -144,6 +144,13 @@ require get_template_directory() . '/inc/custom-header.php';
 require get_template_directory() . '/inc/template-tags.php';
 
 /**
+ * Cache Manager
+ * 
+ * @since 1.4.7
+ */
+require_once get_template_directory() . '/inc/managers/class-cache-manager.php';
+
+/**
  * Functions which enhance the theme by hooking into WordPress.
  */
 require get_template_directory() . '/inc/template-functions.php';
@@ -272,3 +279,32 @@ add_filter( 'sanitize_title', function( $title, $raw_title, $context ) {
  * @since 1.4.4
  */
 if( class_exists( 'WooCommerce' ) ) require_once get_template_directory() . '/inc/compat/woocommerce.php';
+
+/**
+ * Defer non critical css to prevent css files from blocking render
+ * 
+ * @param string $html The html tag
+ * @param string $handle Tag handle
+ * @since 1.4.7
+ */
+add_filter( 'style_loader_tag', function( $html, $handle ) {
+	if( in_array( $handle, [ 'fontawesome', 'fontawesome-6', 'slick', 'newsmatic-typo-fonts', 'newsmatic-customizer-control', 'newsmatic-customizer-builder' ] ) ) {
+		$async = str_replace( "media='print'", "media='print' onload=\"this.media='all'\"", $html );
+		$async .= "<noscript>$html</noscript>";
+		return $async;
+	}
+	return $html;
+}, 10, 2 );
+
+if( ! function_exists( 'newsmatic_preconnect_to_google_fonts' ) ) {
+	/**
+	 * Preconnect to google links to fetch font families
+	 * 
+	 * @since 1.4.7
+	 */
+	function newsmatic_preconnect_to_google_fonts() {
+		echo '<link rel="preconnect" href="https://fonts.googleapis.com">';
+		echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>';
+	}
+	add_action( 'wp_head', 'newsmatic_preconnect_to_google_fonts' , 1 );
+}

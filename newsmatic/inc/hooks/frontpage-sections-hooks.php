@@ -25,7 +25,11 @@ if( ! function_exists( 'newsmatic_main_banner_part' ) ) :
             'slider_args'  => array(
                 'order' => esc_html( $orderArray[1] ),
                 'orderby' => esc_html( $orderArray[0] ),
-                'ignore_sticky_posts'   => true
+                'ignore_sticky_posts'   =>  true,
+                'fields'    =>  'ids',
+                'no_found_rows' =>  true,
+                'update_post_meta_cache'    =>  false,
+                'update_post_term_cache'    =>  false,
             )
         );
         if( $main_banner_post_filter == 'category' ) {
@@ -84,7 +88,11 @@ if( ! function_exists( 'newsmatic_full_width_blocks_part' ) ) :
                                                         'post_type' => 'post',
                                                         'order' => esc_html( $orderArray[1] ),
                                                         'orderby' => esc_html( $orderArray[0] ),
-                                                        'ignore_sticky_posts'   => true
+                                                        'ignore_sticky_posts'   =>  true,
+                                                        'fields'    =>  'ids',
+                                                        'no_found_rows' =>  true,
+                                                        'update_post_meta_cache'    =>  false,
+                                                        'update_post_term_cache'    =>  false,
                                                     ),
                                                     'options'    => $block
                                                 );
@@ -145,7 +153,11 @@ if( ! function_exists( 'newsmatic_leftc_rights_blocks_part' ) ) :
                                                             'post_type' => 'post',
                                                             'order' => esc_html( $orderArray[1] ),
                                                             'orderby' => esc_html( $orderArray[0] ),
-                                                            'ignore_sticky_posts'   => true
+                                                            'ignore_sticky_posts'   =>  true,
+                                                            'fields'    =>  'ids',
+                                                            'no_found_rows' =>  true,
+                                                            'update_post_meta_cache'    =>  false,
+                                                            'update_post_term_cache'    =>  false,
                                                         ),
                                                         'options'    => $block
                                                     );
@@ -213,7 +225,11 @@ if( ! function_exists( 'newsmatic_lefts_rightc_blocks_part' ) ) :
                                                             'post_type' => 'post',
                                                             'order' => esc_html( $orderArray[1] ),
                                                             'orderby' => esc_html( $orderArray[0] ),
-                                                            'ignore_sticky_posts'   => true
+                                                            'ignore_sticky_posts'   =>  true,
+                                                            'fields'    =>  'ids',
+                                                            'no_found_rows' =>  true,
+                                                            'update_post_meta_cache'    =>  false,
+                                                            'update_post_term_cache'    =>  false,
                                                         ),
                                                         'options'    => $block
                                                     );
@@ -274,7 +290,11 @@ if( ! function_exists( 'newsmatic_bottom_full_width_blocks_part' ) ) :
                                                         'post_type' => 'post',
                                                         'order' => esc_html( $orderArray[1] ),
                                                         'orderby' => esc_html( $orderArray[0] ),
-                                                        'ignore_sticky_posts'   => true
+                                                        'ignore_sticky_posts'   =>  true,
+                                                        'fields'    =>  'ids',
+                                                        'no_found_rows' =>  true,
+                                                        'update_post_meta_cache'    =>  false,
+                                                        'update_post_term_cache'    =>  false,
                                                     ),
                                                     'options'    => $block
                                                 );

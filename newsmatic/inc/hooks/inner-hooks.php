@@ -21,7 +21,11 @@ if( ! function_exists( 'newsmatic_single_related_posts' ) ) :
         $related_posts_args = array(
             'posts_per_page'   => 4,
             'post__not_in'  => array( get_the_ID() ),
-            'ignore_sticky_posts'    => true
+            'ignore_sticky_posts'    => true,
+            'fields'    =>  'ids',
+            'no_found_rows' =>  true,
+            'update_post_meta_cache'    =>  false,
+            'update_post_term_cache'    =>  false,
         );
         $current_post_categories = get_the_category(get_the_ID());
         if( $current_post_categories ) :

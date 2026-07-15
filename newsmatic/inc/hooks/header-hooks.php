@@ -66,9 +66,14 @@ if( ! function_exists( 'newsmatic_main_header_social_part' ) ) :
             $header_ads_banner_custom_url = ND\newsmatic_get_customizer_option( 'header_ads_banner_custom_url' );
             $header_ads_banner_custom_target = ND\newsmatic_get_customizer_option( 'header_ads_banner_custom_target' );
             if( ! empty( $header_ads_banner_custom_image ) ) :
+                $title = get_the_title( $header_ads_banner_custom_image );
             ?>
                 <div class="ads-banner">
-                    <a href="<?php echo esc_url( $header_ads_banner_custom_url ); ?>" target="<?php echo esc_html( $header_ads_banner_custom_target ); ?>"><img src="<?php echo esc_url( wp_get_attachment_url( $header_ads_banner_custom_image ) ); ?>"></a>
+                    <a href="<?php echo esc_url( $header_ads_banner_custom_url ); ?>" target="<?php echo esc_html( $header_ads_banner_custom_target ); ?>" aria-label="<?php echo esc_attr( $title ); ?>">
+                        <?php
+                            echo wp_get_attachment_image( $header_ads_banner_custom_image, 'full', false, [ 'alt' => $title ] );
+                        ?>
+                    </a>
                 </div><!-- .ads-banner -->
             <?php
             endif;
@@ -139,13 +144,13 @@ if( ! function_exists( 'newsmatic_main_header_social_part' ) ) :
         if( $off_canvas_position ) $off_canvas_class .= ' position--' . $off_canvas_position;
         ?>
             <div class="<?php echo esc_attr( $off_canvas_class ); ?>">
-                <a class="sidebar-toggle-trigger" href="javascript:void(0);">
+                <button class="sidebar-toggle-trigger" href="javascript:void(0);" aria-label="<?php echo esc_attr__( 'Open canvas', 'newsmatic' ); ?>">
                     <div class="newsmatic_sidetoggle_menu_burger">
                       <span></span>
                       <span></span>
                       <span></span>
                   </div>
-                </a>
+                </button>
                 <div class="sidebar-toggle hide">
                     <span class="sidebar-toggle-close"><i class="fas fa-times"></i></span>
                     <div class="newsmatic-container">
@@ -197,7 +202,7 @@ if( ! function_exists( 'newsmatic_main_header_social_part' ) ) :
     function newsmatic_header_search_part() {
         ?>
             <div class="search-wrap">
-                <button class="search-trigger">
+                <button class="search-trigger" aria-label="<?php echo esc_attr__( 'Open Search', 'newsmatic' )?>">
                     <i class="fas fa-search"></i>
                 </button>
                 <div class="search-form-wrap hide">
@@ -219,7 +224,7 @@ if( ! function_exists( 'newsmatic_header_theme_mode_icon_part' ) ) :
         $newsmatic_dark_mode = ( ND\newsmatic_get_customizer_option( 'theme_default_mode' ) == 'dark' || ( isset( $_COOKIE['themeMode'] ) && $_COOKIE['themeMode'] == 'dark' ) );
         ?>
             <div class="mode_toggle_wrap">
-                <input class="mode_toggle" type="checkbox" <?php if( $newsmatic_dark_mode ) echo "checked"; ?>>
+                <input class="mode_toggle" type="checkbox" <?php if( $newsmatic_dark_mode ) echo "checked"; ?>  aria-label="<?php echo esc_attr__( 'Toggle dark mode', 'newsmatic' )?>">
             </div>
         <?php
      }
@@ -273,23 +278,27 @@ if( ! function_exists( 'newsmatic_header_theme_mode_icon_part' ) ) :
       }
       ?>
          <div class="top-ticker-news">
-            <ul class="ticker-item-wrap">
-               <?php
-               if( isset( $ticker_args ) ) :
-                     $ticker_args['ignore_sticky_posts'] = true;
-                     $ticker_args = apply_filters( 'newsmatic_query_args_filter', $ticker_args );
-                     $ticker_query = new WP_Query( $ticker_args );
-                     if( $ticker_query->have_posts() ) :
-                        while( $ticker_query->have_posts() ) : $ticker_query->the_post();
-                        ?>
-                           <li class="ticker-item"><a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2></li>
-                        <?php
-                        endwhile;
-                        wp_reset_postdata();
-                     endif;
-                  endif;
-               ?>
-            </ul>
+                <div class="ticker-item-wrap">
+                <?php
+                        if( isset( $ticker_args ) ) :
+                            $ticker_args['ignore_sticky_posts'] = true;
+                            $ticker_args[ 'fields' ] = 'ids';
+                            $ticker_args[ 'no_found_rows' ] = true;
+                            $ticker_args[ 'update_post_meta_cache' ] = false;
+                            $ticker_args[ 'update_post_term_cache' ] = false;
+                            $ticker_args = apply_filters( 'newsmatic_query_args_filter', $ticker_args );
+                            $ticker_query = new WP_Query( $ticker_args );
+                                if( $ticker_query->have_posts() ) :
+                                    while( $ticker_query->have_posts() ) : $ticker_query->the_post();
+                                        ?>
+                                            <div class="ticker-item"><a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2></div>
+                                        <?php
+                                    endwhile;
+                                wp_reset_postdata();
+                                endif;
+                        endif;
+                    ?>
+                </div>
 			</div>
       <?php
     }
@@ -365,7 +374,12 @@ endif;
         $orderArray = explode( '-', $ticker_news_order_by );
         $ticker_args = array(
             'order' => esc_html( $orderArray[1] ),
-            'orderby' => esc_html( $orderArray[0] )
+            'orderby' => esc_html( $orderArray[0] ),
+            'ignore_sticky_posts'   =>  true,
+            'fields'    =>  'ids',
+            'no_found_rows' =>  true,
+            'update_post_meta_cache'    =>  false,
+            'update_post_term_cache'    =>  false,
         );
         if( $ticker_news_post_filter == 'category' ) {
             $ticker_args['posts_per_page'] = 10;
@@ -406,12 +420,12 @@ endif;
                     }
                   ?>
 
-                    <ul class="ticker-item-wrap" direction="<?php echo esc_attr($newsmatic_direction); ?>" dir="<?php echo esc_attr($newsmatic_dir); ?>">
+                    <div class="ticker-item-wrap" direction="<?php echo esc_attr($newsmatic_direction); ?>" dir="<?php echo esc_attr($newsmatic_dir); ?>">
                         <?php get_template_part( 'template-parts/ticker-news/template', 'two', $ticker_args ); ?>
-                    </ul>
+                    </div>
                 </div>
                 <div class="newsmatic-ticker-controls">
-                    <button class="newsmatic-ticker-pause"><i class="fas fa-pause"></i></button>
+                    <button class="newsmatic-ticker-pause" aria-label="<?php echo esc_attr__( 'Pause Marquee', 'newsmatic' ); ?>"><i class="fas fa-pause"></i></button>
                 </div>
             </div>
          <?php

@@ -177,8 +177,8 @@ jQuery(document).ready(function($) {
             vertical: true,
             arrows: true,
             autoplay: true,
-            nextArrow: `<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>`,
-            prevArrow: `<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>`,
+            nextArrow: `<button type="button" class="slick-next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>`,
+            prevArrow: `<button type="button" class="slick-prev" aria-label="Previous Slide"><i class="fas fa-chevron-left"></i></button>`,
         });
     }
 
@@ -195,8 +195,8 @@ jQuery(document).ready(function($) {
             arrows: bArrows,
             autoplay: false,
             autoplay: bAuto,
-            nextArrow: `<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>`,
-            prevArrow: `<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>`,
+            nextArrow: `<button type="button" class="slick-next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>`,
+            prevArrow: `<button type="button" class="slick-prev" aria-label="Previous Slide"><i class="fas fa-chevron-left"></i></button>`,
         });
     }
 
@@ -217,8 +217,8 @@ jQuery(document).ready(function($) {
                 autoplay: ncAuto,
                 rtl: nrtl,
                 slidesToShow: ncColumns,
-                nextArrow: `<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>`,
-                prevArrow: `<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>`,
+                nextArrow: `<button type="button" class="slick-next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>`,
+                prevArrow: `<button type="button" class="slick-prev" aria-label="Previous Slide"><i class="fas fa-chevron-left"></i></button>`,
                 responsive: [
                   {
                     breakpoint: 1100,
@@ -299,8 +299,8 @@ jQuery(document).ready(function($) {
                     infinite: ppWidgetLoop,
                     arrows: ppWidgetArrows,
                     autoplay: ppWidgetAuto,
-                    nextArrow: `<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>`,
-                    prevArrow: `<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>`
+                    nextArrow: `<button type="button" class="slick-next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>`,
+                    prevArrow: `<button type="button" class="slick-prev" aria-label="Previous Slide"><i class="fas fa-chevron-left"></i></button>`
                 })
             } else {
                 ppWidget.slick({
@@ -309,8 +309,8 @@ jQuery(document).ready(function($) {
                     rtl: nrtl,
                     arrows: ppWidgetArrows,
                     autoplay: ppWidgetAuto,
-                    nextArrow: `<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>`,
-                    prevArrow: `<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>`
+                    nextArrow: `<button type="button" class="slick-next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>`,
+                    prevArrow: `<button type="button" class="slick-prev" aria-label="Previous Slide"><i class="fas fa-chevron-left"></i></button>`
                 })
             }  
         }
@@ -338,8 +338,8 @@ jQuery(document).ready(function($) {
                     infinite: ppWidgetLoop,
                     arrows: ppWidgetArrows,
                     autoplay: ppWidgetAuto,
-                    nextArrow: `<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>`,
-                    prevArrow: `<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>`
+                    nextArrow: `<button type="button" class="slick-next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>`,
+                    prevArrow: `<button type="button" class="slick-prev" aria-label="Previous Slide"><i class="fas fa-chevron-left"></i></button>`
                 })
             } else {
                 ppWidget.slick({
@@ -348,8 +348,8 @@ jQuery(document).ready(function($) {
                     rtl: nrtl,
                     arrows: ppWidgetArrows,
                     autoplay: ppWidgetAuto,
-                    nextArrow: `<button type="button" class="slick-next"><i class="fas fa-chevron-right"></i></button>`,
-                    prevArrow: `<button type="button" class="slick-prev"><i class="fas fa-chevron-left"></i></button>`
+                    nextArrow: `<button type="button" class="slick-next" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>`,
+                    prevArrow: `<button type="button" class="slick-prev" aria-label="Previous Slide"><i class="fas fa-chevron-left"></i></button>`
                 })
             }  
         }

@@ -66,7 +66,11 @@ class Newsmatic_Posts_List_Widget extends WP_Widget {
                         array( 
                             'category_name'    => esc_html( $posts_category ),
                             'posts_per_page' => absint( $posts_count ),
-                            'ignore_sticky_posts'    => true
+                            'ignore_sticky_posts'    => true,
+                            'fields'    =>  'ids',
+                            'no_found_rows' =>  true,
+                            'update_post_meta_cache'    =>  false,
+                            'update_post_term_cache'    =>  false,
                         )
                     );
                     if( $post->have_posts() ) :
