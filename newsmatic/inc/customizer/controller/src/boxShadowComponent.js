@@ -60,6 +60,7 @@ export const NewsmaticBoxShadow = (props) => {
             <div className="control-inner-content">
                 <Dropdown
                     popoverProps={{resize:false,noArrow:false,flip:true,placement:'bottom-start'}}
+                    contentClassName = 'newsmatic-box-shadow-control-popover'
                     renderToggle={ ( { isOpen, onToggle } ) => (
                         <div className="box-shadow-value-holder">
                             <div className="box-shadow-summ-value" onClick={ onToggle } aria-expanded={ isOpen }>

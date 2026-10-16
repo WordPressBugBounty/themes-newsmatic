@@ -21,12 +21,12 @@ $demos_array = array(
         'plugins' => [
             'mailpoet' => array(
                 'name' => 'MailPoet',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'mailpoet/mailpoet.php'
             ),
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ],
@@ -48,17 +48,17 @@ $demos_array = array(
         'plugins' => array(
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             ),
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -86,17 +86,17 @@ $demos_array = array(
         'plugins' => array(
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             ),
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -123,17 +123,17 @@ $demos_array = array(
         'plugins' => array(
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             ),
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -161,17 +161,17 @@ $demos_array = array(
         'plugins' => array(
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             ),
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -199,17 +199,17 @@ $demos_array = array(
         'plugins' => array(
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             ),
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -236,12 +236,12 @@ $demos_array = array(
         'plugins' => array(
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             )
         ),
@@ -269,17 +269,17 @@ $demos_array = array(
         'plugins' => array(
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             ),
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -307,17 +307,17 @@ $demos_array = array(
         'plugins' => [
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             ),
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ],
@@ -343,7 +343,7 @@ $demos_array = array(
         'plugins' => array(
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -367,7 +367,7 @@ $demos_array = array(
         'plugins' => array(
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -439,12 +439,12 @@ $demos_array = array(
         'plugins' => array(
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             )
         ),
@@ -473,12 +473,12 @@ $demos_array = array(
         'plugins' => array(
             'mailpoet' => array(
                 'name' => 'MailPoet',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'mailpoet/mailpoet.php'
             ),
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -501,12 +501,12 @@ $demos_array = array(
         'plugins' => array(
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             )
         ),
@@ -535,12 +535,12 @@ $demos_array = array(
         'plugins' => array(
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             )
         ),
@@ -566,17 +566,17 @@ $demos_array = array(
         'plugins' => array(
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             ),
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -622,7 +622,7 @@ $demos_array = array(
         'plugins' => array(
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -646,7 +646,7 @@ $demos_array = array(
         'plugins' => array(
             'email-subscribers' => array(
                 'name' => 'Email Subscribers',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'email-subscribers/email-subscribers.php'
             )
         ),
@@ -688,12 +688,12 @@ $demos_array = array(
         'plugins' => array(
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             ),
             'email-subscribers' => array(
                 'name' => 'Email Subscribers',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'email-subscribers/email-subscribers.php'
             )
         ),
@@ -735,7 +735,7 @@ $demos_array = array(
         'plugins' => array(
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -759,7 +759,7 @@ $demos_array = array(
         'plugins' => array(
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -819,17 +819,17 @@ $demos_array = array(
         'plugins' => array(
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             ),
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             ),
         ),
@@ -857,17 +857,17 @@ $demos_array = array(
         'plugins' => array(
             'elementor' => array(
                 'name' => 'Elementor',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'elementor/elementor.php'
             ),
             'news-kit-elementor-addons' => array(
                 'name' => 'News Kit Elementor Addons',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'news-kit-elementor-addons/news-kit-elementor-addons.php'
             ),
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -897,7 +897,7 @@ $demos_array = array(
         'plugins' => array(
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -957,7 +957,7 @@ $demos_array = array(
         'plugins' => array(
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),
@@ -979,7 +979,7 @@ $demos_array = array(
         'plugins' => array(
             'contact-form-7' => array(
                 'name' => 'Contact Form 7',
-                'source' => 'wordpress',
+                'source' => 'WordPress',
                 'file_path' => 'contact-form-7/contact-form-7.php'
             )
         ),

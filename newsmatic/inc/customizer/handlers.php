@@ -263,7 +263,7 @@ if( !function_exists( 'newsmatic_customizer_global_panel' ) ) :
             'description' => esc_html__( 'Date format applied to single and archive pages.', 'newsmatic' ),
             'choices'   => array(
                 'theme_format'  => __( 'Default by theme', 'newsmatic' ),
-                'default'   => __( 'Wordpress default date', 'newsmatic' )
+                'default'   => __( 'WordPress default date', 'newsmatic' )
             )
         ));
 
