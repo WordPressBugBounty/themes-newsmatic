@@ -4,7 +4,7 @@ Tags: news, blog, entertainment, one-column, two-columns, grid-layout, block-sty
 Requires at least: 5.3
 Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,11 @@ URL: http://github.com/kenwheeler/slick
 License: The MIT License
 
 == Changelog ==
+
+= 1.5.2 - October 27th, 2026 =
+    * Code: Introduced theme path and URI constants for cleaner, more consistent file includes.
+    * Tested: Verified compatibility with PHP 8.5.12 (latest patched release). No issues found.
+
 = 1.5.1 -October 16th, 2026 =
 	* Fixed - A potential unauthenticated SQL injection vulnerability in WordPress REST API requests.
 

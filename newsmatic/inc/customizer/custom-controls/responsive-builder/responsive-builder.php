@@ -27,7 +27,7 @@ if( ! class_exists( 'Newsmatic_WP_Responsive_Builder_Control' ) ) :
          * @return void
          */
         public function enqueue() {
-            wp_enqueue_script( 'newsmatic-responsive-builder-js', get_template_directory_uri() . '/inc/customizer/custom-controls/responsive-builder/responsive-builder.js', ['jquery'], NEWSMATIC_VERSION, [ 'strategy' => 'defer', 'in_footer' => true ] );
+            wp_enqueue_script( 'newsmatic-responsive-builder-js', NEWSMATIC_URL . '/inc/customizer/custom-controls/responsive-builder/responsive-builder.js', ['jquery'], NEWSMATIC_VERSION, [ 'strategy' => 'defer', 'in_footer' => true ] );
         }
     
         /**

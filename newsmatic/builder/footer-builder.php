@@ -136,8 +136,8 @@
              * @since 1.4.0
              */
             public function get_widget_html( $widget ) {
-                require get_template_directory() . '/inc/hooks/bottom-footer-hooks.php';
-                require get_template_directory() . '/inc/hooks/footer-hooks.php';
+                require NEWSMATIC_PATH . '/inc/hooks/bottom-footer-hooks.php';
+                require NEWSMATIC_PATH . '/inc/hooks/footer-hooks.php';
                 if( ! $widget ) return;
                 switch( $widget ) :
                     case 'logo':

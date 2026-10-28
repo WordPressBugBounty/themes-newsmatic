@@ -8,7 +8,7 @@
  *
  * @package Newsmatic
  */
-require get_template_directory() . '/builder/footer-builder.php';
+require NEWSMATIC_PATH . '/builder/footer-builder.php';
 use Newsmatic_Builder as NB;
 use Newsmatic\CustomizerDefault as ND;
  if( did_action( 'elementor/loaded' ) && class_exists( 'Nekit_Render_Templates_Html' ) ) :

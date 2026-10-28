@@ -168,11 +168,11 @@ function newsmatic_widget_scripts($hook) {
     if( $hook !== "widgets.php" ) {
         return;
     }
-    wp_enqueue_style( 'newsmatic-widget', get_template_directory_uri() . '/inc/widgets/assets/widgets.css', array(), NEWSMATIC_VERSION );
-	wp_enqueue_style( 'fontawesome', get_template_directory_uri() . '/assets/lib/fontawesome/css/all.min.css', array(), '5.15.3', 'all' );
-	wp_enqueue_style( 'fontawesome-6', get_template_directory_uri() . '/assets/lib/fontawesome-6/css/all.min.css', array(), '6.5.1', 'all' );
+    wp_enqueue_style( 'newsmatic-widget', NEWSMATIC_URL . '/inc/widgets/assets/widgets.css', array(), NEWSMATIC_VERSION );
+	wp_enqueue_style( 'fontawesome', NEWSMATIC_URL . '/assets/lib/fontawesome/css/all.min.css', array(), '5.15.3', 'all' );
+	wp_enqueue_style( 'fontawesome-6', NEWSMATIC_URL . '/assets/lib/fontawesome-6/css/all.min.css', array(), '6.5.1', 'all' );
 	wp_enqueue_media();
-	wp_enqueue_script( 'newsmatic-widget', get_template_directory_uri() . '/inc/widgets/assets/widgets.js', array( 'jquery' ), NEWSMATIC_VERSION, true );
+	wp_enqueue_script( 'newsmatic-widget', NEWSMATIC_URL . '/inc/widgets/assets/widgets.js', array( 'jquery' ), NEWSMATIC_VERSION, true );
 }
 add_action( 'admin_enqueue_scripts', 'newsmatic_widget_scripts' );
 

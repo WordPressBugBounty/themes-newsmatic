@@ -35,7 +35,7 @@ if( class_exists( 'WP_Customize_Control' ) ) :
          * @since 3.4.0
          */
         public function enqueue() {
-            wp_enqueue_style( 'newsmatic-customizer-section-heading', get_template_directory_uri() . '/inc/customizer/custom-controls/section-heading/section-heading.css', array(), NEWSMATIC_VERSION, 'all' );
+            wp_enqueue_style( 'newsmatic-customizer-section-heading', NEWSMATIC_URL . '/inc/customizer/custom-controls/section-heading/section-heading.css', array(), NEWSMATIC_VERSION, 'all' );
         }
 
         /**

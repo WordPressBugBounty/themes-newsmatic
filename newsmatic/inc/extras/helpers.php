@@ -66,8 +66,8 @@ if( !function_exists( 'newsmatic_after_header_html' ) ) :
     }
 endif;
 
-require get_template_directory() . '/inc/hooks/inner-hooks.php'; // inner hooks.
-require get_template_directory() . '/inc/hooks/frontpage-sections-hooks.php'; // frontpage sections hooks.
+require NEWSMATIC_PATH . '/inc/hooks/inner-hooks.php'; // inner hooks.
+require NEWSMATIC_PATH . '/inc/hooks/frontpage-sections-hooks.php'; // frontpage sections hooks.
 
 if ( ! function_exists( 'newsmatic_breadcrumb_trail' ) ) :
     /**
@@ -78,7 +78,7 @@ if ( ! function_exists( 'newsmatic_breadcrumb_trail' ) ) :
     function newsmatic_breadcrumb_trail() {
         if ( ! function_exists( 'breadcrumb_trail' ) ) {
             // load class file
-            require_once get_template_directory() . '/inc/breadcrumb-trail/breadcrumb-trail.php';
+            require_once NEWSMATIC_PATH . '/inc/breadcrumb-trail/breadcrumb-trail.php';
         }
 
         // arguments variable

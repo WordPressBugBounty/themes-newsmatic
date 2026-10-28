@@ -120,7 +120,7 @@
              * @since 1.4.0
              */
             public function get_widget_html( $widget ) {
-                require get_template_directory() . '/inc/hooks/header-hooks.php';
+                require NEWSMATIC_PATH . '/inc/hooks/header-hooks.php';
                 if( ! $widget ) return;
                 switch( $widget ) :
                     case 'site-logo':

@@ -17,15 +17,15 @@ function newsmatic_customize_register( $wp_customize ) {
     $wp_customize->get_section( 'background_image' )->title = esc_html__( 'Background', 'newsmatic' );
     $wp_customize->remove_control( 'background_color' );
     
-	require get_template_directory() . '/inc/customizer/custom-controls/section-heading/section-heading.php'; // section heading control
-	require get_template_directory() . '/inc/customizer/custom-controls/repeater/repeater.php'; // repeater control
-    require get_template_directory() . '/inc/customizer/custom-controls/radio-image/radio-image.php'; // radio image control
-	require get_template_directory() . '/inc/customizer/custom-controls/redirect-control/redirect-control.php'; // redirect control
-    require get_template_directory() . '/inc/customizer/base.php'; // base class
-    require get_template_directory() . '/inc/customizer/custom-controls/upsell/upsell.php'; // upsell class
-    require get_template_directory() . '/inc/customizer/custom-controls/builder/builder.php'; // builder control
-    require get_template_directory() . '/inc/customizer/custom-controls/responsive-builder/responsive-builder.php'; // responsive-builder control
-    require get_template_directory() . '/inc/customizer/custom-controls/section-heading-toggle/section-heading-toggle.php'; // section heading control
+	require NEWSMATIC_PATH . '/inc/customizer/custom-controls/section-heading/section-heading.php'; // section heading control
+	require NEWSMATIC_PATH . '/inc/customizer/custom-controls/repeater/repeater.php'; // repeater control
+    require NEWSMATIC_PATH . '/inc/customizer/custom-controls/radio-image/radio-image.php'; // radio image control
+	require NEWSMATIC_PATH . '/inc/customizer/custom-controls/redirect-control/redirect-control.php'; // redirect control
+    require NEWSMATIC_PATH . '/inc/customizer/base.php'; // base class
+    require NEWSMATIC_PATH . '/inc/customizer/custom-controls/upsell/upsell.php'; // upsell class
+    require NEWSMATIC_PATH . '/inc/customizer/custom-controls/builder/builder.php'; // builder control
+    require NEWSMATIC_PATH . '/inc/customizer/custom-controls/responsive-builder/responsive-builder.php'; // responsive-builder control
+    require NEWSMATIC_PATH . '/inc/customizer/custom-controls/section-heading-toggle/section-heading-toggle.php'; // section heading control
 
     // icon text control
     class Newsmatic_WP_Icon_Text_Control extends Newsmatic_WP_Base_Control {
@@ -639,7 +639,7 @@ function newsmatic_get_image_sizes_option_array_for_customizer() {
 	return $sizes_lists;
 }
 
-require get_template_directory() . '/inc/customizer/handlers.php'; // customizer handlers
-require get_template_directory() . '/inc/customizer/customizer-up.php'; // customizer up
-require get_template_directory() . '/inc/customizer/selective-refresh.php'; // selective refresh
-require get_template_directory() . '/inc/customizer/sanitize-functions.php'; // sanitize functions
+require NEWSMATIC_PATH . '/inc/customizer/handlers.php'; // customizer handlers
+require NEWSMATIC_PATH . '/inc/customizer/customizer-up.php'; // customizer up
+require NEWSMATIC_PATH . '/inc/customizer/selective-refresh.php'; // selective refresh
+require NEWSMATIC_PATH . '/inc/customizer/sanitize-functions.php'; // sanitize functions

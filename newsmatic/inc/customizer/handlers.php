@@ -6,7 +6,7 @@ use Newsmatic\CustomizerDefault as ND;
 add_action( 'customize_preview_init', function() {
     wp_enqueue_script( 
         'newsmatic-customizer-preview',
-        get_template_directory_uri() . '/inc/customizer/assets/customizer-preview.min.js',
+        NEWSMATIC_URL . '/inc/customizer/assets/customizer-preview.min.js',
         ['customize-preview'],
         NEWSMATIC_VERSION,
         [ 'strategy' => 'defer', 'in_footer' => true ]
@@ -35,14 +35,14 @@ add_action( 'customize_controls_enqueue_scripts', function() {
     ));
 	wp_enqueue_style( 
         'newsmatic-customizer-control',
-        get_template_directory_uri() . '/inc/customizer/assets/customizer-controls.min.css', 
+        NEWSMATIC_URL . '/inc/customizer/assets/customizer-controls.min.css', 
         array('wp-components'),
         NEWSMATIC_VERSION,
         'print'
     );
     wp_enqueue_script( 
         'newsmatic-customizer-control',
-        get_template_directory_uri() . '/inc/customizer/assets/customizer-extends.min.js',
+        NEWSMATIC_URL . '/inc/customizer/assets/customizer-extends.min.js',
         $buildControlsDeps,
         NEWSMATIC_VERSION,
         [ 'strategy' => 'defer', 'in_footer' => true ]
@@ -60,14 +60,14 @@ add_action( 'customize_controls_enqueue_scripts', function() {
     );
     wp_enqueue_style( 
         'newsmatic-customizer-builder',
-        get_template_directory_uri() . '/inc/customizer/assets/builder.css', 
+        NEWSMATIC_URL . '/inc/customizer/assets/builder.css', 
         array('wp-components'),
         NEWSMATIC_VERSION,
         'print'
     );
     wp_enqueue_script( 
         'newsmatic-customizer-extras',
-        get_template_directory_uri() . '/inc/customizer/assets/extras.min.js',
+        NEWSMATIC_URL . '/inc/customizer/assets/extras.min.js',
         [],
         NEWSMATIC_VERSION,
         [ 'strategy' => 'defer', 'in_footer' => true ]
@@ -1361,7 +1361,7 @@ if( !function_exists( 'newsmatic_customizer_global_panel' ) ) :
     add_action( 'customize_register', 'newsmatic_customizer_global_panel', 10 );
 endif;
 
-require get_template_directory() . '/inc/customizer/header-builders.php';
+require NEWSMATIC_PATH . '/inc/customizer/header-builders.php';
 
 if( !function_exists( 'newsmatic_customizer_ticker_news_panel' ) ) :
     // Register header options settings
@@ -2666,7 +2666,7 @@ if( !function_exists( 'newsmatic_customizer_page_panel' ) ) :
     add_action( 'customize_register', 'newsmatic_customizer_page_panel', 10 );
 endif;
 
-require get_template_directory() . '/inc/customizer/footer-builders.php';
+require NEWSMATIC_PATH . '/inc/customizer/footer-builders.php';
 
 // extract to the customizer js
 $newsmaticAddAction = function() {

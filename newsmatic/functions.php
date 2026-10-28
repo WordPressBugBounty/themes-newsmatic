@@ -18,6 +18,14 @@ if ( ! defined( 'NEWSMATIC_PREFIX' ) ) {
 	define( 'NEWSMATIC_PREFIX', 'newsmatic_' );
 }
 
+if ( ! defined( 'NEWSMATIC_PATH' ) ) {
+	define( 'NEWSMATIC_PATH', get_template_directory() );
+}
+
+if ( ! defined( 'NEWSMATIC_URL' ) ) {
+	define( 'NEWSMATIC_URL', get_template_directory_uri() );
+}
+
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  *
@@ -33,7 +41,7 @@ function newsmatic_setup() {
 	* If you're building a theme based on Newsmatic, use a find and replace
 	* to change 'newsmatic' to the name of your theme in all the template files.
 	*/
-	load_theme_textdomain( 'newsmatic', get_template_directory() . '/languages' );
+	load_theme_textdomain( 'newsmatic', NEWSMATIC_PATH . '/languages' );
 
 	// Add default posts and comments RSS feed links to head.
 	add_theme_support( 'automatic-feed-links' );
@@ -136,25 +144,25 @@ add_action( 'after_setup_theme', 'newsmatic_content_width', 0 );
 /**
  * Implement the Custom Header feature.
  */
-require get_template_directory() . '/inc/custom-header.php';
+require NEWSMATIC_PATH . '/inc/custom-header.php';
 
 /**
  * Custom template tags for this theme.
  */
-require get_template_directory() . '/inc/template-tags.php';
+require NEWSMATIC_PATH . '/inc/template-tags.php';
 
 /**
  * Cache Manager
  * 
  * @since 1.4.7
  */
-require_once get_template_directory() . '/inc/managers/class-cache-manager.php';
+require_once NEWSMATIC_PATH . '/inc/managers/class-cache-manager.php';
 
 /**
  * Functions which enhance the theme by hooking into WordPress.
  */
-require get_template_directory() . '/inc/template-functions.php';
-require get_template_directory() . '/builder/base.php';
+require NEWSMATIC_PATH . '/inc/template-functions.php';
+require NEWSMATIC_PATH . '/builder/base.php';
 
 add_filter( 'get_the_archive_title_prefix', 'newsmatic_prefix_string' );
 function newsmatic_prefix_string($prefix) {
@@ -267,7 +275,7 @@ endif;
  * 
  * @since 1.4.4
  */
-if( class_exists( 'WooCommerce' ) ) require_once get_template_directory() . '/inc/compat/woocommerce.php';
+if( class_exists( 'WooCommerce' ) ) require_once NEWSMATIC_PATH . '/inc/compat/woocommerce.php';
 
 /**
  * Defer non critical css to prevent css files from blocking render

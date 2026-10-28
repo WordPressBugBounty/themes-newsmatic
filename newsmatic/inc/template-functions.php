@@ -84,7 +84,7 @@ function newsmatic_pingback_header() {
 add_action( 'wp_head', 'newsmatic_pingback_header' );
 
 //define constant
-define( 'NEWSMATIC_INCLUDES_PATH', get_template_directory() . '/inc/' );
+define( 'NEWSMATIC_INCLUDES_PATH', NEWSMATIC_PATH . '/inc/' );
 
 /**
  * Enqueue theme scripts and styles.
@@ -92,24 +92,24 @@ define( 'NEWSMATIC_INCLUDES_PATH', get_template_directory() . '/inc/' );
 function newsmatic_scripts() {
 	global $wp_query;
 	require_once get_theme_file_path( 'inc/wptt-webfont-loader.php' );
-	wp_enqueue_style( 'fontawesome', get_template_directory_uri() . '/assets/lib/fontawesome/css/all.min.css', array(), '5.15.3', 'print' );
-	wp_enqueue_style( 'fontawesome-6', get_template_directory_uri() . '/assets/lib/fontawesome-6/css/all.min.css', array(), '6.5.1', 'print' );
-	wp_enqueue_style( 'slick', get_template_directory_uri() . '/assets/lib/slick/slick.css', array(), '1.8.1', 'print' );
+	wp_enqueue_style( 'fontawesome', NEWSMATIC_URL . '/assets/lib/fontawesome/css/all.min.css', array(), '5.15.3', 'print' );
+	wp_enqueue_style( 'fontawesome-6', NEWSMATIC_URL . '/assets/lib/fontawesome-6/css/all.min.css', array(), '6.5.1', 'print' );
+	wp_enqueue_style( 'slick', NEWSMATIC_URL . '/assets/lib/slick/slick.css', array(), '1.8.1', 'print' );
 	wp_enqueue_style( 'newsmatic-typo-fonts', wptt_get_webfont_url( newsmatic_typo_fonts_url() ), array(), null, 'print' );
 	// enqueue inline style
 	wp_enqueue_style( 'newsmatic-style', get_stylesheet_uri(), array(), NEWSMATIC_VERSION );
-	wp_enqueue_style( 'newsmatic-builder', get_template_directory_uri().'/assets/css/builder.css', array(), NEWSMATIC_VERSION );
+	wp_enqueue_style( 'newsmatic-builder', NEWSMATIC_URL.'/assets/css/builder.css', array(), NEWSMATIC_VERSION );
 	wp_add_inline_style( 'newsmatic-style', Cache_Manager::get_dynamic_css() );
-	wp_enqueue_style( 'newsmatic-main-style', get_template_directory_uri().'/assets/css/main.css', array(), NEWSMATIC_VERSION );
-	if( ND\newsmatic_get_customizer_option( 'preloader_option' ) ) wp_enqueue_style( 'newsmatic-loader-style', get_template_directory_uri().'/assets/css/loader.css', array(), NEWSMATIC_VERSION );
-	wp_enqueue_style( 'newsmatic-responsive-style', get_template_directory_uri().'/assets/css/responsive.css', array(), NEWSMATIC_VERSION );
+	wp_enqueue_style( 'newsmatic-main-style', NEWSMATIC_URL.'/assets/css/main.css', array(), NEWSMATIC_VERSION );
+	if( ND\newsmatic_get_customizer_option( 'preloader_option' ) ) wp_enqueue_style( 'newsmatic-loader-style', NEWSMATIC_URL.'/assets/css/loader.css', array(), NEWSMATIC_VERSION );
+	wp_enqueue_style( 'newsmatic-responsive-style', NEWSMATIC_URL.'/assets/css/responsive.css', array(), NEWSMATIC_VERSION );
 	wp_style_add_data( 'newsmatic-style', 'rtl', 'replace' );
 	$js_strategy = [ 'strategy' => 'defer', 'in_footer' => true ];
-	wp_enqueue_script( 'slick', get_template_directory_uri() . '/assets/lib/slick/slick.min.js', array( 'jquery' ), '1.8.1', $js_strategy );
-	wp_enqueue_script( 'js-marquee', get_template_directory_uri() . '/assets/lib/js-marquee/jquery.marquee.min.js', array( 'jquery' ), '1.6.0', $js_strategy );
-	wp_enqueue_script( 'newsmatic-navigation', get_template_directory_uri() . '/assets/js/navigation.js', array(), NEWSMATIC_VERSION, $js_strategy );
-	wp_enqueue_script( 'jquery-cookie', get_template_directory_uri() . '/assets/lib/jquery-cookie/jquery-cookie.js', array( 'jquery' ), '1.4.1', true );
-	wp_enqueue_script( 'newsmatic-theme', get_template_directory_uri() . '/assets/js/theme.js', array( 'jquery' ), NEWSMATIC_VERSION, $js_strategy );
+	wp_enqueue_script( 'slick', NEWSMATIC_URL . '/assets/lib/slick/slick.min.js', array( 'jquery' ), '1.8.1', $js_strategy );
+	wp_enqueue_script( 'js-marquee', NEWSMATIC_URL . '/assets/lib/js-marquee/jquery.marquee.min.js', array( 'jquery' ), '1.6.0', $js_strategy );
+	wp_enqueue_script( 'newsmatic-navigation', NEWSMATIC_URL . '/assets/js/navigation.js', array(), NEWSMATIC_VERSION, $js_strategy );
+	wp_enqueue_script( 'jquery-cookie', NEWSMATIC_URL . '/assets/lib/jquery-cookie/jquery-cookie.js', array( 'jquery' ), '1.4.1', true );
+	wp_enqueue_script( 'newsmatic-theme', NEWSMATIC_URL . '/assets/js/theme.js', array( 'jquery' ), NEWSMATIC_VERSION, $js_strategy );
 
 	$scriptVars['_wpnonce'] = wp_create_nonce( 'newsmatic-nonce' );
 	$scriptVars['ajaxUrl'] 	= admin_url('admin-ajax.php');
@@ -422,13 +422,13 @@ if( ! function_exists( 'newsmatic_get_image_sizes_option_array' ) ) :
 	}
 endif;
 
-require get_template_directory() . '/inc/theme-starter.php'; // theme starter functions.
-require get_template_directory() . '/inc/customizer/customizer.php'; // Customizer additions.
-require get_template_directory() . '/inc/extras/helpers.php'; // helpers files.
-require get_template_directory() . '/inc/extras/extras.php'; // extras files.
-require get_template_directory() . '/inc/widgets/widgets.php'; // widget handlers
-include get_template_directory() . '/inc/styles.php';
-include get_template_directory() . '/inc/admin/class-theme-info.php';
+require NEWSMATIC_PATH . '/inc/theme-starter.php'; // theme starter functions.
+require NEWSMATIC_PATH . '/inc/customizer/customizer.php'; // Customizer additions.
+require NEWSMATIC_PATH . '/inc/extras/helpers.php'; // helpers files.
+require NEWSMATIC_PATH . '/inc/extras/extras.php'; // extras files.
+require NEWSMATIC_PATH . '/inc/widgets/widgets.php'; // widget handlers
+include NEWSMATIC_PATH . '/inc/styles.php';
+include NEWSMATIC_PATH . '/inc/admin/class-theme-info.php';
 /**
  * Wrap last word with span
  * 
@@ -651,7 +651,7 @@ if( ! function_exists( 'newsmatic_get_header_builder_layouts' ) ) :
 	 * @since 1.4.0
 	 */
 	function newsmatic_get_header_builder_layouts() {
-		$theme_directory = get_template_directory_uri();
+		$theme_directory = NEWSMATIC_URL;
 		return [
 			'one' => [
 				'label' => esc_html__( 'Layout One', 'newsmatic' ),
@@ -718,7 +718,7 @@ if( ! function_exists( 'newsmatic_get_footer_builder_layouts' ) ) :
 	 * @since 1.4.0
 	 */
 	function newsmatic_get_footer_builder_layouts() {
-		$theme_directory = get_template_directory_uri();
+		$theme_directory = NEWSMATIC_URL;
 		return [
 			'one' => [
 				'label' => esc_html__( 'Layout One', 'newsmatic' ),

@@ -41,7 +41,7 @@ if( !class_exists( 'Newsmatic_Theme_Info' ) ) :
          */
         function __construct() {
             add_action( 'init', function(){
-                $this->demofile = include get_template_directory() . '/inc/admin/assets/demos.php';
+                $this->demofile = include NEWSMATIC_PATH . '/inc/admin/assets/demos.php';
                 $this->theme_name = esc_html__( 'Newsmatic', 'newsmatic' );
                 $this->restriction_message = esc_html__( "You dont have permission to perform this action", "newsmatic" );
             });
@@ -68,12 +68,12 @@ if( !class_exists( 'Newsmatic_Theme_Info' ) ) :
             if( ! $this->newsmatic_disable_admin_notices ) :
                 $newsmatic_welcome_notice_dismiss = get_option( 'newsmatic_welcome_notice_dismiss' );
                 if( ! $newsmatic_welcome_notice_dismiss ) {
-                    wp_enqueue_style( 'newsmatic-welcome-notice', get_template_directory_uri() . '/inc/admin/assets/welcome-notice.css', array(), esc_attr( $this->version ), 'all' );
+                    wp_enqueue_style( 'newsmatic-welcome-notice', NEWSMATIC_URL . '/inc/admin/assets/welcome-notice.css', array(), esc_attr( $this->version ), 'all' );
                 }
                 if( ! get_transient( 'newsmatic_show_review_notice' ) ) :
-                    wp_enqueue_style( 'newsmatic-admin-notice', get_template_directory_uri() . '/inc/admin/assets/admin-notice.css', array(), esc_attr( $this->version ), 'all' );
+                    wp_enqueue_style( 'newsmatic-admin-notice', NEWSMATIC_URL . '/inc/admin/assets/admin-notice.css', array(), esc_attr( $this->version ), 'all' );
                 endif;
-                    wp_enqueue_script( 'newsmatic-admin-notice', get_template_directory_uri() . '/inc/admin/assets/admin-notice.js', array( 'jquery' ), esc_attr( $this->version ), true );
+                    wp_enqueue_script( 'newsmatic-admin-notice', NEWSMATIC_URL . '/inc/admin/assets/admin-notice.js', array( 'jquery' ), esc_attr( $this->version ), true );
                     wp_localize_script( 'newsmatic-admin-notice', 'newsmaticThemeInfoObject', array(
                         'ajaxUrl'   => esc_url( admin_url( 'admin-ajax.php' ) ),
                         '_wpnonce'  => wp_create_nonce( 'newsmatic-theme-info-nonce' ),
@@ -83,8 +83,8 @@ if( !class_exists( 'Newsmatic_Theme_Info' ) ) :
             if( $hook != "appearance_page_newsmatic-info" ) {
                 return;
             }
-            wp_enqueue_style( 'newsmatic-info', get_template_directory_uri() . '/inc/admin/assets/info-page.css', array(), esc_attr( $this->version ), 'all' );
-            wp_enqueue_script( 'newsmatic-info', get_template_directory_uri() . '/inc/admin/assets/info-page.js', array( 'jquery' ), esc_attr( $this->version ), true );
+            wp_enqueue_style( 'newsmatic-info', NEWSMATIC_URL . '/inc/admin/assets/info-page.css', array(), esc_attr( $this->version ), 'all' );
+            wp_enqueue_script( 'newsmatic-info', NEWSMATIC_URL . '/inc/admin/assets/info-page.js', array( 'jquery' ), esc_attr( $this->version ), true );
             wp_localize_script( 'newsmatic-info', 'newsmaticThemeInfoObject', array(
                 'ajaxUrl'   => esc_url( admin_url( 'admin-ajax.php' ) ),
                 '_wpnonce'  => wp_create_nonce( 'newsmatic-theme-info-nonce' )
@@ -503,7 +503,7 @@ if( !class_exists( 'Newsmatic_Theme_Info' ) ) :
                         </div>
                     </div>
                 </div><!-- .notice-content-wrap -->
-                <img class="screenshot-wrap" src="<?php echo esc_url( get_template_directory_uri() . '/screenshot.png' ); ?>" height="200" height="200"/>
+                <img class="screenshot-wrap" src="<?php echo esc_url( NEWSMATIC_URL . '/screenshot.png' ); ?>" height="200" height="200"/>
                 <div class="notice-dismiss-button"><?php esc_html_e( 'Dismiss this notice', 'newsmatic' ); ?></div>
             </div>
             <?php
@@ -635,7 +635,7 @@ class Newsmatic_Notice {
     }
     // add notice scripts
     public function add_scripts() {
-        wp_enqueue_style( 'newsmatic-upgrade-notice', get_template_directory_uri() . '/inc/admin/assets/upgrade-notice.css', array(), '1.0.3', 'all' );
+        wp_enqueue_style( 'newsmatic-upgrade-notice', NEWSMATIC_URL . '/inc/admin/assets/upgrade-notice.css', array(), '1.0.3', 'all' );
     }
 
     private function is_dismiss_notice(){

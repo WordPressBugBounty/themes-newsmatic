@@ -9,7 +9,7 @@
  * @package Newsmatic
  */
 use Newsmatic\CustomizerDefault as ND;
-require get_template_directory() . '/builder/responsive-header.php';
+require NEWSMATIC_PATH . '/builder/responsive-header.php';
 use Newsmatic_Builder as NB;
 ?>
 <!doctype html>
