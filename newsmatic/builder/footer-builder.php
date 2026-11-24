@@ -174,27 +174,27 @@
                         break;
                     case 'sidebar-one':
                         /**
-                         * sidebar-id = 'footer-sidebar--column-1'
+                         * sidebar-id = 'footer-sidebar-column-1'
                          */
-                        dynamic_sidebar( 'footer-sidebar--column-1' );
+                        dynamic_sidebar( 'footer-sidebar-column-1' );
                         break;
                     case 'sidebar-two':
                         /**
-                         * sidebar-id = 'footer-sidebar--column-2'
+                         * sidebar-id = 'footer-sidebar-column-2'
                          */
-                        dynamic_sidebar( 'footer-sidebar--column-2' );
+                        dynamic_sidebar( 'footer-sidebar-column-2' );
                         break;
                     case 'sidebar-three':
                         /**
-                         * sidebar-id = 'footer-sidebar--column-3'
+                         * sidebar-id = 'footer-sidebar-column-3'
                          */
-                        dynamic_sidebar( 'footer-sidebar--column-3' );
+                        dynamic_sidebar( 'footer-sidebar-column-3' );
                         break;
                     case 'sidebar-four':
                         /**
-                         * sidebar-id = 'footer-sidebar--column-4'
+                         * sidebar-id = 'footer-sidebar-column-4'
                          */
-                        dynamic_sidebar( 'footer-sidebar--column-4' );
+                        dynamic_sidebar( 'footer-sidebar-column-4' );
                         break;
                     case 'scroll-to-top':
                          /**

@@ -80,7 +80,7 @@ function newsmatic_widgets_init() {
 	register_sidebar(
 		array(
 			'name'          => esc_html__( 'Footer Sidebar - Column 1', 'newsmatic' ),
-			'id'            => 'footer-sidebar--column-1',
+			'id'            => 'footer-sidebar-column-1',
 			'description'   => esc_html__( 'Add widgets here.', 'newsmatic' ),
 			'before_widget' => '<section id="%1$s" class="widget %2$s">',
 			'after_widget'  => '</section>',
@@ -93,7 +93,7 @@ function newsmatic_widgets_init() {
 	register_sidebar(
 		array(
 			'name'          => esc_html__( 'Footer Sidebar - Column 2', 'newsmatic' ),
-			'id'            => 'footer-sidebar--column-2',
+			'id'            => 'footer-sidebar-column-2',
 			'description'   => esc_html__( 'Add widgets here.', 'newsmatic' ),
 			'before_widget' => '<section id="%1$s" class="widget %2$s">',
 			'after_widget'  => '</section>',
@@ -106,7 +106,7 @@ function newsmatic_widgets_init() {
 	register_sidebar(
 		array(
 			'name'          => esc_html__( 'Footer Sidebar - Column 3', 'newsmatic' ),
-			'id'            => 'footer-sidebar--column-3',
+			'id'            => 'footer-sidebar-column-3',
 			'description'   => esc_html__( 'Add widgets here.', 'newsmatic' ),
 			'before_widget' => '<section id="%1$s" class="widget %2$s">',
 			'after_widget'  => '</section>',
@@ -119,7 +119,7 @@ function newsmatic_widgets_init() {
 	register_sidebar(
 		array(
 			'name'          => esc_html__( 'Footer Sidebar - Column 4', 'newsmatic' ),
-			'id'            => 'footer-sidebar--column-4',
+			'id'            => 'footer-sidebar-column-4',
 			'description'   => esc_html__( 'Add widgets here.', 'newsmatic' ),
 			'before_widget' => '<section id="%1$s" class="widget %2$s">',
 			'after_widget'  => '</section>',

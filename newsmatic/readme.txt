@@ -4,7 +4,7 @@ Tags: news, blog, entertainment, one-column, two-columns, grid-layout, block-sty
 Requires at least: 5.3
 Tested up to: 6.9
 Requires PHP: 5.6
-Stable tag: 1.5.2
+Stable tag: 1.5.3
 License: GNU General Public License v2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,9 @@ URL: http://github.com/kenwheeler/slick
 License: The MIT License
 
 == Changelog ==
+
+= 1.5.3 - November 24th, 2026 =
+    * Fixed: Footer sidebars not rendering when the site language is not English.
 
 = 1.5.2 - October 27th, 2026 =
     * Code: Introduced theme path and URI constants for cleaner, more consistent file includes.

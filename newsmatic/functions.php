@@ -305,3 +305,40 @@ if( ! function_exists( 'newsmatic_preconnect_to_google_fonts' ) ) {
 	}
 	add_action( 'wp_head', 'newsmatic_preconnect_to_google_fonts' , 1 );
 }
+
+/**
+ * Move footer widgets from the old sidebar IDs to the new ones.
+ * 
+ * @since 1.5.3
+ */
+function newsmatic_migrate_footer_sidebar_ids() {
+	if( get_option( 'newsmatic_footer_sidebar_ids_migrated' ) ) {
+		return;
+	}
+
+	$sidebars = get_option( 'sidebars_widgets' );
+
+	if( is_array( $sidebars ) ) {
+		$changed = false;
+
+		for( $n = 1; $n <= 4; $n++ ) {
+			$old = 'footer-sidebar--column-' . $n;
+			$new = 'footer-sidebar-column-' . $n;
+
+			if( isset( $sidebars[ $old ] ) ) {
+				if( empty( $sidebars[ $new ] ) ) {
+					$sidebars[ $new ] = $sidebars[ $old ];
+				}
+				unset( $sidebars[ $old ] );
+				$changed = true;
+			}
+		}
+
+		if ( $changed ) {
+			update_option( 'sidebars_widgets', $sidebars );
+		}
+	}
+
+	update_option( 'newsmatic_footer_sidebar_ids_migrated', 1 );
+}
+add_action( 'after_setup_theme', 'newsmatic_migrate_footer_sidebar_ids' );

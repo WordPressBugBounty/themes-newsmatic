@@ -49,22 +49,22 @@ if( ! function_exists( 'newsmatic_footer_builders_customizer_options' ) ) :
                 'sidebar-one'	=>	[
                     'label' 	=>	esc_html__( 'Sidebar 1', 'newsmatic' ),
                     'icon' 	=>	'columns',
-                    'section'	=>	'sidebar-widgets-footer-sidebar--column-1'
+                    'section'	=>	'sidebar-widgets-footer-sidebar-column-1'
                 ],
                 'sidebar-two'	=>	[
                     'label' 	=>	esc_html__( 'Sidebar 2', 'newsmatic' ),
                     'icon' 	=>	'columns',
-                    'section'	=>	'sidebar-widgets-footer-sidebar--column-2'
+                    'section'	=>	'sidebar-widgets-footer-sidebar-column-2'
                 ],
                 'sidebar-three'	=>	[
                     'label' 	=>	esc_html__( 'Sidebar 3', 'newsmatic' ),
                     'icon' 	=>	'columns',
-                    'section'	=>	'sidebar-widgets-footer-sidebar--column-3'
+                    'section'	=>	'sidebar-widgets-footer-sidebar-column-3'
                 ],
                 'sidebar-four'	=>	[
                     'label' 	=>	esc_html__( 'Sidebar 4', 'newsmatic' ),
                     'icon' 	=>	'columns',
-                    'section'	=>	'sidebar-widgets-footer-sidebar--column-4'
+                    'section'	=>	'sidebar-widgets-footer-sidebar-column-4'
                 ],
                 'scroll-to-top'	=>	[
                     'label' 	=>	esc_html__( 'Scroll to Top', 'newsmatic' ),
